@@ -1,5 +1,5 @@
 # SD Web UI 런처
-코랩 또는 런팟에서 [stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)을 실행 시켜주는 웹 앱([Gradio](https://gradio.app/))
+[코랩](https://colab.research.google.com) 또는 [런팟](https://www.runpod.io)에서 [stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)을 실행 시켜주는 웹 앱([Gradio](https://gradio.app/))
 
 | 노트북 이름 | 설명 | 링크 |
 | --- | --- | --- | 
