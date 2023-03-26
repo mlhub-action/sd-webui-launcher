@@ -778,7 +778,7 @@ def start():
             settings_file.style()
 
         with gr.Box():
-            progress = gr.Text(label="진행 과정", interactive=False)
+            progress = gr.Text(label="진행 과정", value="노트북 출력 창에 표시", interactive=False)
 
         with gr.Box():
             gr.Markdown(
