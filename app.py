@@ -1,5 +1,5 @@
 # @title ## 코랩/런팟용 SD Web UI 런처
-VERSION = "v0.1.0"  # @param {type:"string"}
+VERSION = "v0.1.2"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
