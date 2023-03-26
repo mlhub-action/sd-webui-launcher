@@ -52,8 +52,10 @@ DEFAULT_SETTINGS = """
 # @markdown #### <br> 2.2 즐겨찾기 ####
 # @markdown > 등록 형식 : "이름\[⧉\]\(링크\)"
 
+
 # @markdown - 즐겨찾기 : 확장
 FAVORITES_EXTENSIONS = [
+    ["한글 패치[⧉](https://github.com/36DB/stable-diffusion-webui-localization-ko_KR)"],
     ["System Info[⧉](https://github.com/vladmandic/sd-extension-system-info)"],
     [
         "Civitai Helper[⧉](https://github.com/butaixianran/Stable-Diffusion-Webui-Civitai-Helper.git)"
@@ -1078,7 +1080,9 @@ def start():
                         name, url = favorite_tuple(evt.value[0])
                         commit = filename(url)
                         print(f"Launcher: 커밋 해시 변경, 이름: {name} , 해시:{commit}")
-                        return gr.Text.update(value=commit, label=f"Commit hash - {name}")
+                        return gr.Text.update(
+                            value=commit, label=f"Commit hash - {name}"
+                        )
 
                     commit_favorites.select(
                         fn=on_click_commit_favorites, inputs=None, outputs=git_commit
