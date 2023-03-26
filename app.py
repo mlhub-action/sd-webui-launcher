@@ -132,6 +132,9 @@ FAVORITES_ARGS = [
 # @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
     [
+        "2023-03-25 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/a9eab236d7e8afa4d6205127904a385b2c43bb24)"
+    ],
+    [
         "2023-03-24 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/280ed8f00fde0ece026339acdd42888ac4dc3167)"
     ],
     [
@@ -459,11 +462,13 @@ def start():
         if not sd_webui_path.exists():
             run(f'git -C "{sd_webui_path.parent}" clone {git_url} {sd_webui_path.name}')
         else:
-            run(
-                f'git -C "{sd_webui_path}" fetch origin master && git -C "{sd_webui_path}" checkout {git_commit}'
-                if git_commit
-                else f'git -C "{sd_webui_path}" pull origin master'
-            )
+            run(f'git -C "{sd_webui_path}" fetch origin master')
+
+        if git_commit:
+            run(f'git -C "{sd_webui_path}" checkout {git_commit}')
+        else:
+            run(f'git -C "{sd_webui_path}" pull origin master')
+
         time.sleep(0.5)
 
         """
