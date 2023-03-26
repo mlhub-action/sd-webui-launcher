@@ -1,0 +1,37 @@
+From acf7fb7cbb0e20cdacf0e5aa9c5a6c4b4899590a Mon Sep 17 00:00:00 2001
+From: sumof2primes <sumof2primes@gmail.com>
+Date: Sun, 26 Mar 2023 08:11:27 +0900
+Subject: [PATCH] Deprecate lib2to3
+
+---
+ scripts/ddetailer.py | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/scripts/ddetailer.py b/scripts/ddetailer.py
+index 7841d8e..a18ad15 100644
+--- a/scripts/ddetailer.py
++++ b/scripts/ddetailer.py
+@@ -48,6 +48,20 @@ def startup():
+         run(f'"{python}" -m pip install -U openmim', desc="Installing openmim", errdesc="Couldn't install openmim")
+         run(f'"{python}" -m mim install mmcv-full', desc=f"Installing mmcv-full", errdesc=f"Couldn't install mmcv-full")
+         run(f'"{python}" -m pip install mmdet', desc=f"Installing mmdet", errdesc=f"Couldn't install mmdet")
++        site_packages_path = run(
++            f'"{python}" -c "import sysconfig; print(sysconfig.get_path(\'purelib\'))"',
++            desc=f"Find site packages path",
++            errdesc=f"Couldn't find site packages path",
++        )
++        target_mmcv_config = os.path.join(
++            site_packages_path.rstrip(), "mmcv/utils/config.py"
++        )
++        if os.path.exists(target_mmcv_config):
++            run(
++                f"sed -i 's/from yapf.yapflib.yapf_api import FormatCode//g' {target_mmcv_config}",
++                desc=f"Deprecate lib2to3",
++                errdesc=f"Couldn't deprecate lib2to3",
++            )
+ 
+     if (len(list_models(dd_models_path)) == 0):
+         print("No detection models found, downloading...")
+-- 
+2.32.0.windows.2
+
