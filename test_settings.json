@@ -1,6 +1,6 @@
 {
     "workspace": {
-        "name": "test",
+        "name": "testdata",
         "googledrive": false
     },
     "downloads": {
@@ -211,7 +211,7 @@
         "auth_password": "",
         "auth_token": ""
     },
-    "cmdline_args": "--xformers",
+    "cmdline_args": "--xformers --update-all-extensions",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": ""
 }
