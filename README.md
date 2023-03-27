@@ -26,6 +26,12 @@
 ## 업데이트
 ### v0.1.6 (2023-03-27)
 #### 변경 내역
+ - 코랩 tcmalloc 관련 이슈 [우회](https://github.com/toriato/easy-stable-diffusion/blob/1cb87d815dae953cbf7bb8c6df386f9e8b388b06/easy-stable-diffusion.py#L325), https://github.com/toriato/easy-stable-diffusion
+ - 확장 즐겨찾기 목록 추가
+</br>
+
+### v0.1.6 (2023-03-27)
+#### 변경 내역
 > 기능 개선
  - SD Web UI 설정 파일(config.json, ui-config.json) 위치를 작업디렉터리에 지정
  - 전체 실행 인자 표시 기능 추가, 회색 테마 적용
@@ -68,4 +74,4 @@
 
 
 ## Credits
-코랩 tcmalloc 관련 이슈 우회, https://github.com/toriato/easy-stable-diffusion
+코랩 tcmalloc 관련 이슈 [우회](https://github.com/toriato/easy-stable-diffusion/blob/1cb87d815dae953cbf7bb8c6df386f9e8b388b06/easy-stable-diffusion.py#L325), https://github.com/toriato/easy-stable-diffusion
