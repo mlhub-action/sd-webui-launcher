@@ -1,5 +1,5 @@
 # @title ## 코랩/런팟용 SD Web UI 런처
-VERSION = "v0.1.4"  # @param {type:"string"}
+VERSION = "v0.1.5"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
@@ -533,7 +533,7 @@ def start():
         extensions = extensions.drop(extensions.query(f'주소 == ""').index)
         total += extensions.count()["주소"]
 
-        controlnet_models = extensions.drop(controlnet_models.query(f'주소 == ""').index)
+        controlnet_models = controlnet_models.drop(controlnet_models.query(f'주소 == ""').index)
         total += controlnet_models.count()["주소"]
 
         models = models.drop(models.query(f'주소 == ""').index)
