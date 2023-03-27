@@ -144,24 +144,20 @@ DEFAULT_SETTINGS = """
 # @markdown - 즐겨찾기 : 확장
 FAVORITES_EXTENSIONS = [
     ["한글 패치[⧉](https://github.com/36DB/stable-diffusion-webui-localization-ko_KR)"],
-    ["System Info[⧉](https://github.com/vladmandic/sd-extension-system-info)"],
-    [
-        "Civitai Helper[⧉](https://github.com/butaixianran/Stable-Diffusion-Webui-Civitai-Helper.git)"
-    ],
+    ["Booru tag autocompletion[⧉](https://github.com/DominikDoom/a1111-sd-webui-tagcomplete)"],
+    ["Civitai Helper[⧉](https://github.com/butaixianran/Stable-Diffusion-Webui-Civitai-Helper.git)"],
+    ["Composable LoRA[⧉](https://github.com/opparco/stable-diffusion-webui-composable-lora.git)"],
     ["ControlNet[⧉](https://github.com/Mikubill/sd-webui-controlnet)"],
+    ["Cutoff[⧉](https://github.com/hnmr293/sd-webui-cutoff.git)"],
+    ["Dataset Tag Editor[⧉](https://github.com/toshiaki1729/stable-diffusion-webui-dataset-tag-editor)"],
     ["Detection Detailer[⧉](https://github.com/dustysys/ddetailer)"],
-    [
-        "Kohya-ss Additional Networks[⧉](https://github.com/kohya-ss/sd-webui-additional-networks)"
-    ],
-    [
-        "Dynamic Thresholding[⧉](https://github.com/mcmonkeyprojects/sd-dynamic-thresholding)"
-    ],
-    [
-        "Booru tag autocompletion[⧉](https://github.com/DominikDoom/a1111-sd-webui-tagcomplete)"
-    ],
-    [
-        "Dataset Tag Editor[⧉](https://github.com/toshiaki1729/stable-diffusion-webui-dataset-tag-editor)"
-    ],
+    ["Dynamic Prompts[⧉](https://github.com/adieyal/sd-dynamic-prompts.git)"],
+    ["Dynamic Thresholding[⧉](https://github.com/mcmonkeyprojects/sd-dynamic-thresholding)"],
+    ["Kohya-ss Additional Networks[⧉](https://github.com/kohya-ss/sd-webui-additional-networks)"],
+    ["Latent Couple[⧉](https://github.com/ashen-sensored/stable-diffusion-webui-two-shot.git)"],
+    ["Preset Utilities[⧉](https://github.com/Gerschel/sd_web_ui_preset_utils.git)"],
+    ["stable-diffusion-webui-state[⧉](https://github.com/ilian6806/stable-diffusion-webui-state.git)"],
+    ["System Info[⧉](https://github.com/vladmandic/sd-extension-system-info)"],
     ["WD 1.4 Tagger[⧉](https://github.com/toriato/stable-diffusion-webui-wd14-tagger)"],
 ]
 
