@@ -340,6 +340,26 @@ def setup():
             check=True,
         )
 
+    if is_colab():
+        import subprocess
+
+        # 코랩 tcmalloc 관련 이슈 우회
+        # https://github.com/googlecolab/colabtools/issues/3412
+        try:
+            # 패키지가 이미 다운그레이드 됐는지 확인하기
+            run("dpkg -l libunwind8-dev", check=True)
+        except RuntimeError:
+            for url in (
+                "http://launchpadlibrarian.net/367274644/libgoogle-perftools-dev_2.5-2.2ubuntu3_amd64.deb",
+                "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/google-perftools_2.5-2.2ubuntu3_all.deb",
+                "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libtcmalloc-minimal4_2.5-2.2ubuntu3_amd64.deb",
+                "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb",
+            ):
+                run(f"curl --location --output {url.rsplit('/', 1)[-1]} {url}")
+            run("apt install -qq libunwind8-dev")
+            run("dpkg -i *.deb")
+            run("rm *.deb")
+
 
 def start():
     import gradio as gr
@@ -895,7 +915,12 @@ def start():
 
         time.sleep(0.5)
 
-        import subprocess
+        import subprocess, os
+
+        env = os.environ.copy()
+        if is_colab():
+            # https://github.com/googlecolab/colabtools/issues/3412
+            env["LD_PRELOAD"] = "libtcmalloc.so"
 
         with subprocess.Popen(
             [
@@ -908,6 +933,7 @@ def start():
             bufsize=1,
             text=True,
             cwd=sd_webui_path,
+            env=env,
         ) as proc:
             for line in proc.stdout:
                 if line.startswith("Running on public URL:"):
