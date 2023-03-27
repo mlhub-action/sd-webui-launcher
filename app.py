@@ -1353,7 +1353,7 @@ def start():
         share=USE_GRADIO_LIVE and not is_local(),
         debug=True,  # 노트북 결과창에 출력
         inline=not USE_GRADIO_LIVE,
-        server_port=7878 if is_local() else None,
+        server_port=7878 if not USE_GRADIO_LIVE or is_local() else None,
     )
 
 
