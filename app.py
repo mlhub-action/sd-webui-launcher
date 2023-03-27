@@ -656,8 +656,10 @@ def start():
                 total,
                 desc=f"확장 다운로드, 이름: {name}, 주소: {url}",
             )
-            if not Path(extensions_path, repositoryname(url)).exists():
+            repository_path = Path(extensions_path, repositoryname(url))
+            if not repository_path.exists():
                 run(f'git -C "{extensions_path}" clone --recursive --depth=1 {url}')
+                run(f'git -C "{repository_path}" fetch --depth=1') # SD Web UI의 Check for updates 기능을 위해
             time.sleep(0.5)
 
         def download(url, cwd=None):
