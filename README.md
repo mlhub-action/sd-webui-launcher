@@ -16,6 +16,9 @@
 - 확장, 모델, 실행 인자, 커밋 해시 등 즐겨찾기
 - TODO: 즐겨찾기 내보내기/가져오기, 컨트롤넷 모델 추가 다운로드, SD Web UI 설정 내보내기/가져오기
 
+## 알려진 문제
+ - https://github.com/mlhub-action/sd-webui-launcher/issues/1
+
 ## 업데이트
 ### v0.1.2 (2023-03-26)
 #### 변경 내역
