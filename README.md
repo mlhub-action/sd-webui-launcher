@@ -65,3 +65,7 @@
 #### 변경 내역
 - 최초 릴리즈
 </br>
+
+
+## Credits
+https://github.com/toriato/easy-stable-diffusion
