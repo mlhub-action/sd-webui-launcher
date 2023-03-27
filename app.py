@@ -1028,7 +1028,7 @@ def start():
                                     interactive=True,
                                 )
                     with gr.Column(scale=0.2):
-                        gr.Markdown("[인덱스](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)")
+                        gr.Markdown("[확장 인덱스](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)")
                         extensions_favorites = gr.Dataset(
                             components=[gr.Markdown(visible=False)],
                             label="즐겨찾기",
