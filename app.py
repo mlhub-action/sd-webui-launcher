@@ -344,6 +344,7 @@ def start():
                     "git_commit": gr.Text(git_commit).value,
                 },
                 f,
+                ensure_ascii=False,
             )
 
     def on_export_settings(
