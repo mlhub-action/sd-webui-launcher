@@ -269,20 +269,20 @@ def start():
             settings = json.load(f)
 
         return [
-            gr.Checkbox.update(value=settings["workspace"]["googledrive"]),
-            gr.Text.update(value=settings["workspace"]["name"]),
-            gr.DataFrame.update(value=settings["downloads"]["extensions"]),
-            gr.DataFrame.update(value=settings["downloads"]["models"]),
-            gr.DataFrame.update(value=settings["downloads"]["loras"]),
-            gr.DataFrame.update(value=settings["downloads"]["embeddings"]),
-            gr.DataFrame.update(value=settings["downloads"]["vaes"]),
-            gr.Text.update(value=settings["authentication"]["auth_method"]),
-            gr.Text.update(value=settings["authentication"]["auth_username"]),
-            gr.Text.update(value=settings["authentication"]["auth_password"]),
-            gr.Text.update(value=settings["authentication"]["auth_token"]),
-            gr.Text.update(value=settings["cmdline_args"]),
-            gr.Text.update(value=settings["git_url"]),
-            gr.Text.update(value=settings["git_commit"]),
+            gr.Checkbox.update(value=settings["workspace"].get("googledrive", False)),
+            gr.Text.update(value=settings["workspace"].get("name", None)),
+            gr.DataFrame.update(value=settings["downloads"].get("extensions", None)),
+            gr.DataFrame.update(value=settings["downloads"].get("models", None)),
+            gr.DataFrame.update(value=settings["downloads"].get("loras", None)),
+            gr.DataFrame.update(value=settings["downloads"].get("embeddings", None)),
+            gr.DataFrame.update(value=settings["downloads"].get("vaes", None)),
+            gr.Text.update(value=settings["authentication"].get("auth_method", None)),
+            gr.Text.update(value=settings["authentication"].get("auth_username", None)),
+            gr.Text.update(value=settings["authentication"].get("auth_password", None)),
+            gr.Text.update(value=settings["authentication"].get("auth_token", None)),
+            gr.Text.update(value=settings.get("cmdline_args", None)),
+            gr.Text.update(value=settings.get("git_url", None)),
+            gr.Text.update(value=settings.get("git_commit", None)),
         ]
 
     def on_default_settings():
@@ -459,6 +459,7 @@ def start():
             f"깃 저장소 다운로드, 주소: {git_url} 커밋: {git_commit}",
         )
 
+        assert git_url
         if not sd_webui_path.exists():
             run(f'git -C "{sd_webui_path.parent}" clone {git_url} {sd_webui_path.name}')
         else:
