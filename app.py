@@ -547,17 +547,17 @@ def start():
                 return name
 
         for index, (name, url) in enumerate(zip(extensions["이름"], extensions["주소"])):
-            if url:
-                steps += 1
-                update_progress(
-                    progress,
-                    steps,
-                    total,
-                    desc=f"확장 다운로드, 이름: {name}, 주소: {url}",
-                )
-                if not Path(extensions_path, repositoryname(url)).exists():
-                    run(f'git -C "{extensions_path}" clone --recursive --depth=1 {url}')
-                time.sleep(0.5)
+            assert url
+            steps += 1
+            update_progress(
+                progress,
+                steps,
+                total,
+                desc=f"확장 다운로드, 이름: {name}, 주소: {url}",
+            )
+            if not Path(extensions_path, repositoryname(url)).exists():
+                run(f'git -C "{extensions_path}" clone --recursive --depth=1 {url}')
+            time.sleep(0.5)
 
         def download(url, cwd=None):
             from urllib.parse import urlparse
@@ -597,61 +597,61 @@ def start():
         모델 다운로드
         """
         for index, (name, url) in enumerate(zip(models["이름"], models["주소"])):
-            if url:
-                steps += 1
-                update_progress(
-                    progress,
-                    steps,
-                    total,
-                    desc=f"모델 다운로드, 이름: {name}, 주소: {url}",
-                )
-                download(url, cwd=ckpt_path)
-                time.sleep(0.5)
+            assert url
+            steps += 1
+            update_progress(
+                progress,
+                steps,
+                total,
+                desc=f"모델 다운로드, 이름: {name}, 주소: {url}",
+            )
+            download(url, cwd=ckpt_path)
+            time.sleep(0.5)
 
         """
         로라 다운로드
         """
         for index, (name, url) in enumerate(zip(loras["이름"], loras["주소"])):
-            if url:
-                steps += 1
-                update_progress(
-                    progress,
-                    steps,
-                    total,
-                    desc=f"로라 다운로드, 이름: {name}, 주소: {url}",
-                )
-                download(url, cwd=lora_path)
-                time.sleep(0.5)
+            assert url
+            steps += 1
+            update_progress(
+                progress,
+                steps,
+                total,
+                desc=f"로라 다운로드, 이름: {name}, 주소: {url}",
+            )
+            download(url, cwd=lora_path)
+            time.sleep(0.5)
 
         """
         임베딩 다운로드
         """
         for index, (name, url) in enumerate(zip(embeddings["이름"], embeddings["주소"])):
-            if url:
-                steps += 1
-                update_progress(
-                    progress,
-                    steps,
-                    total,
-                    desc=f"임베딩 다운로드, 이름: {name}, 주소: {url}",
-                )
-                download(url, cwd=embeddings_path)
-                time.sleep(0.5)
+            assert url
+            steps += 1
+            update_progress(
+                progress,
+                steps,
+                total,
+                desc=f"임베딩 다운로드, 이름: {name}, 주소: {url}",
+            )
+            download(url, cwd=embeddings_path)
+            time.sleep(0.5)
 
         """
         VAEs 다운로드
         """
         for index, (name, url) in enumerate(zip(vaes["이름"], vaes["주소"])):
-            if url:
-                steps += 1
-                update_progress(
-                    progress,
-                    steps,
-                    total,
-                    desc=f"VAEs 다운로드, 이름: {name}, 주소: {url}",
-                )
-                download(url, cwd=vae_path)
-                time.sleep(0.5)
+            assert url
+            steps += 1
+            update_progress(
+                progress,
+                steps,
+                total,
+                desc=f"VAEs 다운로드, 이름: {name}, 주소: {url}",
+            )
+            download(url, cwd=vae_path)
+            time.sleep(0.5)
 
         """
         SD Web UI 가상 환경 설정(venv)
@@ -675,23 +675,23 @@ def start():
 
         # Patch extensions dependencies
         for index, (name, url) in enumerate(zip(extensions["이름"], extensions["주소"])):
-            if url:
-                if repositoryname(url) == "ddetailer":
-                    diff_path = Path(
-                        extensions_path, repositoryname(url), "deprecate_lib2to3.diff"
-                    )
-                    steps += 1
-                    update_progress(
-                        progress,
-                        steps,
-                        total,
-                        desc=f"패치 적용, {diff_path}",
-                    )
-                    run(
-                        f"curl -o {diff_path} https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff"
-                    )
-                    run(f"patch -N -d {diff_path.parent} -p1 < {diff_path} || true")
-                time.sleep(0.5)
+            assert url
+            if repositoryname(url) == "ddetailer":
+                diff_path = Path(
+                    extensions_path, repositoryname(url), "deprecate_lib2to3.diff"
+                )
+                steps += 1
+                update_progress(
+                    progress,
+                    steps,
+                    total,
+                    desc=f"패치 적용, {diff_path}",
+                )
+                run(
+                    f"curl -o {diff_path} https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff"
+                )
+                run(f"patch -N -d {diff_path.parent} -p1 < {diff_path} || true")
+            time.sleep(0.5)
 
         """
         SD Web UI 실행 시작
