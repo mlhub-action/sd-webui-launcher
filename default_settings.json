@@ -1,0 +1,125 @@
+{
+    "workspace": {
+        "name": "userdata",
+        "googledrive": false
+    },
+    "downloads": {
+        "extensions": {
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "System Info",
+                    "https://github.com/vladmandic/sd-extension-system-info"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
+        },
+        "controlnet_models": {
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "openpose",
+                    "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors"
+                ],
+                [
+                    "canny",
+                    "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors"
+                ],
+                [
+                    "hed",
+                    "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors"
+                ],
+                [
+                    "depth",
+                    "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors"
+                ]
+            ]
+        },
+        "models": {
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "AOM3A1",
+                    "https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
+        },
+        "loras": {
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "Anime Tarot Card Art Style LoRA",
+                    "https://civitai.com/api/download/models/19859"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
+        },
+        "embeddings": {
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "EasyNegative",
+                    "https://civitai.com/api/download/models/9208"
+                ],
+                [
+                    "badhandv4",
+                    "https://civitai.com/api/download/models/20068"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
+        },
+        "vaes": {
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "kl-f8-anime2",
+                    "https://huggingface.co/hakurei/waifu-diffusion-v1-4/resolve/main/vae/kl-f8-anime2.ckpt"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
+        }
+    },
+    "authentication": {
+        "auth_method": "gradio",
+        "auth_username": "",
+        "auth_password": "",
+        "auth_token": ""
+    },
+    "cmdline_args": "--xformers",
+    "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
+    "git_commit": ""
+}
