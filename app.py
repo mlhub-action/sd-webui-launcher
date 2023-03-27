@@ -266,7 +266,7 @@ def bash_shell():
     )
 
 
-def run(command, cwd=None):
+def run(command, cwd=None, check=False):
     import shlex
     import subprocess
 
@@ -279,7 +279,10 @@ def run(command, cwd=None):
 
     if proc.returncode != 0:
         message = f"RunningCommandError: Return code: '{proc.returncode}', Message: '{proc.stderr.decode(encoding='utf8', errors='ignore') if len(proc.stderr)>0 else ''}', Command: '{command}'"
-        raise RuntimeError(message)
+        if check:
+            raise RuntimeError(message)
+        else:
+            print(message)
 
     return proc.stdout.decode(encoding="utf8", errors="ignore")
 
@@ -295,16 +298,16 @@ def setup():
         return spec is not None
 
     if not is_installed("pyngrok"):
-        run('pip -q install "pyngrok"')
+        run('pip -q install "pyngrok"', check=True)
 
     if not is_installed("gradio"):
-        run('pip -q install "gradio>=3.21"')
+        run('pip -q install "gradio>=3.21"', check=True)
 
     if not is_installed("bs4"):
-        run('pip -q install "beautifulsoup4"')
+        run('pip -q install "beautifulsoup4"', check=True)
 
     if not is_installed("lxml"):
-        run('pip -q install "lxml"')
+        run('pip -q install "lxml"', check=True)
 
     def has_executable(name):
         import shutil
@@ -312,7 +315,7 @@ def setup():
         return shutil.which(name) is not None
 
     if not has_executable("gdown"):
-        run("pip -q install gdown")
+        run("pip -q install gdown", check=True)
 
     if not has_executable("aria2c"):
         if platform.system() == "Windows":
@@ -320,23 +323,26 @@ def setup():
                 "다음 링크를 통해 aria2c를 설치해 주세요. https://github.com/aria2/aria2/releases/tag/release-1.36.0"
             )
         elif platform.system() == "Linux":
-            run("apt-get update -qq -y && apt-get install -y aria2")
+            run("apt-get update -qq -y && apt-get install -y aria2", check=True)
 
     if not has_executable("curl"):
         if platform.system() == "Windows":
             print("다음 링크를 통해 curl를 설치해 주세요. https://curl.se/download.html")
         elif platform.system() == "Linux":
-            run("apt-get update -qq -y && apt-get install -y curl")
+            run("apt-get update -qq -y && apt-get install -y curl", check=True)
 
     if not has_executable("git"):
         if platform.system() == "Windows":
             print("다음 링크를 통해 git를 설치해 주세요. https://gitforwindows.org/")
         elif platform.system() == "Linux":
-            run("apt-get update -qq -y && apt-get install -y git")
+            run("apt-get update -qq -y && apt-get install -y git", check=True)
 
     if is_runpod():
         # for RunPod Pytorch
-        run("apt-get update -qq -y && apt-get install -y libgl1 libpython3.10-dev")
+        run(
+            "apt-get update -qq -y && apt-get install -y libgl1 libpython3.10-dev",
+            check=True,
+        )
 
 
 def start():
@@ -533,7 +539,9 @@ def start():
         extensions = extensions.drop(extensions.query(f'주소 == ""').index)
         total += extensions.count()["주소"]
 
-        controlnet_models = controlnet_models.drop(controlnet_models.query(f'주소 == ""').index)
+        controlnet_models = controlnet_models.drop(
+            controlnet_models.query(f'주소 == ""').index
+        )
         total += controlnet_models.count()["주소"]
 
         models = models.drop(models.query(f'주소 == ""').index)
@@ -561,7 +569,10 @@ def start():
 
         assert git_url
         if not sd_webui_path.exists():
-            run(f'git -C "{sd_webui_path.parent}" clone {git_url} {sd_webui_path.name}')
+            run(
+                f'git -C "{sd_webui_path.parent}" clone {git_url} {sd_webui_path.name}',
+                check=True,
+            )
         else:
             run(f'git -C "{sd_webui_path}" fetch origin master')
 
@@ -659,7 +670,9 @@ def start():
             repository_path = Path(extensions_path, repositoryname(url))
             if not repository_path.exists():
                 run(f'git -C "{extensions_path}" clone --recursive --depth=1 {url}')
-                run(f'git -C "{repository_path}" fetch --depth=1') # SD Web UI의 Check for updates 기능을 위해
+                run(
+                    f'git -C "{repository_path}" fetch --depth=1'
+                )  # SD Web UI의 Check for updates 기능을 위해
             time.sleep(0.5)
 
         def download(url, cwd=None):
@@ -788,14 +801,17 @@ def start():
             desc=f"SD Web UI 가상 환경 설정(venv)",
         )
 
-        run(f'python -m venv "{Path(sd_webui_path, "venv")}" --without-pip')
+        run(f'python -m venv "{Path(sd_webui_path, "venv")}" --without-pip', check=True)
 
         if platform.system() == "Windows":
             activate = f'source "{Path(sd_webui_path, "venv", "Scripts", "activate")}"'
         else:
             activate = f'source "{Path(sd_webui_path, "venv", "bin", "activate")}"'
 
-        run(f"{activate} && curl https://bootstrap.pypa.io/get-pip.py | python")
+        run(
+            f"{activate} && curl https://bootstrap.pypa.io/get-pip.py | python",
+            check=True,
+        )
 
         # Patch extensions dependencies
         for index, (name, url) in enumerate(zip(extensions["이름"], extensions["주소"])):
@@ -1030,7 +1046,9 @@ def start():
                                     interactive=True,
                                 )
                     with gr.Column(scale=0.2):
-                        gr.Markdown("[확장 인덱스](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)")
+                        gr.Markdown(
+                            "[확장 인덱스](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)"
+                        )
                         extensions_favorites = gr.Dataset(
                             components=[gr.Markdown(visible=False)],
                             label="즐겨찾기",
