@@ -1,5 +1,5 @@
 # @title ## 코랩/런팟용 SD Web UI 런처
-VERSION = "v0.1.2"  # @param {type:"string"}
+VERSION = "v0.1.3"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
@@ -19,6 +19,10 @@ DEFAULT_SETTINGS = """
         "extensions": {
             "headers": ["이름", "주소"],
             "data": [["System Info", "https://github.com/vladmandic/sd-extension-system-info"], ["", ""], ["", ""]]
+        },
+        "controlnet_models": {
+            "headers": ["이름", "주소"],
+            "data": [["openpose", "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors"], ["canny", "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors"], ["hed", "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors"], ["depth", "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors"]]
         },
         "models": {
             "headers": ["이름", "주소"],
@@ -272,6 +276,9 @@ def start():
             gr.Checkbox.update(value=settings["workspace"].get("googledrive", False)),
             gr.Text.update(value=settings["workspace"].get("name", None)),
             gr.DataFrame.update(value=settings["downloads"].get("extensions", None)),
+            gr.DataFrame.update(
+                value=settings["downloads"].get("controlnet_models", None)
+            ),
             gr.DataFrame.update(value=settings["downloads"].get("models", None)),
             gr.DataFrame.update(value=settings["downloads"].get("loras", None)),
             gr.DataFrame.update(value=settings["downloads"].get("embeddings", None)),
@@ -305,6 +312,7 @@ def start():
         workspace_googledrive,
         workspace_name,
         extensions,
+        controlnet_models,
         models,
         loras,
         embeddings,
@@ -328,6 +336,7 @@ def start():
                     },
                     "downloads": {
                         "extensions": gr.DataFrame(extensions).value,
+                        "controlnet_models": gr.DataFrame(controlnet_models).value,
                         "models": gr.DataFrame(models).value,
                         "loras": gr.DataFrame(loras).value,
                         "embeddings": gr.DataFrame(embeddings).value,
@@ -351,6 +360,7 @@ def start():
         workspace_googledrive,
         workspace_name,
         extensions,
+        controlnet_models,
         models,
         loras,
         embeddings,
@@ -370,6 +380,7 @@ def start():
             workspace_googledrive,
             workspace_name,
             extensions,
+            controlnet_models,
             models,
             loras,
             embeddings,
@@ -408,6 +419,7 @@ def start():
         workspace_googledrive,
         workspace_name,
         extensions,
+        controlnet_models,
         models,
         loras,
         embeddings,
@@ -436,6 +448,9 @@ def start():
 
         extensions = extensions.drop(extensions.query(f'주소 == ""').index)
         total += extensions.count()["주소"]
+
+        controlnet_models = extensions.drop(controlnet_models.query(f'주소 == ""').index)
+        total += controlnet_models.count()["주소"]
 
         models = models.drop(models.query(f'주소 == ""').index)
         total += models.count()["주소"]
@@ -594,6 +609,27 @@ def start():
                 run(f"gdown --fuzzy {url}", cwd)
             else:
                 run(f"aria2c {aria2c_options} {url}", cwd)
+
+        """
+        컨트롤넷 모델 다운로드
+        """
+        for index, (name, url) in enumerate(
+            zip(controlnet_models["이름"], controlnet_models["주소"])
+        ):
+            assert url
+            controlnet_models_path = Path(
+                extensions_path, "sd-webui-controlnet", "models"
+            )
+            if Path(controlnet_models_path).exists():
+                steps += 1
+                update_progress(
+                    progress,
+                    steps,
+                    total,
+                    desc=f"컨트롤넷 모델 다운로드, 이름: {name}, 주소: {url}",
+                )
+                download(url, cwd=controlnet_models_path)
+            time.sleep(0.5)
 
         """
         모델 다운로드
@@ -890,13 +926,23 @@ def start():
             with gr.Accordion("확장", open=True):
                 with gr.Row():
                     with gr.Column(scale=0.8):
-                        extensions = gr.Dataframe(
-                            headers=["이름", "주소"],
-                            datatype=["str", "str"],
-                            row_count=3,
-                            col_count=(2, "fixed"),
-                            interactive=True,
-                        )
+                        with gr.Tab("저장소"):
+                            extensions = gr.Dataframe(
+                                headers=["이름", "주소"],
+                                datatype=["str", "str"],
+                                row_count=3,
+                                col_count=(2, "fixed"),
+                                interactive=True,
+                            )
+                        with gr.Tab("컨트롤넷 모델"):
+                            with gr.Column(scale=0.8):
+                                controlnet_models = gr.Dataframe(
+                                    headers=["이름", "주소"],
+                                    datatype=["str", "str"],
+                                    row_count=3,
+                                    col_count=(2, "fixed"),
+                                    interactive=True,
+                                )
                     with gr.Column(scale=0.2):
                         extensions_favorites = gr.Dataset(
                             components=[gr.Markdown(visible=False)],
@@ -1099,6 +1145,7 @@ def start():
             workspace_googledrive,
             workspace_name,
             extensions,
+            controlnet_models,
             models,
             loras,
             embeddings,
