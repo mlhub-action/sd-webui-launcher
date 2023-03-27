@@ -17,28 +17,112 @@ DEFAULT_SETTINGS = """
     },
     "downloads": {
         "extensions": {
-            "headers": ["이름", "주소"],
-            "data": [["System Info", "https://github.com/vladmandic/sd-extension-system-info"], ["", ""], ["", ""]]
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "System Info",
+                    "https://github.com/vladmandic/sd-extension-system-info"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
         },
         "controlnet_models": {
-            "headers": ["이름", "주소"],
-            "data": [["openpose", "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors"], ["canny", "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors"], ["hed", "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors"], ["depth", "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors"]]
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "openpose",
+                    "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors"
+                ],
+                [
+                    "canny",
+                    "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors"
+                ],
+                [
+                    "hed",
+                    "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors"
+                ],
+                [
+                    "depth",
+                    "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors"
+                ]
+            ]
         },
         "models": {
-            "headers": ["이름", "주소"],
-            "data": [["AOM3A1", "https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors"], ["", ""], ["", ""]]
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "AOM3A1",
+                    "https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
         },
         "loras": {
-            "headers": ["이름", "주소"],
-            "data": [["Anime Tarot Card Art Style LoRA", "https://civitai.com/api/download/models/19859"], ["", ""]]
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "Anime Tarot Card Art Style LoRA",
+                    "https://civitai.com/api/download/models/19859"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
         },
         "embeddings": {
-            "headers": ["이름", "주소"],
-            "data": [["EasyNegative", "https://civitai.com/api/download/models/9208"], ["badhandv4", "https://civitai.com/api/download/models/20068"], ["", ""]]
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "EasyNegative",
+                    "https://civitai.com/api/download/models/9208"
+                ],
+                [
+                    "badhandv4",
+                    "https://civitai.com/api/download/models/20068"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
         },
         "vaes": {
-            "headers": ["이름", "주소"],
-            "data": [["kl-f8-anime2", "https://huggingface.co/hakurei/waifu-diffusion-v1-4/resolve/main/vae/kl-f8-anime2.ckpt"], ["", ""]]
+            "headers": [
+                "이름",
+                "주소"
+            ],
+            "data": [
+                [
+                    "kl-f8-anime2",
+                    "https://huggingface.co/hakurei/waifu-diffusion-v1-4/resolve/main/vae/kl-f8-anime2.ckpt"
+                ],
+                [
+                    "",
+                    ""
+                ]
+            ]
         }
     },
     "authentication": {
@@ -944,6 +1028,7 @@ def start():
                                     interactive=True,
                                 )
                     with gr.Column(scale=0.2):
+                        gr.Markdown("[인덱스](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)")
                         extensions_favorites = gr.Dataset(
                             components=[gr.Markdown(visible=False)],
                             label="즐겨찾기",
