@@ -1,5 +1,5 @@
 # @title ## 코랩/런팟용 SD Web UI 런처
-VERSION = "v0.1.5"  # @param {type:"string"}
+VERSION = "v0.1.6"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
@@ -348,7 +348,7 @@ def setup():
 def start():
     import gradio as gr
     import time
-    from pathlib import Path
+    from pathlib import Path, PurePath
 
     working_dir = (
         "/content" if is_colab() else "/workspace" if is_runpod() else Path.cwd()
@@ -411,7 +411,7 @@ def start():
         auth_username,
         auth_password,
         auth_token,
-        cmdline_args,
+        extra_cmdline_args,
         git_url,
         git_commit,
     ):
@@ -438,7 +438,7 @@ def start():
                         "auth_password": gr.Text(auth_password).value,
                         "auth_token": gr.Text(auth_token).value,
                     },
-                    "cmdline_args": gr.Text(cmdline_args).value,
+                    "cmdline_args": gr.Text(extra_cmdline_args).value,
                     "git_url": gr.Text(git_url).value,
                     "git_commit": gr.Text(git_commit).value,
                 },
@@ -459,7 +459,7 @@ def start():
         auth_username,
         auth_password,
         auth_token,
-        cmdline_args,
+        extra_cmdline_args,
         git_url,
         git_commit,
     ):
@@ -479,7 +479,7 @@ def start():
             auth_username,
             auth_password,
             auth_token,
-            cmdline_args,
+            extra_cmdline_args,
             git_url,
             git_commit,
         )
@@ -493,17 +493,58 @@ def start():
 
         if len(workspace) > 0 or not googledrive:
             return [
-                Path(sd_webui_path, workspace),
+                PurePath(sd_webui_path, workspace),
                 gr.Markdown.update(visible=False),
             ]
         else:
             return [
-                Path(sd_webui_path, workspace),
+                PurePath(sd_webui_path, workspace),
                 gr.Markdown.update(
                     visible=True,
                     value="<p style='color:red';>구글 드라이브 연결시 이름을 필수로 입력해 주세요</p>",
                 ),
             ]
+
+    def build_cmdline_args(
+        workspace_name,
+        auth_method,
+        auth_username,
+        auth_password,
+        auth_token,
+        extra_args,
+    ):
+        cmdline_args = []
+
+        if auth_method == "ngrok" and auth_token:
+            cmdline_args += [f"--ngrok {auth_token}"]
+        elif auth_method == "gradio":
+            cmdline_args += [f"--share"] if not is_local() else []
+            if auth_username and auth_password:
+                cmdline_args += [f"--gradio-auth {auth_username}:{auth_password}"]
+            elif auth_username:
+                cmdline_args += [f"--gradio-auth {auth_username}"]
+
+        userdata = workspace_name
+        if userdata:
+            ckpt_path = PurePath(sd_webui_path, userdata, "models", "Stable-diffusion")
+            lora_path = PurePath(sd_webui_path, userdata, "models", "Lora")
+            vae_path = PurePath(sd_webui_path, userdata, "models", "VAE")
+            embeddings_path = PurePath(sd_webui_path, userdata, "embeddings")
+
+            cmdline_args += [f'--ckpt-dir "{ckpt_path}"']
+            cmdline_args += [f'--lora-dir "{lora_path}"']
+            cmdline_args += [f'--vae-dir "{vae_path}"']
+            cmdline_args += [f'--embeddings-dir "{embeddings_path}"']
+            cmdline_args += [
+                f'--ui-config-file "{PurePath(sd_webui_path, userdata, "ui-config.json")}"'
+            ]
+            cmdline_args += [
+                f'--ui-settings-file "{PurePath(sd_webui_path, userdata, "config.json")}"'
+            ]
+
+        cmdline_args += [f"{extra_args}"]
+
+        return cmdline_args
 
     def on_execute(
         workspace_googledrive,
@@ -518,7 +559,7 @@ def start():
         auth_username,
         auth_password,
         auth_token,
-        cmdline_args,
+        extra_cmdline_args,
         git_url,
         git_commit,
         progress=lambda x, desc: "",  # gr.Blocks.queue 사용시 응답이 느려서 gr.Progress 대신 콘솔창에 출력
@@ -836,26 +877,16 @@ def start():
         """
         SD Web UI 실행 시작
         """
-        args = []
-
-        if auth_method == "ngrok" and auth_token:
-            args += [f"--ngrok {auth_token}"]
-        elif auth_method == "gradio":
-            args += [f"--share"] if not is_local() else []
-            if auth_username and auth_password:
-                args += [f"--gradio-auth {auth_username}:{auth_password}"]
-            elif auth_username:
-                args += [f"--gradio-auth {auth_username}"]
-
-        if userdata:
-            args += [f'--ckpt-dir "{ckpt_path}"']
-            args += [f'--lora-dir "{lora_path}"']
-            args += [f'--embeddings-dir "{embeddings_path}"']
-            args += [f'--vae-dir "{vae_path}"']
-
-        args += [f"{cmdline_args}"]
-
-        args = " ".join(args)  # shlex.join(args)
+        cmdline_args = " ".join(
+            build_cmdline_args(
+                workspace_name,
+                auth_method,
+                auth_username,
+                auth_password,
+                auth_token,
+                extra_cmdline_args,
+            )
+        )  # shlex.join
 
         steps += 1
 
@@ -863,7 +894,7 @@ def start():
             progress,
             steps,
             total,
-            desc=f"SD Web UI 실행 시작, 인자: {args}",
+            desc=f"SD Web UI 실행 시작, 인자: {cmdline_args}",
         )
 
         time.sleep(0.5)
@@ -874,7 +905,7 @@ def start():
             [
                 bash_shell(),
                 "-c",
-                f'{activate} && python -u "{Path(sd_webui_path, "launch.py")}" {args}',
+                f'{activate} && python -u "{Path(sd_webui_path, "launch.py")}" {cmdline_args}',
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -898,7 +929,7 @@ def start():
     """
     SD Web UI 런처 앱
     """
-    with gr.Blocks(gr.themes.Soft()) as demo:
+    with gr.Blocks(gr.themes.Soft(), css="#info {background-color: Gainsboro}") as demo:
         gr.Markdown(
             f"""
             # 코랩/런팟용 SD Web UI 런처(베타) {VERSION}
@@ -956,7 +987,8 @@ def start():
                         interactive=True,
                     )
                     workspace_tooltip = gr.Markdown(visible=False)
-                    workspace_path = gr.Text(
+                    workspace_path = gr.Textbox(
+                        elem_id="info",
                         label="경로",
                         info="  이름을 입력하면 아래에 실제 경로가 표시됩니다",
                         interactive=False,
@@ -1172,17 +1204,48 @@ def start():
             )
             with gr.Row():
                 with gr.Column(scale=0.8):
-                    cmdline_args = gr.Text(
-                        label="실행 인자",
+                    extra_cmdline_args = gr.Text(
+                        label="추가 실행 인자",
                         info="  추가 실행 인자를 입력해 주세요",
                         placeholder="필요 없으면 비칸으로 두세요. 예) --xformers",
                         value="",
                         interactive=True,
                     )
+                    cmdline_args = gr.Text(
+                        elem_id="info",
+                        label="전체 실행 인자",
+                        info="  실행 인자를 입력하면 아래에 전체 실행 인자가 표시됩니다",
+                        interactive=False,
+                    )
+
+                    extra_cmdline_args.change(
+                        fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                        inputs=[
+                            workspace_name,
+                            auth_method,
+                            auth_username,
+                            auth_password,
+                            auth_token,
+                            extra_cmdline_args,
+                        ],
+                        outputs=cmdline_args,
+                    )
+                    workspace_name.blur(
+                        fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                        inputs=[
+                            workspace_name,
+                            auth_method,
+                            auth_username,
+                            auth_password,
+                            auth_token,
+                            extra_cmdline_args,
+                        ],
+                        outputs=cmdline_args,
+                    )
                 with gr.Column(scale=0.2):
                     args_favorites = gr.Dataset(
                         components=[gr.Textbox(visible=False)],
-                        label="주요 성능 관련 옵션",
+                        label="주요 성능 관련 인자",
                         samples=FAVORITES_ARGS,
                     )
 
@@ -1196,8 +1259,8 @@ def start():
 
                     args_favorites.select(
                         fn=on_click_args_favorites,
-                        inputs=cmdline_args,
-                        outputs=cmdline_args,
+                        inputs=extra_cmdline_args,
+                        outputs=extra_cmdline_args,
                     )
 
         with gr.Box():
@@ -1259,7 +1322,7 @@ def start():
             auth_username,
             auth_password,
             auth_token,
-            cmdline_args,
+            extra_cmdline_args,
             git_url,
             git_commit,
         ]
