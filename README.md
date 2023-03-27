@@ -19,6 +19,7 @@
 </br>
 
 ## 알려진 문제
+ - [TypeError: unsupported operand type(s) for |: 'type' and 'type'](https://github.com/mlhub-action/sd-webui-launcher/issues/2)
  - [Unexpected token '<', "<html> <h"... is not valid JSON](https://github.com/mlhub-action/sd-webui-launcher/issues/1)
 </br>
 
