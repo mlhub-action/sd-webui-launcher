@@ -68,4 +68,4 @@
 
 
 ## Credits
-https://github.com/toriato/easy-stable-diffusion
+코랩 tcmalloc 관련 이슈 우회, https://github.com/toriato/easy-stable-diffusion
