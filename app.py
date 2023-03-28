@@ -268,11 +268,12 @@ def run(command, cwd=None, check=False, live=False):
     import subprocess
 
     if live:
-        print(command)
+        print(f"Launcher: {command}")
         proc = subprocess.run(
             [bash_shell(), "-c", command],
             cwd=cwd,
         )
+        return ""
     else:
         proc = subprocess.run(
             [bash_shell(), "-c", command],
@@ -281,14 +282,14 @@ def run(command, cwd=None, check=False, live=False):
             cwd=cwd,
         )
 
-    if proc.returncode != 0:
-        message = f"RunningCommandError: Return code: '{proc.returncode}', Message: '{proc.stderr.decode(encoding='utf8', errors='ignore') if len(proc.stderr)>0 else ''}', Command: '{command}'"
-        if check:
-            raise RuntimeError(message)
-        else:
-            print(message)
+        if proc.returncode != 0:
+            message = f"RunningCommandError: Return code: '{proc.returncode}', Message: '{proc.stderr.decode(encoding='utf8', errors='ignore') if len(proc.stderr)>0 else ''}', Command: '{command}'"
+            if check:
+                raise RuntimeError(message)
+            else:
+                print(f"Launcher: {message}")
 
-    return "" if live else proc.stdout.decode(encoding="utf8", errors="ignore")
+        return proc.stdout.decode(encoding="utf8", errors="ignore")
 
 
 def setup():
