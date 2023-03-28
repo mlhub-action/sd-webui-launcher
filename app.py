@@ -1,5 +1,5 @@
 # @title ## 코랩/런팟용 SD Web UI 런처
-VERSION = "v0.1.8"  # @param {type:"string"}
+VERSION = "v0.1.9"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
@@ -1230,7 +1230,7 @@ def start():
 
                 with gr.Tab("ngrok") as tab_ngrok:
                     gr.Markdown(
-                        "[인증 토큰?](https://dashboard.ngrok.com/tunnels/authtokens)"
+                        "[인증 토큰?](https://dashboard.ngrok.com/get-started/your-authtoken)"
                     )
                     auth_token = gr.Text(
                         label="Authtoken",
