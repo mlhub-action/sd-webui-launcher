@@ -142,6 +142,7 @@ DEFAULT_SETTINGS = """
 
 
 # @markdown - 즐겨찾기 : 확장
+# fmt: off
 FAVORITES_EXTENSIONS = [
     ["한글 패치[⧉](https://github.com/36DB/stable-diffusion-webui-localization-ko_KR)"],
     ["Booru tag autocompletion[⧉](https://github.com/DominikDoom/a1111-sd-webui-tagcomplete)"],
@@ -164,27 +165,17 @@ FAVORITES_EXTENSIONS = [
 
 # @markdown - 즐겨찾기 : 모델
 FAVORITES_MODELS = [
-    [
-        "AOM3[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3_orangemixs.safetensors)"
-    ],
-    [
-        "AOM3A1[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors)"
-    ],
-    [
-        "AOM3A2[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A2_orangemixs.safetensors)"
-    ],
-    [
-        "AOM3A3[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A3_orangemixs.safetensors)"
-    ],
+    ["AOM3[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3_orangemixs.safetensors)"],
+    ["AOM3A1[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors)"],
+    ["AOM3A2[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A2_orangemixs.safetensors)"],
+    ["AOM3A3[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A3_orangemixs.safetensors)"],
     ["Pastel-Mix[⧉](https://civitai.com/api/download/models/6297)"],
     ["ChilloutMix[⧉](https://civitai.com/api/download/models/11745)"],
 ]
 
 # @markdown - 즐겨찾기 : 로라
 FAVORITES_LORAS = [
-    [
-        "Anime Tarot Card Art Style LoRA[⧉](https://civitai.com/api/download/models/19859)"
-    ],
+    ["Anime Tarot Card Art Style LoRA[⧉](https://civitai.com/api/download/models/19859)"],
     ["Anime Lineart[⧉](https://civitai.com/api/download/models/19075)"],
 ]
 
@@ -192,9 +183,7 @@ FAVORITES_LORAS = [
 FAVORITES_EMBEDDINGS = [
     ["EasyNegative[⧉](https://civitai.com/api/download/models/9208)"],
     ["badhandv4[⧉](https://civitai.com/api/download/models/20068)"],
-    [
-        "bad_prompt_version2[⧉](https://huggingface.co/embed/bad_prompt/resolve/main/bad_prompt_version2.pt)"
-    ],
+    ["bad_prompt_version2[⧉](https://huggingface.co/embed/bad_prompt/resolve/main/bad_prompt_version2.pt)"],
 ]
 
 # @markdown - 즐겨찾기 : VAES
@@ -229,7 +218,7 @@ FAVORITES_COMMITS = [
         "2023-02-11 fastapi==0.90.1[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/4f4debbadbf665c483416ee02e12c9b987765103)"
     ],
 ]
-
+# fmt: on
 
 import platform
 
