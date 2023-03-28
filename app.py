@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.0"  # @param {type:"string"}
+VERSION = "v0.2.1"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
@@ -200,6 +200,7 @@ FAVORITES_VAES = [
 FAVORITES_ARGS = [
     ["--xformers"],
     ["--medvram"],
+    ["--no-gradio-queue"],
     ["--update-all-extensions"],
 ]
 
