@@ -912,7 +912,10 @@ def start():
         else:
             activate = f'source "{Path(sd_webui_path, "venv", "bin", "activate")}"'
 
-        run("curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py", check=True)
+        run(
+            "curl --location --output get-pip.py https://bootstrap.pypa.io/get-pip.py",
+            check=True,
+        )
 
         run(f"{activate} && python get-pip.py", check=True)
 
@@ -931,7 +934,7 @@ def start():
                     desc=f"패치 적용, {diff_path}",
                 )
                 run(
-                    f"curl -o {diff_path} https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff"
+                    f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
                 )
                 run(f"patch -N -d {diff_path.parent} -p1 < {diff_path} || true")
             time.sleep(0.5)
