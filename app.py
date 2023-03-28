@@ -547,18 +547,26 @@ def start():
         auth_token,
         extra_args,
     ):
+
         cmdline_args = []
 
-        if auth_method == "ngrok" and auth_token:
-            cmdline_args += [f"--ngrok {auth_token}"]
-            if not "--ngrok-region" in extra_args:
-                cmdline_args += [f"--ngrok-region jp"]
-        elif auth_method == "gradio":
-            cmdline_args += [f"--share"] if not is_local() else []
-            if auth_username and auth_password:
-                cmdline_args += [f"--gradio-auth {auth_username}:{auth_password}"]
-            elif auth_username:
-                cmdline_args += [f"--gradio-auth {auth_username}"]
+        import shlex
+
+        override_args = shlex.split(extra_args)  # allow override
+
+        if not "--ngrok" in override_args:
+            if auth_method == "ngrok" and auth_token:
+                cmdline_args += [f"--ngrok {auth_token}"]
+                if not "--ngrok-region" in override_args:
+                    cmdline_args += [f"--ngrok-region jp"]
+
+        if not "--gradio-auth" in override_args:
+            if auth_method == "gradio":
+                cmdline_args += [f"--share"] if not is_local() else []
+                if auth_username and auth_password:
+                    cmdline_args += [f"--gradio-auth {auth_username}:{auth_password}"]
+                elif auth_username:
+                    cmdline_args += [f"--gradio-auth {auth_username}"]
 
         userdata = workspace_name
         if userdata:
@@ -567,16 +575,22 @@ def start():
             vae_path = PurePath(sd_webui_path, userdata, "models", "VAE")
             embeddings_path = PurePath(sd_webui_path, userdata, "embeddings")
 
-            cmdline_args += [f'--ckpt-dir "{ckpt_path}"']
-            cmdline_args += [f'--lora-dir "{lora_path}"']
-            cmdline_args += [f'--vae-dir "{vae_path}"']
-            cmdline_args += [f'--embeddings-dir "{embeddings_path}"']
-            cmdline_args += [
-                f'--ui-config-file "{PurePath(sd_webui_path, userdata, "ui-config.json")}"'
-            ]
-            cmdline_args += [
-                f'--ui-settings-file "{PurePath(sd_webui_path, userdata, "config.json")}"'
-            ]
+            if not "--ckpt-dir" in override_args:
+                cmdline_args += [f'--ckpt-dir "{ckpt_path}"']
+            if not "--lora-dir" in override_args:
+                cmdline_args += [f'--lora-dir "{lora_path}"']
+            if not "--vae-dir" in override_args:
+                cmdline_args += [f'--vae-dir "{vae_path}"']
+            if not "--embeddings-dir" in override_args:
+                cmdline_args += [f'--embeddings-dir "{embeddings_path}"']
+            if not "--ui-config-file" in override_args:
+                cmdline_args += [
+                    f'--ui-config-file "{PurePath(sd_webui_path, userdata, "ui-config.json")}"'
+                ]
+            if not "--ui-settings-file" in override_args:
+                cmdline_args += [
+                    f'--ui-settings-file "{PurePath(sd_webui_path, userdata, "config.json")}"'
+                ]
 
         cmdline_args += [f"{extra_args}"]
 
