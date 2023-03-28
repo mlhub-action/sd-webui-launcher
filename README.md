@@ -31,6 +31,13 @@
 </br>
 
 ## 업데이트
+### v0.2.2 (2023-03-28)
+#### 변경 내역
+- 작업 디렉터리 이름을 루트로 시작할 수 없도록 안내
+- 커밋 해시 즐겨찾기 추가 "2023-03-27 gradio==3.23[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/955df7751eef11bb7697e2d77f6b8a6226b21e13)"
+  
+</br>
+
 ### v0.2.1 (2023-03-28)
 #### 변경 내역
 - 실행 인자 즐겨 찾기 추가 : --no-gradio-queue, SD Web UI 응답이 느린 경우 사용
