@@ -19,6 +19,13 @@
 - 확장, 모델, 실행 인자, 커밋 해시 등 즐겨찾기
 </br>
 
+## [원클릭 코랩](https://github.com/toriato/easy-stable-diffusion) 사용자 호환성
+ - 작업 디렉터리 이름을 같게(예, SD) 하면
+ - 모델, 로라, VAE를 그대로 사용할 수 있음
+ - 설정 파일도 그대로 사용(config.json, ui-config.json)
+ - 단, 확장은 지원 안함(일부 확장에서 구글 드라이브 경로 문제로 실행이 안되는 문제가 있어서 제외)
+</br>
+
 ## 제한 사항
 - 설정한 확장은 구글 드라이브에 저장 안됨. gradio 보안상 이유로 SD Web UI 앱 이외의 경로 접근 제한
 - 기본값으로 런처는 gradio.live로 연결되는데 gradio.live가 응답이 느린 경우 USE_GRADIO_LIVE 체크 해제하고 사용 권장
