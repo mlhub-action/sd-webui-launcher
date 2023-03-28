@@ -1,5 +1,5 @@
 # @title ## 코랩/런팟용 SD Web UI 런처
-VERSION = "v0.1.7"  # @param {type:"string"}
+VERSION = "v0.1.8"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
@@ -263,16 +263,23 @@ def bash_shell():
     )
 
 
-def run(command, cwd=None, check=False):
+def run(command, cwd=None, check=False, live=False):
     import shlex
     import subprocess
 
-    proc = subprocess.run(
-        [bash_shell(), "-c", command],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        cwd=cwd,
-    )
+    if live:
+        print(command)
+        proc = subprocess.run(
+            [bash_shell(), "-c", command],
+            cwd=cwd,
+        )
+    else:
+        proc = subprocess.run(
+            [bash_shell(), "-c", command],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=cwd,
+        )
 
     if proc.returncode != 0:
         message = f"RunningCommandError: Return code: '{proc.returncode}', Message: '{proc.stderr.decode(encoding='utf8', errors='ignore') if len(proc.stderr)>0 else ''}', Command: '{command}'"
@@ -281,7 +288,7 @@ def run(command, cwd=None, check=False):
         else:
             print(message)
 
-    return proc.stdout.decode(encoding="utf8", errors="ignore")
+    return "" if live else proc.stdout.decode(encoding="utf8", errors="ignore")
 
 
 def setup():
@@ -295,16 +302,16 @@ def setup():
         return spec is not None
 
     if not is_installed("pyngrok"):
-        run('pip -q install "pyngrok"', check=True)
+        run('pip -q install "pyngrok"', check=True, live=True)
 
     if not is_installed("gradio"):
-        run('pip -q install "gradio>=3.21"', check=True)
+        run('pip -q install "gradio>=3.21"', check=True, live=True)
 
     if not is_installed("bs4"):
-        run('pip -q install "beautifulsoup4"', check=True)
+        run('pip -q install "beautifulsoup4"', check=True, live=True)
 
     if not is_installed("lxml"):
-        run('pip -q install "lxml"', check=True)
+        run('pip -q install "lxml"', check=True, live=True)
 
     def has_executable(name):
         import shutil
@@ -312,7 +319,7 @@ def setup():
         return shutil.which(name) is not None
 
     if not has_executable("gdown"):
-        run("pip -q install gdown", check=True)
+        run("pip -q install gdown", check=True, live=True)
 
     if not has_executable("aria2c"):
         if platform.system() == "Windows":
@@ -320,13 +327,21 @@ def setup():
                 "다음 링크를 통해 aria2c를 설치해 주세요. https://github.com/aria2/aria2/releases/tag/release-1.36.0"
             )
         elif platform.system() == "Linux":
-            run("apt-get update -qq -y && apt-get install -y aria2", check=True)
+            run(
+                "apt-get update -qq -y && apt-get install -y aria2",
+                check=True,
+                live=True,
+            )
 
     if not has_executable("curl"):
         if platform.system() == "Windows":
             print("다음 링크를 통해 curl를 설치해 주세요. https://curl.se/download.html")
         elif platform.system() == "Linux":
-            run("apt-get update -qq -y && apt-get install -y curl", check=True)
+            run(
+                "apt-get update -qq -y && apt-get install -y curl",
+                check=True,
+                live=True,
+            )
 
     if not has_executable("git"):
         if platform.system() == "Windows":
@@ -339,6 +354,7 @@ def setup():
         run(
             "apt-get update -qq -y && apt-get install -y libgl1 libpython3.10-dev",
             check=True,
+            live=True,
         )
 
     if is_colab():
@@ -348,7 +364,7 @@ def setup():
         # https://github.com/googlecolab/colabtools/issues/3412
         try:
             # 패키지가 이미 다운그레이드 됐는지 확인하기
-            run("dpkg -l libunwind8-dev", check=True)
+            run("dpkg -l libunwind8-dev", check=False, live=True)
         except RuntimeError:
             for url in (
                 "http://launchpadlibrarian.net/367274644/libgoogle-perftools-dev_2.5-2.2ubuntu3_amd64.deb",
@@ -357,9 +373,9 @@ def setup():
                 "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb",
             ):
                 run(f"curl --location --output {url.rsplit('/', 1)[-1]} {url}")
-            run("apt install -qq libunwind8-dev")
-            run("dpkg -i *.deb")
-            run("rm *.deb")
+            run("apt install -qq libunwind8-dev", check=False, live=True)
+            run("dpkg -i *.deb", check=False, live=True)
+            run("rm *.deb", check=False, live=True)
 
 
 def start():
@@ -534,6 +550,8 @@ def start():
 
         if auth_method == "ngrok" and auth_token:
             cmdline_args += [f"--ngrok {auth_token}"]
+            if not "--ngrok-region" in extra_args:
+                cmdline_args += [f"--ngrok-region jp"]
         elif auth_method == "gradio":
             cmdline_args += [f"--share"] if not is_local() else []
             if auth_username and auth_password:
@@ -1377,10 +1395,10 @@ def start():
         excute.click(fn=on_execute, inputs=settings, outputs=progress)
 
     demo.launch(
-        share=USE_GRADIO_LIVE and not is_local(),
-        debug=True,  # 노트북 결과창에 출력
-        inline=not USE_GRADIO_LIVE,
-        server_port=7878 if not USE_GRADIO_LIVE or is_local() else None,
+        share=USE_GRADIO_LIVE and not is_local(),  # 공유 연결 사용할지 여부
+        debug=True,  # 노트북 결과창에 출력 여부
+        inline=not USE_GRADIO_LIVE,  # 노트북에 웹 표시 여부
+        server_port=7878,
     )
 
 

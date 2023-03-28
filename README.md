@@ -24,7 +24,12 @@
 </br>
 
 ## 업데이트
-### v0.1.6 (2023-03-27)
+### v0.1.8 (2023-03-28)
+#### 변경 내역
+ - ngrok로 연결이 안되는 문제 수정
+</br>
+
+### v0.1.7 (2023-03-27)
 #### 변경 내역
  - 코랩 tcmalloc 관련 이슈 [우회](https://github.com/toriato/easy-stable-diffusion/blob/1cb87d815dae953cbf7bb8c6df386f9e8b388b06/easy-stable-diffusion.py#L325), https://github.com/toriato/easy-stable-diffusion
  - 확장 즐겨찾기 목록 추가
