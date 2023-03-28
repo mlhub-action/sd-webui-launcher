@@ -207,6 +207,9 @@ FAVORITES_ARGS = [
 # @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
     [
+        "2023-03-27 gradio==3.23[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/955df7751eef11bb7697e2d77f6b8a6226b21e13)"
+    ],
+    [
         "2023-03-25 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/a9eab236d7e8afa4d6205127904a385b2c43bb24)"
     ],
     [
