@@ -708,7 +708,10 @@ def start():
             f"작업 디렉터리 설정, 경로: {userdata_path}",
         )
 
-        if is_colab() and workspace_googledrive:
+        if is_colab() and workspace_googledrive and not userdata:
+            print(f"Launcher: 작업 디렉터리 이름이 없어서 구글 드라이브에 연결하지 않고 진행합니다")
+
+        if is_colab() and workspace_googledrive and userdata:
             googledrive_path = Path(working_dir, "drive")
             userdata_path_target = Path(googledrive_path, "MyDrive", userdata)
 
@@ -726,11 +729,11 @@ def start():
                 drive.mount(str(googledrive_path))
 
             if userdata_path.is_symlink():
-                userdata_path.unlink()
-            else:
+                userdata_path.unlink(missing_ok=True)
+            elif userdata_path.exists():
                 import shutil
 
-                print(f"Launcher: 기존 {userdata_path} 디렉터리를 삭제하고 구글 드라이브에 연결 합니다")
+                print(f'Launcher: 기존 "{userdata_path}" 디렉터리를 삭제하고 구글 드라이브에 연결 합니다')
                 shutil.rmtree(userdata_path, ignore_errors=True)
 
             userdata_path_target.mkdir(parents=True, exist_ok=True)
