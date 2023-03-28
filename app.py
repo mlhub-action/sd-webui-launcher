@@ -900,10 +900,9 @@ def start():
         else:
             activate = f'source "{Path(sd_webui_path, "venv", "bin", "activate")}"'
 
-        run(
-            f"{activate} && curl https://bootstrap.pypa.io/get-pip.py | python",
-            check=True,
-        )
+        run("curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py", check=True)
+
+        run(f"{activate} && python get-pip.py", check=True)
 
         # Patch extensions dependencies
         for index, (name, url) in enumerate(zip(extensions["이름"], extensions["주소"])):
