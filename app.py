@@ -273,6 +273,13 @@ def run(command, cwd=None, check=False, live=False):
             [bash_shell(), "-c", command],
             cwd=cwd,
         )
+        if proc.returncode != 0:
+            message = f"RunningCommandError: Return code: '{proc.returncode}', Command: '{command}'"
+            if check:
+                raise RuntimeError(message)
+            else:
+                print(f"Launcher: {message}")
+
         return ""
     else:
         proc = subprocess.run(
@@ -365,7 +372,7 @@ def setup():
         # https://github.com/googlecolab/colabtools/issues/3412
         try:
             # 패키지가 이미 다운그레이드 됐는지 확인하기
-            run("dpkg -l libunwind8-dev", check=False, live=True)
+            run("dpkg -l libunwind8-dev", check=True, live=True)
         except RuntimeError:
             for url in (
                 "http://launchpadlibrarian.net/367274644/libgoogle-perftools-dev_2.5-2.2ubuntu3_amd64.deb",
@@ -373,7 +380,11 @@ def setup():
                 "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libtcmalloc-minimal4_2.5-2.2ubuntu3_amd64.deb",
                 "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb",
             ):
-                run(f"curl --location --output {url.rsplit('/', 1)[-1]} {url}")
+                run(
+                    f"curl --location --output {url.rsplit('/', 1)[-1]} {url}",
+                    check=False,
+                    live=True,
+                )
             run("apt install -qq libunwind8-dev", check=False, live=True)
             run("dpkg -i *.deb", check=False, live=True)
             run("rm *.deb", check=False, live=True)
