@@ -1,5 +1,5 @@
-# @title ## 코랩/런팟용 SD Web UI 런처
-VERSION = "v0.1.9"  # @param {type:"string"}
+# @title ## 런처 앱 ##
+VERSION = "v0.2.0"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
@@ -955,10 +955,6 @@ def start():
         if is_colab():
             # https://github.com/googlecolab/colabtools/issues/3412
             env["LD_PRELOAD"] = "libtcmalloc.so"
-            # Deactivate tensorflow print standard error
-            env["TF_CPP_MIN_LOG_LEVEL"] = 3
-            # For cuda library
-            env["LD_LIBRARY_PATH"] = "/usr/local/cuda/lib64/:$LD_LIBRARY_PATH"
 
         tunnel = None
         with subprocess.Popen(
