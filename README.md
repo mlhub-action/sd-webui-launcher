@@ -88,3 +88,5 @@
 
 ## Credits
 코랩 tcmalloc 관련 이슈 [우회](https://github.com/toriato/easy-stable-diffusion/blob/1cb87d815dae953cbf7bb8c6df386f9e8b388b06/easy-stable-diffusion.py#L325), https://github.com/toriato/easy-stable-diffusion
+
+os.environ [설정](https://github.com/Linaqruf/kohya-trainer/commit/38e99df5ad40eb312fefd4fead0f8f7d7bce4e9f), https://github.com/Linaqruf/kohya-trainer

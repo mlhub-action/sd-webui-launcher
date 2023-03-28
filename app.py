@@ -955,6 +955,10 @@ def start():
         if is_colab():
             # https://github.com/googlecolab/colabtools/issues/3412
             env["LD_PRELOAD"] = "libtcmalloc.so"
+            # Deactivate tensorflow print standard error
+            env["TF_CPP_MIN_LOG_LEVEL"] = 3
+            # For cuda library
+            env["LD_LIBRARY_PATH"] = "/usr/local/cuda/lib64/:$LD_LIBRARY_PATH"
 
         tunnel = None
         with subprocess.Popen(
