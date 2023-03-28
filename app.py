@@ -942,6 +942,7 @@ def start():
             # https://github.com/googlecolab/colabtools/issues/3412
             env["LD_PRELOAD"] = "libtcmalloc.so"
 
+        tunnel = None
         with subprocess.Popen(
             [
                 bash_shell(),
@@ -956,15 +957,20 @@ def start():
             env=env,
         ) as proc:
             for line in proc.stdout:
-                if line.startswith("Running on public URL:"):
+                print("SDWebUI: " + line, end="")
+
+                if line.startswith("ngrok connected to"):
+                    tunnel = line
+                if line.startswith("Running on local URL:") or line.startswith(
+                    "Running on public URL:"
+                ):
                     steps += 1
                     update_progress(
                         progress,
                         steps,
                         total,
-                        desc=f"SD Web UI 실행 완료, {line}",
+                        desc=f"SD Web UI 실행 완료, {tunnel if tunnel else line}",
                     )
-                print("SDWebUI: " + line, end="")
 
         return f"SD Web UI 실행 종료"
 
