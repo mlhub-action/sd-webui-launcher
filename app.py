@@ -1290,6 +1290,54 @@ def start():
                         ],
                         outputs=cmdline_args,
                     )
+                    auth_method.change(
+                        fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                        inputs=[
+                            workspace_name,
+                            auth_method,
+                            auth_username,
+                            auth_password,
+                            auth_token,
+                            extra_cmdline_args,
+                        ],
+                        outputs=cmdline_args,
+                    )
+                    auth_username.blur(
+                        fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                        inputs=[
+                            workspace_name,
+                            auth_method,
+                            auth_username,
+                            auth_password,
+                            auth_token,
+                            extra_cmdline_args,
+                        ],
+                        outputs=cmdline_args,
+                    )
+                    auth_password.blur(
+                        fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                        inputs=[
+                            workspace_name,
+                            auth_method,
+                            auth_username,
+                            auth_password,
+                            auth_token,
+                            extra_cmdline_args,
+                        ],
+                        outputs=cmdline_args,
+                    )
+                    auth_token.blur(
+                        fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                        inputs=[
+                            workspace_name,
+                            auth_method,
+                            auth_username,
+                            auth_password,
+                            auth_token,
+                            extra_cmdline_args,
+                        ],
+                        outputs=cmdline_args,
+                    )
                 with gr.Column(scale=0.2):
                     args_favorites = gr.Dataset(
                         components=[gr.Textbox(visible=False)],
