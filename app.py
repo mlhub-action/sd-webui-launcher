@@ -526,12 +526,16 @@ def start():
     def on_change_workspace(workspace, googledrive):
         from pathlib import PurePosixPath, PureWindowsPath
 
-        if len(workspace) > 0 or not googledrive:
+        if PurePath(workspace).anchor:
             return [
-                PurePath(sd_webui_path, workspace),
-                gr.Markdown.update(visible=False),
+                PurePath(sd_webui_path, ""),
+                gr.Markdown.update(
+                    visible=True,
+                    value="<p style='color:red';>이름은 루트 디렉터리로 시작할 수 없습니다</p>",
+                ),
             ]
-        else:
+
+        if not workspace and googledrive and is_colab():
             return [
                 PurePath(sd_webui_path, workspace),
                 gr.Markdown.update(
@@ -539,6 +543,11 @@ def start():
                     value="<p style='color:red';>구글 드라이브 연결시 이름을 필수로 입력해 주세요</p>",
                 ),
             ]
+
+        return [
+            PurePath(sd_webui_path, workspace),
+            gr.Markdown.update(visible=False),
+        ]
 
     def build_cmdline_args(
         workspace_name,
