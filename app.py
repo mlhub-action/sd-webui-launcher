@@ -995,7 +995,7 @@ def start():
     with gr.Blocks(gr.themes.Soft(), css="#info {background-color: Gainsboro}") as demo:
         gr.Markdown(
             f"""
-            # 코랩/런팟용 SD Web UI 런처(베타) {VERSION}
+            # 코랩/런팟용 SD Web UI 런처 {VERSION}
             - [최신 버전](https://github.com/mlhub-action/sd-webui-launcher)
             - [이슈/버그 리포트](https://github.com/mlhub-action/sd-webui-launcher/issues)
             > 팁1 : 실행 중지는 노트북에서 하세요

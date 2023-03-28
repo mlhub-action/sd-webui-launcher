@@ -1,7 +1,7 @@
 # SD Web UI 런처
 [코랩](https://colab.research.google.com) 또는 [런팟](https://www.runpod.io)에서 [stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)을 실행 시켜주는 웹 앱([Gradio](https://gradio.app/))
 > 확장 프로그램이 아니라 별개 프로그램 입니다.
-> 베타 버전이라 기능이 완벽하지 않거나 버그가 있을 수 있습니다
+> 기능이 완벽하지 않거나 버그가 있을 수 있습니다
 </br>
 
 | 노트북 이름 | 설명 | 링크 |
