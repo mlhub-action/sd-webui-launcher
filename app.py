@@ -632,6 +632,8 @@ def start():
             print(f"Launcher: {desc} - {steps/total*100:.2f}%")
             progress(steps / total, desc=desc)
 
+        start_time_execute = time.perf_counter()
+
         userdata = workspace_name
 
         """
@@ -993,6 +995,7 @@ def start():
                 if line.startswith("Running on local URL:") or line.startswith(
                     "Running on public URL:"
                 ):
+                    end_time_execute = time.perf_counter()
                     steps += 1
                     update_progress(
                         progress,
@@ -1000,6 +1003,15 @@ def start():
                         total,
                         desc=f"SD Web UI 실행 완료, {tunnel if tunnel else line}",
                     )
+                    from datetime import datetime as dt
+                    from datetime import timedelta
+
+                    duration = dt.utcfromtimestamp(
+                        timedelta(
+                            seconds=end_time_execute - start_time_execute
+                        ).total_seconds()
+                    )
+                    print(f'Launcher: 실행까지 걸린 시간: {duration.strftime("%H:%M:%S")}')
 
         return f"SD Web UI 실행 종료"
 
