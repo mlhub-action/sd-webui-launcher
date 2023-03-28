@@ -642,13 +642,19 @@ def start():
         steps = 0
         total = 6
 
+        total += is_colab() and workspace_googledrive
+
         extensions = extensions.drop(extensions.query(f'주소 == ""').index)
         total += extensions.count()["주소"]
 
-        controlnet_models = controlnet_models.drop(
-            controlnet_models.query(f'주소 == ""').index
-        )
-        total += controlnet_models.count()["주소"]
+        include_controlnet = [
+            url for url in extensions["주소"].values if "sd-webui-controlnet" in url
+        ]
+        if include_controlnet:
+            controlnet_models = controlnet_models.drop(
+                controlnet_models.query(f'주소 == ""').index
+            )
+            total += controlnet_models.count()["주소"]
 
         models = models.drop(models.query(f'주소 == ""').index)
         total += models.count()["주소"]
@@ -825,7 +831,8 @@ def start():
             controlnet_models_path = Path(
                 extensions_path, "sd-webui-controlnet", "models"
             )
-            if Path(controlnet_models_path).exists():
+
+            if include_controlnet and Path(controlnet_models_path).exists():
                 steps += 1
                 update_progress(
                     progress,
