@@ -1052,16 +1052,15 @@ class Launcher(ABC):
         SD Web UI 런처 앱
         """
         with gr.Blocks(
-            gr.themes.Soft(), css="#info {background-color: Gainsboro}"
+            gr.themes.Soft(),
+            css="#info {background-color: Gainsboro} #progress {background-color: DarkSeaGreen}",
         ) as demo:
             gr.Markdown(
                 f"""
                 # 코랩/런팟용 SD Web UI 런처 {VERSION}
                 - [최신 버전](https://github.com/mlhub-action/sd-webui-launcher)
                 - [이슈/버그 리포트](https://github.com/mlhub-action/sd-webui-launcher/issues)
-                > 팁1 : 실행 중지는 노트북에서 하세요
-                > 팁2 : 진행 과정은 노트북 출력에서 확인 하세요
-                > 팁3 : 인증 정보가 담긴 설정 파일을 다른 사람과 공유하지 마세요
+                > 팁1 : 인증 정보가 담긴 설정 파일을 다른 사람과 공유하지 마세요
                 """
             )
 
@@ -1071,17 +1070,19 @@ class Launcher(ABC):
                     "설정 가져오기", file_types=["file"], file_count="single"
                 )
                 export_settings = gr.Button("설정 내보내기")
-                excute = gr.Button("실행", variant="primary")
+                execute_webui = gr.Button("실행", variant="primary")
 
             with gr.Box():
                 settings_file = gr.File(
                     label="설정 파일", file_types=["file"], visible=False, interactive=True
                 )
-                settings_file.style()
 
             with gr.Box():
+                gr.Markdown(
+                    '<em><font color="DeepPink"><p style="color:DeepPink; text-align: center;">진행 과정은 노트북 출력창에서 확인해 주세요</p></font></em>'
+                )
                 progress = gr.Text(
-                    label="진행 과정", value="노트북 출력 창에 표시", interactive=False
+                    elem_id="progress", show_label=False, interactive=False
                 )
 
             with gr.Box():
@@ -1526,7 +1527,28 @@ class Launcher(ABC):
                 outputs=settings_file,
             )
 
-            excute.click(fn=on_execute, inputs=settings, outputs=progress)
+            def update_state():
+                return {
+                    default_settings: gr.Button.update(interactive=False),
+                    import_settings: gr.UploadButton.update(interactive=False),
+                    export_settings: gr.Button.update(interactive=False),
+                    execute_webui: gr.Button.update(
+                        value="중지는 노트북에서만 가능", interactive=False
+                    ),
+                    settings_file: gr.File.update(interactive=False),
+                }
+
+            execute_webui.click(
+                fn=update_state,
+                inputs=None,
+                outputs=[
+                    default_settings,
+                    import_settings,
+                    export_settings,
+                    execute_webui,
+                    settings_file,
+                ],
+            ).then(fn=on_execute, inputs=settings, outputs=progress)
 
         demo.launch(
             share=USE_GRADIO_LIVE and self.is_support_share(),  # 공유 연결 사용할지 여부
