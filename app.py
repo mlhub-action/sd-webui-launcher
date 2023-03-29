@@ -655,13 +655,14 @@ class Launcher(ABC):
             extensions = extensions.drop(extensions.query(f'주소 == ""').index)
             total += extensions.count()["주소"]
 
+            controlnet_models = controlnet_models.drop(
+                controlnet_models.query(f'주소 == ""').index
+            )
+            
             include_controlnet = [
                 url for url in extensions["주소"].values if "sd-webui-controlnet" in url
             ]
             if include_controlnet:
-                controlnet_models = controlnet_models.drop(
-                    controlnet_models.query(f'주소 == ""').index
-                )
                 total += controlnet_models.count()["주소"]
 
             models = models.drop(models.query(f'주소 == ""').index)
