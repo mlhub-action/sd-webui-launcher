@@ -658,7 +658,7 @@ class Launcher(ABC):
             controlnet_models = controlnet_models.drop(
                 controlnet_models.query(f'주소 == ""').index
             )
-            
+
             include_controlnet = [
                 url for url in extensions["주소"].values if "sd-webui-controlnet" in url
             ]
@@ -1089,7 +1089,7 @@ class Launcher(ABC):
                 gr.Markdown(
                     """
                     # 1. 작업 디렉터리
-                    [코랩](https://colab.research.google.com/) 또는 [런팟](https://www.runpod.io/)에서 모델, 확장, 설정 파일 등이 저장될 디렉터리를 입력해주세요. 
+                    [코랩](https://colab.research.google.com/) 또는 [런팟](https://www.runpod.io/)에서 모델, 로라, VAE, 설정 파일 등이 저장될 디렉터리를 입력해주세요. 
                     """
                 )
 
