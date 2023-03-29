@@ -341,6 +341,11 @@ class Launcher(ABC):
     def is_support_share():
         pass
 
+    @staticmethod
+    @abstractmethod
+    def is_support_load():
+        pass
+
     def start(self, inbrowser=False):
         import gradio as gr
         import time
@@ -402,22 +407,26 @@ class Launcher(ABC):
             ]
 
         def on_default_settings():
-            print("Launcher: 설정 초기화")
-            filename = "default_settings.json"
-            with open(filename, "w", encoding="utf8") as f:
-                f.write(DEFAULT_SETTINGS)
-            return load_settings(filename) + [
-                gr.File.update(label="디폴트 설정 파일", value=filename, visible=True)
+            filepath = Path("settings", "default_settings.json")
+            print(f'Launcher: 설정 초기화, "{filepath}"')
+            if not filepath.exists():
+                filepath.parent.mkdir(parents=True, exist_ok=True)
+                with open(filepath, "w", encoding="utf8") as f:
+                    f.write(DEFAULT_SETTINGS)
+
+            return load_settings(filepath) + [
+                gr.File.update(label="디폴트 설정 파일", value=filepath, visible=True)
             ]
 
-        def on_import_settings(file):
-            print("Launcher: 설정 가져오기")
-            return load_settings(file.name) + [
-                gr.File.update(label="가져온 설정 파일", value=file.name, visible=True)
+        def on_import_settings(filewrap):
+            filepath = filewrap.name
+            print(f'Launcher: 설정 가져오기, "{filepath}"')
+            return load_settings(filepath) + [
+                gr.File.update(label="가져온 설정 파일", value=filepath, visible=True)
             ]
 
         def save_settings(
-            filename,
+            filepath,
             workspace_googledrive,
             workspace_name,
             extensions,
@@ -436,7 +445,7 @@ class Launcher(ABC):
         ):
             import json
 
-            with open(filename, "w", encoding="utf8") as f:
+            with open(filepath, "w", encoding="utf8") as f:
                 json.dump(
                     {
                         "workspace": {
@@ -482,10 +491,11 @@ class Launcher(ABC):
             git_url,
             git_commit,
         ):
-            print("Launcher: 설정 내보내기")
-            filename = "my_settings.json"
+            filepath = Path("settings", "my_settings.json")
+            print(f'Launcher: 설정 내보내기, "{filepath}"')
+            filepath.parent.mkdir(parents=True, exist_ok=True)
             save_settings(
-                filename,
+                filepath,
                 workspace_googledrive,
                 workspace_name,
                 extensions,
@@ -502,7 +512,7 @@ class Launcher(ABC):
                 git_url,
                 git_commit,
             )
-            return gr.File.update(label="내보낸 설정 파일", value=filename, visible=True)
+            return gr.File.update(label="내보낸 설정 파일", value=filepath, visible=True)
 
         def on_change_workspace(workspace, googledrive):
             from pathlib import PurePosixPath, PureWindowsPath
@@ -740,9 +750,7 @@ class Launcher(ABC):
                 if userdata_path.is_symlink():
                     userdata_path.unlink(missing_ok=True)
                 elif userdata_path.exists():
-                    print(
-                        f'Launcher: 기존 "{userdata_path}" 디렉터리를 삭제하고 구글 드라이브에 연결 합니다'
-                    )
+                    print(f'Launcher: 기존 "{userdata_path}" 디렉터리를 삭제하고 구글 드라이브에 연결 합니다')
                     shutil.rmtree(userdata_path, ignore_errors=True)
 
                 userdata_path_target.mkdir(parents=True, exist_ok=True)
@@ -1215,7 +1223,7 @@ class Launcher(ABC):
                             )
                     gr.Markdown("<br/>")
 
-                with gr.Accordion("로라", open=False):
+                with gr.Accordion("로라", open=self.is_support_load()):
                     with gr.Row():
                         with gr.Column(scale=0.8):
                             loras = gr.Dataframe(
@@ -1236,7 +1244,7 @@ class Launcher(ABC):
                             )
                     gr.Markdown("<br/>")
 
-                with gr.Accordion("임베딩", open=False):
+                with gr.Accordion("임베딩", open=self.is_support_load()):
                     with gr.Row():
                         with gr.Column(scale=0.8):
                             embeddings = gr.Dataframe(
@@ -1259,7 +1267,7 @@ class Launcher(ABC):
                             )
                     gr.Markdown("<br/>")
 
-                with gr.Accordion("VAE", open=False):
+                with gr.Accordion("VAE", open=self.is_support_load()):
                     with gr.Row():
                         with gr.Column(scale=0.8):
                             vaes = gr.Dataframe(
@@ -1550,6 +1558,13 @@ class Launcher(ABC):
                 ],
             ).then(fn=on_execute, inputs=settings, outputs=progress)
 
+            # gr.Accordion이 모두 open 되어 있어야만 호출됨, LocalLauncher에서만 기본 설정값 로드
+            demo.load(
+                fn=on_default_settings,
+                inputs=None,
+                outputs=settings + [settings_file],
+            )
+
         demo.launch(
             share=USE_GRADIO_LIVE and self.is_support_share(),  # 공유 연결 사용할지 여부
             debug=True,  # 노트북 결과창에 출력 여부
@@ -1696,6 +1711,10 @@ class ColabLauncher(LinuxPlatform):
     def is_support_share():
         return True
 
+    @staticmethod
+    def is_support_load():
+        return False
+
 
 class RunPodLauncher(LinuxPlatform):
     def setup(self):
@@ -1720,6 +1739,10 @@ class RunPodLauncher(LinuxPlatform):
     def is_support_share():
         return True
 
+    @staticmethod
+    def is_support_load():
+        return False
+
 
 class LocalLauncher(WindowsPlatform):
     def setup(self):
@@ -1743,6 +1766,10 @@ class LocalLauncher(WindowsPlatform):
     @staticmethod
     def is_support_share():
         return False
+
+    @staticmethod
+    def is_support_load():
+        return True
 
 
 class LauncherFactory:
