@@ -334,6 +334,10 @@ class Launcher(ABC):
         pass
 
     @staticmethod
+    def service_type():
+        pass
+
+    @staticmethod
     @abstractmethod
     def is_support_googledrive():
         pass
@@ -356,6 +360,7 @@ class Launcher(ABC):
         import gradio as gr
         import time
 
+        service_type = self.service_type()
         sd_webui_path = Path(self.working_dir(), "sd-webui").resolve()
 
         def load_settings(filename):
@@ -1116,7 +1121,7 @@ class Launcher(ABC):
 
             with gr.Box():
                 gr.Markdown(
-                    '<p style="color:DeepPink !important; text-align: center;"><em>진행 과정은 노트북 출력창에서 확인해 주세요</em></p>'
+                    f'<p style="color:DeepPink !important; text-align: center;"><em>진행 과정은 {service_type} 출력창에서 확인해 주세요</em></p>'
                 )
                 progress = gr.Text(
                     elem_id="progress", show_label=False, interactive=False
@@ -1593,7 +1598,7 @@ class Launcher(ABC):
                         interactive=False,
                     ),
                     execute_webui: gr.Button.update(
-                        value="중지는 노트북에서만 가능",
+                        value=f"중지는 {service_type}에서만 가능",
                         interactive=False,
                     ),
                     settings_file: gr.File.update(
@@ -1770,6 +1775,10 @@ class ColabLauncher(LinuxPlatform):
     @staticmethod
     def service_name():
         return "코랩(colab)"
+    
+    @staticmethod
+    def service_type():
+        return "노트북"
 
     @staticmethod
     def is_support_googledrive():
@@ -1813,6 +1822,10 @@ class RunPodLauncher(LinuxPlatform):
         return "런팟(runpod)"
 
     @staticmethod
+    def service_type():
+        return "노트북"
+    
+    @staticmethod
     def is_support_googledrive():
         return False
 
@@ -1843,6 +1856,10 @@ class LocalLauncher(WindowsPlatform):
     @staticmethod
     def service_name():
         return "로컬(windows)"
+    
+    @staticmethod
+    def service_type():
+        return "터미널"
 
     @staticmethod
     def is_support_googledrive():
