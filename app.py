@@ -341,7 +341,7 @@ class Launcher(ABC):
     def is_support_share():
         pass
 
-    def start(self):
+    def start(self, inbrowser=False):
         import gradio as gr
         import time
 
@@ -1555,6 +1555,7 @@ class Launcher(ABC):
             debug=True,  # 노트북 결과창에 출력 여부
             inline=not USE_GRADIO_LIVE,  # 노트북에 웹 표시 여부
             server_port=7878,
+            inbrowser=inbrowser,
         )
 
     @staticmethod
@@ -1723,6 +1724,9 @@ class RunPodLauncher(LinuxPlatform):
 class LocalLauncher(WindowsPlatform):
     def setup(self):
         super().setup()
+        from os import system
+
+        system("title " + "SD Web UI 런처")
 
     @staticmethod
     def working_dir():
@@ -1776,6 +1780,12 @@ class LauncherFactory:
 
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="SD Web UI 런처")
+    parser.add_argument("--inbrowser", action="store_true", help="기본 웹브라우저로 런처 창 띄우기")
+
+    args = parser.parse_args()
     launcher = LauncherFactory.create()
     launcher.setup()
-    launcher.start()
+    launcher.start(args.inbrowser)
