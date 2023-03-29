@@ -279,6 +279,7 @@ class Launcher(ABC):
             proc = subprocess.run(
                 [self.shell(), "-c", command],
                 encoding="utf8",
+                errors="ignore",
                 cwd=cwd,
                 env=self.env,
             )
@@ -295,18 +296,20 @@ class Launcher(ABC):
                 [self.shell(), "-c", command],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
+                encoding="utf8",
+                errors="ignore",
                 cwd=cwd,
                 env=self.env,
             )
 
             if proc.returncode != 0:
-                message = f"RunningCommandError: Return code: '{proc.returncode}', Message: '{proc.stderr.decode(encoding='utf8', errors='ignore') if len(proc.stderr)>0 else ''}', Command: '{command}'"
+                message = f"RunningCommandError: Return code: '{proc.returncode}', Message: '{proc.stderr if len(proc.stderr)>0 else ''}', Command: '{command}'"
                 if check:
                     raise RuntimeError(message)
                 else:
                     print(f"Launcher: {message}")
 
-            return proc.stdout.decode(encoding="utf8", errors="ignore")
+            return proc.stdout
 
     @staticmethod
     @abstractmethod
@@ -1012,6 +1015,7 @@ class Launcher(ABC):
                 bufsize=1,
                 text=True,
                 encoding="utf8",
+                errors="ignore",
                 cwd=sd_webui_path,
                 env=self.env,
             ) as proc:
