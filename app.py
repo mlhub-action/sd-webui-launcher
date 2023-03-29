@@ -976,7 +976,7 @@ class Launcher(ABC):
             python_path = self.python_path(venv_path)
 
             venv = self.environ.copy()
-            venv["PATH"] = python_path.parent + os.pathsep + venv["PATH"]
+            venv["PATH"] = str(python_path.parent) + os.pathsep + venv["PATH"]
 
             self.run(
                 f'curl https://bootstrap.pypa.io/get-pip.py | "{python_path}"',
@@ -1069,6 +1069,7 @@ class Launcher(ABC):
                 - [최신 버전](https://github.com/mlhub-action/sd-webui-launcher)
                 - [이슈/버그 리포트](https://github.com/mlhub-action/sd-webui-launcher/issues)
                 > 팁1 : 인증 정보가 담긴 설정 파일을 다른 사람과 공유하지 마세요
+                {"> 팁2 : 설정을 settings/default_settings.json 파일에 저장하면 웹 페이지가 로드될 때 자동으로 가져옵니다" if self.is_support_load() else ''}
                 """
             )
 
@@ -1654,6 +1655,17 @@ class WindowsPlatform(Launcher):
                 ) as dst:
                     shutil.copyfileobj(src, dst)
 
+    def start(self, inbrowser=False):
+        import argparse
+
+        parser = argparse.ArgumentParser(description="SD Web UI 런처")
+        parser.add_argument(
+            "--inbrowser", action="store_true", help="기본 웹브라우저로 런처 창 띄우기"
+        )
+
+        args = parser.parse_args()
+        super().start(inbrowser=args.inbrowser)
+
     @staticmethod
     def shell():
         path = ""
@@ -1808,12 +1820,7 @@ class LauncherFactory:
 
 
 if __name__ == "__main__":
-    import argparse
 
-    parser = argparse.ArgumentParser(description="SD Web UI 런처")
-    parser.add_argument("--inbrowser", action="store_true", help="기본 웹브라우저로 런처 창 띄우기")
-
-    args = parser.parse_args()
     launcher = LauncherFactory.create()
     launcher.setup()
-    launcher.start(args.inbrowser)
+    launcher.start()
