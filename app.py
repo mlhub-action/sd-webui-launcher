@@ -242,6 +242,8 @@ class Launcher(ABC):
         except NameError:
             pass
 
+        self.run('python -m pip -q install --upgrade pip', check=False, live=True)
+
         if not self.is_installed("gradio"):
             self.run('pip -q install "gradio>=3.21"', check=True, live=True)
 
@@ -346,6 +348,10 @@ class Launcher(ABC):
     def is_support_load():
         pass
 
+    @staticmethod
+    def force_virtualenv():
+        pass
+
     def start(self, inbrowser=False):
         import gradio as gr
         import time
@@ -404,6 +410,9 @@ class Launcher(ABC):
                 gr.Text.update(
                     value=settings.get("git_commit", None),
                 ),
+                gr.Checkbox.update(
+                    value=settings.get("use_virtualenv", False),
+                ),
             ]
 
         def on_default_settings():
@@ -442,6 +451,7 @@ class Launcher(ABC):
             extra_cmdline_args,
             git_url,
             git_commit,
+            use_virtualenv,
         ):
             import json
 
@@ -469,6 +479,7 @@ class Launcher(ABC):
                         "cmdline_args": gr.Text(extra_cmdline_args).value,
                         "git_url": gr.Text(git_url).value,
                         "git_commit": gr.Text(git_commit).value,
+                        "use_virtualenv": use_virtualenv,
                     },
                     f,
                     ensure_ascii=False,
@@ -490,6 +501,7 @@ class Launcher(ABC):
             extra_cmdline_args,
             git_url,
             git_commit,
+            use_virtualenv,
         ):
             filepath = Path("settings", "my_settings.json")
             print(f'Launcher: 설정 내보내기, "{filepath}"')
@@ -511,6 +523,7 @@ class Launcher(ABC):
                 extra_cmdline_args,
                 git_url,
                 git_commit,
+                use_virtualenv,
             )
             return gr.File.update(label="내보낸 설정 파일", value=filepath, visible=True)
 
@@ -647,6 +660,7 @@ class Launcher(ABC):
             extra_cmdline_args,
             git_url,
             git_commit,
+            use_virtualenv,
             progress=lambda x, desc: "",  # gr.Blocks.queue 사용시 응답이 느려서 gr.Progress 대신 콘솔창에 출력
         ):
             def update_progress(progress, steps, total, desc):
@@ -662,9 +676,11 @@ class Launcher(ABC):
             진행 스탭 계산
             """
             steps = 0
-            total = 6
+            total = 5
 
             total += self.is_support_googledrive() and workspace_googledrive
+
+            total += use_virtualenv or self.force_virtualenv()
 
             extensions = extensions.drop(extensions.query(f'주소 == ""').index)
             total += extensions.count()["주소"]
@@ -960,33 +976,39 @@ class Launcher(ABC):
                 download(url, cwd=vae_path)
                 time.sleep(0.5)
 
-            """
-            SD Web UI 가상 환경 설정(venv)
-            """
-            steps += 1
-            update_progress(
-                progress,
-                steps,
-                total,
-                desc=f"SD Web UI 가상 환경 설정(venv)",
-            )
+            if use_virtualenv or self.force_virtualenv():
+                """
+                SD Web UI 가상 환경 설정(venv)
+                """
+                steps += 1
+                update_progress(
+                    progress,
+                    steps,
+                    total,
+                    desc=f"SD Web UI 가상 환경 설정(venv)",
+                )
 
-            venv_path = Path(sd_webui_path, "venv")
-            self.run(
-                f'python -m venv "{venv_path}" --without-pip',
-                check=True,
-            )
+                venv_path = Path(sd_webui_path, "venv")
+                self.run(
+                    f'python -m venv "{venv_path}" --without-pip',
+                    check=True,
+                )
 
-            python_path = self.python_path(venv_path)
+                python_path = self.python_path(venv_path)
 
-            venv = self.environ.copy()
-            venv["PATH"] = str(python_path.parent) + os.pathsep + venv["PATH"]
+                webui_environ = self.environ.copy()
+                webui_environ["PATH"] = (
+                    str(python_path.parent) + os.pathsep + webui_environ["PATH"]
+                )
 
-            self.run(
-                f'curl https://bootstrap.pypa.io/get-pip.py | "{python_path}"',
-                check=True,
-                env=venv,
-            )
+                self.run(
+                    f'curl https://bootstrap.pypa.io/get-pip.py | "{python_path}"',
+                    check=True,
+                    env=webui_environ,
+                )
+            else:
+                python_path = "python"
+                webui_environ = self.environ.copy()
 
             """
             SD Web UI 실행 시작
@@ -1030,7 +1052,7 @@ class Launcher(ABC):
                 encoding="utf8",
                 errors="ignore",
                 cwd=sd_webui_path,
-                env=venv,
+                env=webui_environ,
             ) as proc:
                 for line in proc.stdout:
                     print("SDWebUI: " + line, end="")
@@ -1343,92 +1365,104 @@ class Launcher(ABC):
                 )
                 with gr.Row():
                     with gr.Column(scale=0.8):
-                        extra_cmdline_args = gr.Text(
-                            label="추가 실행 인자",
-                            info="  추가 실행 인자를 입력해 주세요",
-                            placeholder="필요 없으면 비칸으로 두세요. 예) --xformers",
-                            value="",
-                            interactive=True,
-                        )
-                        cmdline_args = gr.Text(
-                            elem_id="info",
-                            label="전체 실행 인자",
-                            info="  실행 인자를 입력하면 아래에 전체 실행 인자가 표시됩니다",
-                            interactive=False,
-                        )
+                        with gr.Tab("실행 인자"):
+                            extra_cmdline_args = gr.Text(
+                                label="추가 실행 인자",
+                                info="  추가 실행 인자를 입력해 주세요",
+                                placeholder="필요 없으면 비칸으로 두세요. 예) --xformers",
+                                value="",
+                                interactive=True,
+                            )
+                            cmdline_args = gr.Text(
+                                elem_id="info",
+                                label="전체 실행 인자",
+                                info="  실행 인자를 입력하면 아래에 전체 실행 인자가 표시됩니다",
+                                interactive=False,
+                            )
 
-                        extra_cmdline_args.change(
-                            fn=lambda *args: "\n".join(build_cmdline_args(*args)),
-                            inputs=[
-                                workspace_name,
-                                auth_method,
-                                auth_username,
-                                auth_password,
-                                auth_token,
-                                extra_cmdline_args,
-                            ],
-                            outputs=cmdline_args,
-                        )
-                        workspace_name.blur(
-                            fn=lambda *args: "\n".join(build_cmdline_args(*args)),
-                            inputs=[
-                                workspace_name,
-                                auth_method,
-                                auth_username,
-                                auth_password,
-                                auth_token,
-                                extra_cmdline_args,
-                            ],
-                            outputs=cmdline_args,
-                        )
-                        auth_method.change(
-                            fn=lambda *args: "\n".join(build_cmdline_args(*args)),
-                            inputs=[
-                                workspace_name,
-                                auth_method,
-                                auth_username,
-                                auth_password,
-                                auth_token,
-                                extra_cmdline_args,
-                            ],
-                            outputs=cmdline_args,
-                        )
-                        auth_username.blur(
-                            fn=lambda *args: "\n".join(build_cmdline_args(*args)),
-                            inputs=[
-                                workspace_name,
-                                auth_method,
-                                auth_username,
-                                auth_password,
-                                auth_token,
-                                extra_cmdline_args,
-                            ],
-                            outputs=cmdline_args,
-                        )
-                        auth_password.blur(
-                            fn=lambda *args: "\n".join(build_cmdline_args(*args)),
-                            inputs=[
-                                workspace_name,
-                                auth_method,
-                                auth_username,
-                                auth_password,
-                                auth_token,
-                                extra_cmdline_args,
-                            ],
-                            outputs=cmdline_args,
-                        )
-                        auth_token.blur(
-                            fn=lambda *args: "\n".join(build_cmdline_args(*args)),
-                            inputs=[
-                                workspace_name,
-                                auth_method,
-                                auth_username,
-                                auth_password,
-                                auth_token,
-                                extra_cmdline_args,
-                            ],
-                            outputs=cmdline_args,
-                        )
+                            extra_cmdline_args.change(
+                                fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                                inputs=[
+                                    workspace_name,
+                                    auth_method,
+                                    auth_username,
+                                    auth_password,
+                                    auth_token,
+                                    extra_cmdline_args,
+                                ],
+                                outputs=cmdline_args,
+                            )
+                            workspace_name.blur(
+                                fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                                inputs=[
+                                    workspace_name,
+                                    auth_method,
+                                    auth_username,
+                                    auth_password,
+                                    auth_token,
+                                    extra_cmdline_args,
+                                ],
+                                outputs=cmdline_args,
+                            )
+                            auth_method.change(
+                                fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                                inputs=[
+                                    workspace_name,
+                                    auth_method,
+                                    auth_username,
+                                    auth_password,
+                                    auth_token,
+                                    extra_cmdline_args,
+                                ],
+                                outputs=cmdline_args,
+                            )
+                            auth_username.blur(
+                                fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                                inputs=[
+                                    workspace_name,
+                                    auth_method,
+                                    auth_username,
+                                    auth_password,
+                                    auth_token,
+                                    extra_cmdline_args,
+                                ],
+                                outputs=cmdline_args,
+                            )
+                            auth_password.blur(
+                                fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                                inputs=[
+                                    workspace_name,
+                                    auth_method,
+                                    auth_username,
+                                    auth_password,
+                                    auth_token,
+                                    extra_cmdline_args,
+                                ],
+                                outputs=cmdline_args,
+                            )
+                            auth_token.blur(
+                                fn=lambda *args: "\n".join(build_cmdline_args(*args)),
+                                inputs=[
+                                    workspace_name,
+                                    auth_method,
+                                    auth_username,
+                                    auth_password,
+                                    auth_token,
+                                    extra_cmdline_args,
+                                ],
+                                outputs=cmdline_args,
+                            )
+                        with gr.Tab("(선택) 가상 환경"):
+                            use_virtualenv = gr.Checkbox(
+                                label="Python 가상 환경 venv 사용", info="기본값, 사용 안함"
+                            )
+                            gr.Markdown(
+                                """
+                                > 체크시 가상 환경 venv 생성 => 설치 속도 느림, 버전 호환성 좋음
+                                > 해제시 코랩/런팟 기본 환경 사용 => 설치 속도 빠름, 버전 호환성 낮음
+                                > 단, 로컬은 가상 환경 사용 강제
+                                """
+                            )
                     with gr.Column(scale=0.2):
                         args_favorites = gr.Dataset(
                             components=[gr.Textbox(visible=False)],
@@ -1514,6 +1548,7 @@ class Launcher(ABC):
                 extra_cmdline_args,
                 git_url,
                 git_commit,
+                use_virtualenv,
             ]
 
             default_settings.click(
@@ -1732,13 +1767,26 @@ class ColabLauncher(LinuxPlatform):
     def is_support_load():
         return False
 
+    @staticmethod
+    def force_virtualenv():
+        return False
+
 
 class RunPodLauncher(LinuxPlatform):
     def setup(self):
         super().setup()
 
         # For ddetailer extension
-        self.run("apt-get install -y libgl1 libpython3.10-dev", check=True, live=True)
+        self.run(
+            "apt-get install -y libgl1 libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
+            check=True,
+            live=True,
+        )
+        self.run(
+            "pip install -q --upgrade pip setuptools wheel",
+            check=True,
+            live=True,
+        )
 
     @staticmethod
     def working_dir():
@@ -1758,6 +1806,10 @@ class RunPodLauncher(LinuxPlatform):
 
     @staticmethod
     def is_support_load():
+        return False
+
+    @staticmethod
+    def force_virtualenv():
         return False
 
 
@@ -1786,6 +1838,10 @@ class LocalLauncher(WindowsPlatform):
 
     @staticmethod
     def is_support_load():
+        return True
+
+    @staticmethod
+    def force_virtualenv():
         return True
 
 
