@@ -509,7 +509,7 @@ class Launcher(ABC):
 
             if PurePath(workspace).anchor:
                 return [
-                    PurePath(sd_webui_path, "").as_posix(),
+                    PurePath(sd_webui_path, ""),
                     gr.Markdown.update(
                         visible=True,
                         value="<p style='color:red';>이름은 루트 디렉터리로 시작할 수 없습니다</p>",
@@ -518,7 +518,7 @@ class Launcher(ABC):
 
             if not workspace and googledrive and self.is_support_googledrive():
                 return [
-                    PurePath(sd_webui_path, workspace).as_posix(),
+                    PurePath(sd_webui_path, workspace),
                     gr.Markdown.update(
                         visible=True,
                         value="<p style='color:red';>구글 드라이브 연결시 이름을 필수로 입력해 주세요</p>",
@@ -526,7 +526,7 @@ class Launcher(ABC):
                 ]
 
             return [
-                PurePath(sd_webui_path, workspace).as_posix(),
+                PurePath(sd_webui_path, workspace),
                 gr.Markdown.update(visible=False),
             ]
 
@@ -571,34 +571,34 @@ class Launcher(ABC):
                     userdata,
                     "models",
                     "Stable-diffusion",
-                ).as_posix()
+                )
                 lora_path = PurePath(
                     sd_webui_path,
                     userdata,
                     "models",
                     "Lora",
-                ).as_posix()
+                )
                 vae_path = PurePath(
                     sd_webui_path,
                     userdata,
                     "models",
                     "VAE",
-                ).as_posix()
+                )
                 embeddings_path = PurePath(
                     sd_webui_path,
                     userdata,
                     "embeddings",
-                ).as_posix()
+                )
                 ui_config_path = PurePath(
                     sd_webui_path,
                     userdata,
                     "ui-config.json",
-                ).as_posix()
+                )
                 ui_settings_path = PurePath(
                     sd_webui_path,
                     userdata,
                     "config.json",
-                ).as_posix()
+                )
 
                 if not "--ckpt-dir" in override_args:
                     cmdline_args += [f'--ckpt-dir "{ckpt_path}"']
@@ -691,16 +691,16 @@ class Launcher(ABC):
             assert git_url
             if not sd_webui_path.exists():
                 self.run(
-                    f'git -C "{sd_webui_path.parent.as_posix()}" clone {git_url} {sd_webui_path.name}',
+                    f'git -C "{sd_webui_path.parent}" clone {git_url} {sd_webui_path.name}',
                     check=True,
                 )
             else:
-                self.run(f'git -C "{sd_webui_path.as_posix()}" fetch origin master')
+                self.run(f'git -C "{sd_webui_path}" fetch origin master')
 
             if git_commit:
-                self.run(f'git -C "{sd_webui_path.as_posix()}" checkout {git_commit}')
+                self.run(f'git -C "{sd_webui_path}" checkout {git_commit}')
             else:
-                self.run(f'git -C "{sd_webui_path.as_posix()}" pull origin master')
+                self.run(f'git -C "{sd_webui_path}" pull origin master')
 
             time.sleep(0.5)
 
@@ -714,7 +714,7 @@ class Launcher(ABC):
                 progress,
                 steps,
                 total,
-                f"작업 디렉터리 설정, 경로: {userdata_path.as_posix()}",
+                f"작업 디렉터리 설정, 경로: {userdata_path}",
             )
 
             if self.is_support_googledrive() and workspace_googledrive and not userdata:
@@ -729,7 +729,7 @@ class Launcher(ABC):
                     progress,
                     steps,
                     total,
-                    f"구글 드라이브 연결, 경로: {userdata_path.as_posix()} -> {userdata_path_target.as_posix()}",
+                    f"구글 드라이브 연결, 경로: {userdata_path} -> {userdata_path_target}",
                 )
 
                 if not googledrive_path.exists():
@@ -741,7 +741,7 @@ class Launcher(ABC):
                     userdata_path.unlink(missing_ok=True)
                 elif userdata_path.exists():
                     print(
-                        f'Launcher: 기존 "{userdata_path.as_posix()}" 디렉터리를 삭제하고 구글 드라이브에 연결 합니다'
+                        f'Launcher: 기존 "{userdata_path}" 디렉터리를 삭제하고 구글 드라이브에 연결 합니다'
                     )
                     shutil.rmtree(userdata_path, ignore_errors=True)
 
@@ -796,10 +796,10 @@ class Launcher(ABC):
                 repository_path = Path(extensions_path, repositoryname(url))
                 if not repository_path.exists():
                     self.run(
-                        f'git -C "{extensions_path.as_posix()}" clone --recursive --depth=1 {url}'
+                        f'git -C "{extensions_path}" clone --recursive --depth=1 {url}'
                     )
                     self.run(
-                        f'git -C "{repository_path.as_posix()}" fetch --depth=1'
+                        f'git -C "{repository_path}" fetch --depth=1'
                     )  # SD Web UI의 Check for updates 기능을 위해
                 time.sleep(0.5)
 
@@ -817,13 +817,13 @@ class Launcher(ABC):
                         progress,
                         steps,
                         total,
-                        desc=f"확장 패치 적용, {diff_path.as_posix()}",
+                        desc=f"확장 패치 적용, {diff_path}",
                     )
                     self.run(
-                        f'curl --location --output "{diff_path.as_posix()}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
+                        f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
                     )
                     self.run(
-                        f'patch -N -d "{diff_path.parent.as_posix()}" -p1 < "{diff_path.as_posix()}" || true'
+                        f'patch -N -d "{diff_path.parent}" -p1 < "{diff_path}" || true'
                     )
                 time.sleep(0.5)
 
@@ -960,7 +960,7 @@ class Launcher(ABC):
 
             venv_path = Path(sd_webui_path, "venv")
             self.run(
-                f'python -m venv "{venv_path.as_posix()}" --without-pip',
+                f'python -m venv "{venv_path}" --without-pip',
                 check=True,
             )
 
@@ -1594,7 +1594,7 @@ class WindowsPlatform(Launcher):
         super().__init__()
 
         self.env["PATH"] = (
-            Path(self.working_dir(), "bin").as_posix() + os.pathsep + self.env["PATH"]
+            Path(self.working_dir(), "bin") + os.pathsep + self.env["PATH"]
         )
 
     def setup(self):
@@ -1644,7 +1644,7 @@ class WindowsPlatform(Launcher):
         path += "C:/Program Files/Git/bin" + os.pathsep
         path += os.environ.copy()["PATH"]
 
-        return Path(shutil.which("bash", path=path)).as_posix()
+        return Path(shutil.which("bash", path=path))
 
     @staticmethod
     def activate_path(venv_path):
