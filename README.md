@@ -1,5 +1,5 @@
 # SD Web UI 런처
-[코랩](https://colab.research.google.com) 또는 [런팟](https://www.runpod.io)에서 [stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)을 실행 시켜주는 웹 앱([Gradio](https://gradio.app/))
+로컬(Windows), [코랩](https://colab.research.google.com) 또는 [런팟](https://www.runpod.io)에서 [stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)을 실행 시켜주는 웹 앱([Gradio](https://gradio.app/))
 > 확장 프로그램이 아니라 별개 프로그램 입니다.
 > 기능이 완벽하지 않거나 버그가 있을 수 있습니다
 </br>
@@ -38,6 +38,11 @@
 </br>
 
 ## 업데이트
+### v0.2.4 (2023-03-29)
+#### 변경 내역
+ - 로컬(Windows) 설치 지원
+</br>
+
 ### v0.2.3 (2023-03-28)
 #### 변경 내역
  - 총 진행 단계 수 올바르게 계산하도록 수정
