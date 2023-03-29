@@ -558,6 +558,10 @@ class Launcher(ABC):
 
             override_args = shlex.split(extra_args)  # allow override
 
+            if not "--autolaunch" in override_args:
+                if inbrowser:
+                    cmdline_args += [f"--autolaunch"]
+
             if not "--ngrok" in override_args:
                 if auth_method == "ngrok" and auth_token:
                     cmdline_args += [f"--ngrok {auth_token}"]
