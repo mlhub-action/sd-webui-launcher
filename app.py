@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.4"  # @param {type:"string"}
+VERSION = "v0.2.5"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
@@ -233,7 +233,7 @@ from abc import ABC, abstractmethod
 
 class Launcher(ABC):
     def __init__(self):
-        self.env = os.environ.copy()
+        self.environ = os.environ.copy()
 
     def setup(self):
         try:
@@ -270,7 +270,7 @@ class Launcher(ABC):
 
         return shutil.which(cmd=name, path=path) is not None
 
-    def run(self, command, cwd=None, check=False, live=False):
+    def run(self, command, cwd=None, check=False, live=False, env=None):
         import shlex
         import subprocess
 
@@ -281,7 +281,7 @@ class Launcher(ABC):
                 encoding="utf8",
                 errors="ignore",
                 cwd=cwd,
-                env=self.env,
+                env=env if env else self.environ,
             )
             if proc.returncode != 0:
                 message = f"RunningCommandError: Return code: '{proc.returncode}', Command: '{command}'"
@@ -299,7 +299,7 @@ class Launcher(ABC):
                 encoding="utf8",
                 errors="ignore",
                 cwd=cwd,
-                env=self.env,
+                env=env if env else self.environ,
             )
 
             if proc.returncode != 0:
@@ -318,7 +318,7 @@ class Launcher(ABC):
 
     @staticmethod
     @abstractmethod
-    def activate_path(venv_path):
+    def python_path(venv_path):
         pass
 
     @staticmethod
@@ -873,6 +873,7 @@ class Launcher(ABC):
 
             """
             컨트롤넷 모델 다운로드
+            TODO : --controlnet-dir 옵션으로 구글 드라이브에 저장 가능 하도록 선택 기능 제공
             """
             for index, (name, url) in enumerate(
                 zip(controlnet_models["이름"], controlnet_models["주소"])
@@ -972,16 +973,15 @@ class Launcher(ABC):
                 check=True,
             )
 
-            self.run(
-                "curl --location --output get-pip.py https://bootstrap.pypa.io/get-pip.py",
-                check=True,
-            )
+            python_path = self.python_path(venv_path)
 
-            activate = f'source "{self.activate_path(venv_path).as_posix()}"'
+            venv = self.environ.copy()
+            venv["PATH"] = python_path.parent + os.pathsep + venv["PATH"]
 
             self.run(
-                f"{activate} && python get-pip.py",
+                f'curl https://bootstrap.pypa.io/get-pip.py | "{python_path}"',
                 check=True,
+                env=venv,
             )
 
             """
@@ -1017,7 +1017,7 @@ class Launcher(ABC):
                 [
                     self.shell(),
                     "-c",
-                    f'{activate} && python -u "{launch_path.as_posix()}" {cmdline_args}',
+                    f'"{python_path}" -u "{launch_path}" {cmdline_args}',
                 ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
@@ -1026,7 +1026,7 @@ class Launcher(ABC):
                 encoding="utf8",
                 errors="ignore",
                 cwd=sd_webui_path,
-                env=self.env,
+                env=venv,
             ) as proc:
                 for line in proc.stdout:
                     print("SDWebUI: " + line, end="")
@@ -1097,7 +1097,7 @@ class Launcher(ABC):
                 gr.Markdown(
                     """
                     # 1. 작업 디렉터리
-                    [코랩](https://colab.research.google.com/) 또는 [런팟](https://www.runpod.io/)에서 모델, 로라, VAE, 설정 파일 등이 저장될 디렉터리를 입력해주세요. 
+                    모델, 로라, VAE, 설정 파일 등을 따로 저장할 작업 디렉터리 이름을 입력해주세요. 
                     """
                 )
 
@@ -1111,7 +1111,7 @@ class Launcher(ABC):
                         workspace_name = gr.Text(
                             label="이름",
                             info="  디렉터리 이름 규칙에 따라 입력해주세요",
-                            placeholder="필요 없으면 빈칸으로 두세요. 예) userdata",
+                            placeholder="비워두면 기본 작업 디렉토리를 사용합니다. 예) SD 또는 userdata",
                             interactive=True,
                         )
                         workspace_tooltip = gr.Markdown(visible=False)
@@ -1137,7 +1137,7 @@ class Launcher(ABC):
                     """
                     # 2. 다운로드 주소
                     [civitai](https://civitai.com/) 또는 [huggingface](https://huggingface.co/)에서 다운로드 할 주소 목록을 작성해주세요. 이름은 표시 용도니 자유롭게 정하세요.
-                    테이블의 셀을 더블 클릭하면 편집 가능합니다.
+                    테이블의 셀을 더블 클릭하면 편집/삭제 가능합니다.
                     """
                 )
 
@@ -1601,16 +1601,16 @@ class LinuxPlatform(Launcher):
         return "/usr/bin/bash"
 
     @staticmethod
-    def activate_path(venv_path):
-        return Path(venv_path, "bin", "activate")
+    def python_path(venv_path):
+        return Path(venv_path, "bin", "python")
 
 
 class WindowsPlatform(Launcher):
     def __init__(self):
         super().__init__()
 
-        self.env["PATH"] = (
-            Path(self.working_dir(), "bin") + os.pathsep + self.env["PATH"]
+        self.environ["PATH"] = (
+            str(Path(self.working_dir(), "bin")) + os.pathsep + self.environ["PATH"]
         )
 
     def setup(self):
@@ -1623,6 +1623,7 @@ class WindowsPlatform(Launcher):
             raise RuntimeError("다음 링크를 통해 git를 설치해 주세요. https://gitforwindows.org/")
 
         bin_path = Path(self.working_dir(), "bin")
+        bin_path.mkdir(parents=True, exist_ok=True)
         if not self.has_executable("curl", path=bin_path):
             Path("temp").mkdir(parents=True, exist_ok=True)
             curl_zip = Path("temp", "curl.zip")
@@ -1656,15 +1657,15 @@ class WindowsPlatform(Launcher):
     @staticmethod
     def shell():
         path = ""
-        path += "C:/Program Files (x86)/Git/bin" + os.pathsep
-        path += "C:/Program Files/Git/bin" + os.pathsep
+        path += "C:\\Program Files (x86)\\Git\\bin" + os.pathsep
+        path += "C:\\Program Files\\Git\\bin" + os.pathsep
         path += os.environ.copy()["PATH"]
 
         return Path(shutil.which("bash", path=path))
 
     @staticmethod
-    def activate_path(venv_path):
-        return Path(venv_path, "Scripts", "activate")
+    def python_path(venv_path):
+        return Path(venv_path, "Scripts", "python.exe")
 
 
 class ColabLauncher(LinuxPlatform):
@@ -1693,7 +1694,7 @@ class ColabLauncher(LinuxPlatform):
             self.run("rm *.deb", check=False, live=True)
 
         # https://github.com/googlecolab/colabtools/issues/3412
-        self.env["LD_PRELOAD"] = "libtcmalloc.so"
+        self.environ["LD_PRELOAD"] = "libtcmalloc.so"
 
     @staticmethod
     def working_dir():
