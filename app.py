@@ -295,7 +295,6 @@ class Launcher(ABC):
                 [self.shell(), "-c", command],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                encoding="utf8",
                 cwd=cwd,
                 env=self.env,
             )
