@@ -1094,15 +1094,17 @@ class Launcher(ABC):
                 # 코랩/런팟용 SD Web UI 런처 {VERSION}
                 - [최신 버전](https://github.com/mlhub-action/sd-webui-launcher)
                 - [이슈/버그 리포트](https://github.com/mlhub-action/sd-webui-launcher/issues)
-                > 팁1 : 인증 정보가 담긴 설정 파일을 다른 사람과 공유하지 마세요
-                {"> 팁2 : 설정을 settings/default_settings.json 파일에 저장하면 웹 페이지가 로드될 때 자동으로 가져옵니다" if self.is_support_load() else ''}
+                > 💡 팁1: 인증 정보가 담긴 설정 파일을 다른 사람과 공유하지 마세요
+                {"> 💡 팁2: 설정을 settings/default_settings.json 파일에 저장하면 웹 페이지가 로드될 때 자동으로 가져옵니다" if self.is_support_load() else ''}
                 """
             )
 
             with gr.Row():
                 default_settings = gr.Button("설정 초기화", variant="secondary")
                 import_settings = gr.UploadButton(
-                    "설정 가져오기", file_types=["file"], file_count="single"
+                    "설정 가져오기",
+                    file_types=["file"],
+                    file_count="single",
                 )
                 export_settings = gr.Button("설정 내보내기")
                 execute_webui = gr.Button("실행", variant="primary")
@@ -1114,7 +1116,7 @@ class Launcher(ABC):
 
             with gr.Box():
                 gr.Markdown(
-                    '<em><font color="DeepPink"><p style="color:DeepPink; text-align: center;">진행 과정은 노트북 출력창에서 확인해 주세요</p></font></em>'
+                    '<p style="color:DeepPink !important; text-align: center;"><em>진행 과정은 노트북 출력창에서 확인해 주세요</em></p>'
                 )
                 progress = gr.Text(
                     elem_id="progress", show_label=False, interactive=False
@@ -1575,19 +1577,33 @@ class Launcher(ABC):
                 outputs=settings_file,
             )
 
-            def update_state():
+            def disable_buttons():
                 return {
-                    default_settings: gr.Button.update(interactive=False),
-                    import_settings: gr.UploadButton.update(interactive=False),
-                    export_settings: gr.Button.update(interactive=False),
-                    execute_webui: gr.Button.update(
-                        value="중지는 노트북에서만 가능", interactive=False
+                    # UploadButton이 interactive=False 업데이트가 안되서 visible=False로
+                    default_settings: gr.Button.update(
+                        visible=False,
+                        interactive=False,
                     ),
-                    settings_file: gr.File.update(interactive=False),
+                    import_settings: gr.UploadButton.update(
+                        visible=False,
+                        interactive=False,
+                    ),
+                    export_settings: gr.Button.update(
+                        visible=False,
+                        interactive=False,
+                    ),
+                    execute_webui: gr.Button.update(
+                        value="중지는 노트북에서만 가능",
+                        interactive=False,
+                    ),
+                    settings_file: gr.File.update(
+                        visible=False,
+                        interactive=False,
+                    ),
                 }
 
             execute_webui.click(
-                fn=update_state,
+                fn=disable_buttons,
                 inputs=None,
                 outputs=[
                     default_settings,
