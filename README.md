@@ -31,6 +31,7 @@
 - 기본값으로 런처는 gradio.live로 연결되는데 gradio.live가 응답이 느린 경우 USE_GRADIO_LIVE 체크 해제하고 사용 권장
 - 코랩 사용 환경 : ubuntu 20.04, python 3.9, venv 가상 환경
 - 런팟 사용 환경 : runpod/pytorch:3.10-1.13.1-116 템플릿, ubuntu 20.04, python 3.10, venv 가상 환경
+- 로컬 사용 환경 : Windows 10, python 3.10, git
 </br>
 
 ## 알려진 문제
