@@ -218,6 +218,5 @@
     "cmdline_args": "--xformers --update-all-extensions",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
-    "use_virtualenv": false,
-    "ddetailer_install_with_pip": true
+    "use_virtualenv": false
 }

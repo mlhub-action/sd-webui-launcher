@@ -138,8 +138,7 @@ DEFAULT_SETTINGS = """
     "cmdline_args": "--xformers",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
-    "use_virtualenv": false,
-    "ddetailer_install_with_pip": true
+    "use_virtualenv": false
 }
 """
 
@@ -432,9 +431,6 @@ class Launcher(ABC):
                 git_commit: gr.Text.update(
                     value=settings.get("git_commit", None),
                 ),
-                ddetailer_install_with_pip: gr.Checkbox.update(
-                    value=settings.get("ddetailer_install_with_pip", True),
-                ),
             }
 
         def on_default_settings():
@@ -497,7 +493,6 @@ class Launcher(ABC):
             use_virtualenv,
             git_url,
             git_commit,
-            ddetailer_install_with_pip,
         ):
             import json
 
@@ -528,7 +523,6 @@ class Launcher(ABC):
                         "use_virtualenv": use_virtualenv,
                         "git_url": gr.Text(git_url).value,
                         "git_commit": gr.Text(git_commit).value,
-                        "ddetailer_install_with_pip": ddetailer_install_with_pip,
                     },
                     f,
                     ensure_ascii=False,
@@ -688,7 +682,6 @@ class Launcher(ABC):
             use_virtualenv,
             git_url,
             git_commit,
-            ddetailer_install_with_pip,
             progress=lambda x, desc: "",  # gr.Blocks.queue 사용시 응답이 느려서 gr.Progress 대신 콘솔창에 출력
         ):
             def update_progress(progress, steps, total, desc):
@@ -723,14 +716,6 @@ class Launcher(ABC):
 
             if include_controlnet:
                 total += controlnet_models.count()["주소"]
-
-            include_ddetailer = has_extension_settings(extensions, "ddetailer")
-            if include_ddetailer:
-                total += ddetailer_install_with_pip
-
-            # TODO : 선택 옵션으로 제공
-            apply_ddetailer_patches = True
-            total += include_ddetailer and apply_ddetailer_patches
 
             models = models.drop(models.query(f'주소 == ""').index)
             total += models.count()["주소"]
@@ -1040,36 +1025,6 @@ class Launcher(ABC):
                 )
                 return pattern.match(torch_command)
 
-            # Patch extensions dependencies
-            for index, (name, url) in enumerate(
-                zip(extensions["이름"], extensions["주소"])
-            ):
-                assert url
-                if repositoryname(url) == "ddetailer":
-                    if ddetailer_install_with_pip and apply_ddetailer_patches:
-                        diff_path = Path(
-                            extensions_path,
-                            repositoryname(url),
-                            "ddetailer_install_with_pip.diff",
-                        )
-                        steps += 1
-                        update_progress(
-                            progress,
-                            steps,
-                            total,
-                            desc=f"확장 패치 적용, {diff_path}",
-                        )
-
-                        self.run(
-                            f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/ddetailer_install_with_pip.diff'
-                        )
-                        self.run(
-                            f'patch -N -d "{diff_path.parent}" -p1 < "{diff_path}" || true',
-                            check=False,
-                        )
-                    break
-                time.sleep(0.5)
-
             """
             SD Web UI 실행 시작
             """
@@ -1295,18 +1250,6 @@ class Launcher(ABC):
                                     row_count=3,
                                     col_count=(2, "fixed"),
                                     interactive=True,
-                                )
-                            with gr.Tab("Detection Detailer") as ddetailer_tab:
-                                ddetailer_install_with_pip = gr.Checkbox(
-                                    label="미리 빌드된 의존성 패키지 설치",
-                                    info="기본값, 체크",
-                                    value=True,
-                                )
-                                gr.Markdown(
-                                    """
-                                    > 📝체크시: mmcv-full 패키지를 pip로 설치 => 🐇설치 속도 빠름, ⚠️버전 호환성 나쁨
-                                    > 📝해제시: mmcv-full 소스 코드로 빌드/설치 =🐢설치 속도 느림, 👍전호환성 좋음
-                                    """
                                 )
                         with gr.Column(scale=0.2):
                             gr.Markdown(
@@ -1760,7 +1703,6 @@ class Launcher(ABC):
                 use_virtualenv,
                 git_url,
                 git_commit,
-                ddetailer_install_with_pip,
             ]
 
             default_settings.click(
@@ -2026,7 +1968,7 @@ class RunPodLauncher(LinuxPlatform):
             live=True,
         )
 
-        # For ddetailer extension, mmdet dependency
+        # For ddetailer extension, mmcv, mmdet dependency
         self.run(
             "apt-get install -qq -y libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
             check=True,
