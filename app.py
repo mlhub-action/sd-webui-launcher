@@ -1051,7 +1051,7 @@ class Launcher(ABC):
                         diff_path = Path(
                             extensions_path,
                             repositoryname(url),
-                            "deprecate_lib2to3.diff",
+                            "ddetailer_install_with_pip.diff",
                         )
                         steps += 1
                         update_progress(
@@ -1062,7 +1062,7 @@ class Launcher(ABC):
                         )
 
                         self.run(
-                            f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
+                            f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/ddetailer_install_with_pip.diff'
                         )
                         self.run(
                             f'patch -N -d "{diff_path.parent}" -p1 < "{diff_path}" || true',
