@@ -242,6 +242,8 @@ class Launcher(ABC):
         except NameError:
             pass
 
+        print(f"Launcher: 시작, {VERSION}")
+
         # Suppress pip version upgrade warning
         self.run("python -m pip -q install --upgrade pip", check=False, live=True)
 
