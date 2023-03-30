@@ -135,7 +135,7 @@ DEFAULT_SETTINGS = """
         "auth_password": "",
         "auth_token": ""
     },
-    "cmdline_args": "--xformers",
+    "cmdline_args": "--xformers --no-gradio-queue",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
     "use_virtualenv": false
