@@ -502,6 +502,7 @@ class Launcher(ABC):
                     },
                     f,
                     ensure_ascii=False,
+                    indent=4,
                 )
 
         def on_export_settings(
