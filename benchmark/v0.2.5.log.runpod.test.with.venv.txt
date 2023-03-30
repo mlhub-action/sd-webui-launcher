@@ -1,0 +1,1235 @@
+RunPod Pytorch
+ID: rl2hk8qzdgsqqt
+1 x RTX 3090
+9 vCPU 37 GB RAM
+runpod/pytorch:3.10-1.13.1-116
+On-Demand - Community Cloud
+Running
+20 GB Disk
+20 GB Volume
+Volume Path: /workspace
+US
+891 Mbps
+869 Mbps
+785 MBps
+
+root@9aeaec894db3:~# lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 20.04.5 LTS
+Release:        20.04
+Codename:       focal
+root@9aeaec894db3:~# cat /proc/cpuinfo | grep 'model name' | uniq
+model name      : AMD Ryzen Threadripper PRO 3975WX 32-Cores
+root@9aeaec894db3:~# cat /proc/cpuinfo |grep cpu\ cores |uniq
+cpu cores       : 48
+root@9aeaec894db3:~# nvidia-smi -q | grep 'Product Name'
+    Product Name                          : NVIDIA GeForce RTX 3090
+root@9aeaec894db3:~#
+
+Launcher: python -m pip -q install --upgrade pip
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Launcher: pip -q install "gradio>=3.21"
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Launcher: pip -q install "lxml"
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Launcher: pip -q install gdown
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Launcher: apt-get update -qq -y
+Launcher: apt-get install -y aria2
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libaria2-0 libc-ares2 libssh2-1
+The following NEW packages will be installed:
+  aria2 libaria2-0 libc-ares2 libssh2-1
+0 upgraded, 4 newly installed, 0 to remove and 31 not upgraded.
+Need to get 1550 kB of archives.
+After this operation, 6235 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libc-ares2 amd64 1.15.0-1ubuntu0.2 [36.7 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal/universe amd64 libssh2-1 amd64 1.8.0-2.1build1 [75.4 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal/universe amd64 libaria2-0 amd64 1.35.0-1build1 [1082 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal/universe amd64 aria2 amd64 1.35.0-1build1 [356 kB]
+Fetched 1550 kB in 1s (1087 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package libc-ares2:amd64.
+(Reading database ... 20238 files and directories currently installed.)
+Preparing to unpack .../libc-ares2_1.15.0-1ubuntu0.2_amd64.deb ...
+Unpacking libc-ares2:amd64 (1.15.0-1ubuntu0.2) ...
+Selecting previously unselected package libssh2-1:amd64.
+Preparing to unpack .../libssh2-1_1.8.0-2.1build1_amd64.deb ...
+Unpacking libssh2-1:amd64 (1.8.0-2.1build1) ...
+Selecting previously unselected package libaria2-0:amd64.
+Preparing to unpack .../libaria2-0_1.35.0-1build1_amd64.deb ...
+Unpacking libaria2-0:amd64 (1.35.0-1build1) ...
+Selecting previously unselected package aria2.
+Preparing to unpack .../aria2_1.35.0-1build1_amd64.deb ...
+Unpacking aria2 (1.35.0-1build1) ...
+Setting up libc-ares2:amd64 (1.15.0-1ubuntu0.2) ...
+Setting up libssh2-1:amd64 (1.8.0-2.1build1) ...
+Setting up libaria2-0:amd64 (1.35.0-1build1) ...
+Setting up aria2 (1.35.0-1build1) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Launcher: apt-get install -y libgl1 libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz
+Reading package lists...
+Building dependency tree...
+Reading state information...
+build-essential is already the newest version (12.8ubuntu1.1).
+build-essential set to manually installed.
+The following additional packages will be installed:
+  libdrm-amdgpu1 libdrm-common libdrm-intel1 libdrm-nouveau2 libdrm-radeon1
+  libdrm2 libexpat1-dev libgl1-mesa-dri libglapi-mesa libglvnd0 libglx-mesa0
+  libglx0 libllvm12 libpciaccess0 libpython3.10 libsensors-config libsensors5
+  libvulkan1 libwayland-client0 libx11-6 libx11-data libx11-xcb1 libxau6
+  libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-randr0
+  libxcb-shm0 libxcb-sync1 libxcb-xfixes0 libxcb1 libxdmcp6 libxext6
+  libxfixes3 libxshmfence1 libxxf86vm1 mesa-vulkan-drivers
+Suggested packages:
+  pciutils lm-sensors python-toolz-doc
+The following NEW packages will be installed:
+  libdrm-amdgpu1 libdrm-common libdrm-intel1 libdrm-nouveau2 libdrm-radeon1
+  libdrm2 libexpat1-dev libgl1 libgl1-mesa-dri libglapi-mesa libglvnd0
+  libglx-mesa0 libglx0 libllvm12 libpciaccess0 libpython3.10 libpython3.10-dev
+  libsensors-config libsensors5 libvulkan1 libwayland-client0 libx11-6
+  libx11-data libx11-xcb1 libxau6 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0
+  libxcb-present0 libxcb-randr0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0
+  libxcb1 libxdmcp6 libxext6 libxfixes3 libxshmfence1 libxxf86vm1
+  mesa-vulkan-drivers python3-distutils python3-lib2to3 python3-toolz
+0 upgraded, 43 newly installed, 0 to remove and 31 not upgraded.
+Need to get 43.5 MB of archives.
+After this operation, 558 MB of additional disk space will be used.
+Get:1 http://ppa.launchpad.net/deadsnakes/ppa/ubuntu focal/main amd64 libpython3.10 amd64 3.10.10-1+focal1 [1768 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdrm-common all 2.4.107-8ubuntu1~20.04.2 [5396 B]
+Get:3 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdrm2 amd64 2.4.107-8ubuntu1~20.04.2 [34.1 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal/main amd64 libxau6 amd64 1:1.0.9-0ubuntu1 [7488 B]
+Get:5 http://archive.ubuntu.com/ubuntu focal/main amd64 libxdmcp6 amd64 1:1.1.3-0ubuntu1 [10.6 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb1 amd64 1.14-2 [44.7 kB]
+Get:7 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libx11-data all 2:1.6.9-2ubuntu1.2 [113 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libx11-6 amd64 2:1.6.9-2ubuntu1.2 [575 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal/main amd64 libxext6 amd64 2:1.3.4-0ubuntu1 [29.1 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdrm-amdgpu1 amd64 2.4.107-8ubuntu1~20.04.2 [18.6 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal/main amd64 libpciaccess0 amd64 0.16-0ubuntu1 [17.9 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdrm-intel1 amd64 2.4.107-8ubuntu1~20.04.2 [60.3 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdrm-nouveau2 amd64 2.4.107-8ubuntu1~20.04.2 [16.6 kB]
+Get:14 http://ppa.launchpad.net/deadsnakes/ppa/ubuntu focal/main amd64 libpython3.10-dev amd64 3.10.10-1+focal1 [4274 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdrm-radeon1 amd64 2.4.107-8ubuntu1~20.04.2 [19.7 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libexpat1-dev amd64 2.2.9-1ubuntu0.6 [116 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libglapi-mesa amd64 21.2.6-0ubuntu0.1~20.04.2 [27.4 kB]
+Get:18 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libllvm12 amd64 1:12.0.0-3ubuntu1~20.04.5 [18.8 MB]
+Get:19 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libsensors-config all 1:3.6.0-2ubuntu1.1 [6052 B]
+Get:20 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libsensors5 amd64 1:3.6.0-2ubuntu1.1 [27.2 kB]
+Get:21 http://archive.ubuntu.com/ubuntu focal/main amd64 libvulkan1 amd64 1.2.131.2-1 [93.3 kB]
+Get:22 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libgl1-mesa-dri amd64 21.2.6-0ubuntu0.1~20.04.2 [11.0 MB]
+Get:23 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libx11-xcb1 amd64 2:1.6.9-2ubuntu1.2 [9372 B]
+Get:24 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-dri2-0 amd64 1.14-2 [6920 B]
+Get:25 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-dri3-0 amd64 1.14-2 [6552 B]
+Get:26 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-glx0 amd64 1.14-2 [22.1 kB]
+Get:27 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-present0 amd64 1.14-2 [5560 B]
+Get:28 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-shm0 amd64 1.14-2 [5584 B]
+Get:29 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-sync1 amd64 1.14-2 [8884 B]
+Get:30 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-xfixes0 amd64 1.14-2 [9296 B]
+Get:31 http://archive.ubuntu.com/ubuntu focal/main amd64 libxfixes3 amd64 1:5.0.3-2 [10.9 kB]
+Get:32 http://archive.ubuntu.com/ubuntu focal/main amd64 libxshmfence1 amd64 1.3-1 [5028 B]
+Get:33 http://archive.ubuntu.com/ubuntu focal/main amd64 libxxf86vm1 amd64 1:1.1.4-1build1 [10.2 kB]
+Get:34 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libglx-mesa0 amd64 21.2.6-0ubuntu0.1~20.04.2 [137 kB]
+Get:35 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libwayland-client0 amd64 1.18.0-1ubuntu0.1 [23.9 kB]
+Get:36 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-randr0 amd64 1.14-2 [16.3 kB]
+Get:37 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 mesa-vulkan-drivers amd64 21.2.6-0ubuntu0.1~20.04.2 [5788 kB]
+Get:38 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-lib2to3 all 3.8.10-0ubuntu1~20.04 [76.3 kB]
+Get:39 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-distutils all 3.8.10-0ubuntu1~20.04 [141 kB]
+Get:40 http://archive.ubuntu.com/ubuntu focal/universe amd64 python3-toolz all 0.9.0-1 [42.0 kB]
+Get:41 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libglvnd0 amd64 1.3.2-1~ubuntu0.20.04.2 [48.1 kB]
+Get:42 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libglx0 amd64 1.3.2-1~ubuntu0.20.04.2 [32.5 kB]
+Get:43 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libgl1 amd64 1.3.2-1~ubuntu0.20.04.2 [85.8 kB]
+Fetched 43.5 MB in 7s (6298 kB/s)
+Selecting previously unselected package libdrm-common.
+(Reading database ... 20324 files and directories currently installed.)
+Preparing to unpack .../00-libdrm-common_2.4.107-8ubuntu1~20.04.2_all.deb ...
+Unpacking libdrm-common (2.4.107-8ubuntu1~20.04.2) ...
+Selecting previously unselected package libdrm2:amd64.
+Preparing to unpack .../01-libdrm2_2.4.107-8ubuntu1~20.04.2_amd64.deb ...
+Unpacking libdrm2:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package libxau6:amd64.
+Preparing to unpack .../02-libxau6_1%3a1.0.9-0ubuntu1_amd64.deb ...
+Unpacking libxau6:amd64 (1:1.0.9-0ubuntu1) ...
+Selecting previously unselected package libxdmcp6:amd64.
+Preparing to unpack .../03-libxdmcp6_1%3a1.1.3-0ubuntu1_amd64.deb ...
+Unpacking libxdmcp6:amd64 (1:1.1.3-0ubuntu1) ...
+Selecting previously unselected package libxcb1:amd64.
+Preparing to unpack .../04-libxcb1_1.14-2_amd64.deb ...
+Unpacking libxcb1:amd64 (1.14-2) ...
+Selecting previously unselected package libx11-data.
+Preparing to unpack .../05-libx11-data_2%3a1.6.9-2ubuntu1.2_all.deb ...
+Unpacking libx11-data (2:1.6.9-2ubuntu1.2) ...
+Selecting previously unselected package libx11-6:amd64.
+Preparing to unpack .../06-libx11-6_2%3a1.6.9-2ubuntu1.2_amd64.deb ...
+Unpacking libx11-6:amd64 (2:1.6.9-2ubuntu1.2) ...
+Selecting previously unselected package libxext6:amd64.
+Preparing to unpack .../07-libxext6_2%3a1.3.4-0ubuntu1_amd64.deb ...
+Unpacking libxext6:amd64 (2:1.3.4-0ubuntu1) ...
+Selecting previously unselected package libdrm-amdgpu1:amd64.
+Preparing to unpack .../08-libdrm-amdgpu1_2.4.107-8ubuntu1~20.04.2_amd64.deb ...
+Unpacking libdrm-amdgpu1:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Selecting previously unselected package libpciaccess0:amd64.
+Preparing to unpack .../09-libpciaccess0_0.16-0ubuntu1_amd64.deb ...
+Unpacking libpciaccess0:amd64 (0.16-0ubuntu1) ...
+Selecting previously unselected package libdrm-intel1:amd64.
+Preparing to unpack .../10-libdrm-intel1_2.4.107-8ubuntu1~20.04.2_amd64.deb ...
+Unpacking libdrm-intel1:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Selecting previously unselected package libdrm-nouveau2:amd64.
+Preparing to unpack .../11-libdrm-nouveau2_2.4.107-8ubuntu1~20.04.2_amd64.deb ...
+Unpacking libdrm-nouveau2:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Selecting previously unselected package libdrm-radeon1:amd64.
+Preparing to unpack .../12-libdrm-radeon1_2.4.107-8ubuntu1~20.04.2_amd64.deb ...
+Unpacking libdrm-radeon1:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Selecting previously unselected package libexpat1-dev:amd64.
+Preparing to unpack .../13-libexpat1-dev_2.2.9-1ubuntu0.6_amd64.deb ...
+Unpacking libexpat1-dev:amd64 (2.2.9-1ubuntu0.6) ...
+Selecting previously unselected package libglapi-mesa:amd64.
+Preparing to unpack .../14-libglapi-mesa_21.2.6-0ubuntu0.1~20.04.2_amd64.deb ...
+Unpacking libglapi-mesa:amd64 (21.2.6-0ubuntu0.1~20.04.2) ...
+Selecting previously unselected package libllvm12:amd64.
+Preparing to unpack .../15-libllvm12_1%3a12.0.0-3ubuntu1~20.04.5_amd64.deb ...
+Unpacking libllvm12:amd64 (1:12.0.0-3ubuntu1~20.04.5) ...
+Selecting previously unselected package libsensors-config.
+Preparing to unpack .../16-libsensors-config_1%3a3.6.0-2ubuntu1.1_all.deb ...
+Unpacking libsensors-config (1:3.6.0-2ubuntu1.1) ...
+Selecting previously unselected package libsensors5:amd64.
+Preparing to unpack .../17-libsensors5_1%3a3.6.0-2ubuntu1.1_amd64.deb ...
+Unpacking libsensors5:amd64 (1:3.6.0-2ubuntu1.1) ...
+Selecting previously unselected package libvulkan1:amd64.
+Preparing to unpack .../18-libvulkan1_1.2.131.2-1_amd64.deb ...
+Unpacking libvulkan1:amd64 (1.2.131.2-1) ...
+Selecting previously unselected package libgl1-mesa-dri:amd64.
+Preparing to unpack .../19-libgl1-mesa-dri_21.2.6-0ubuntu0.1~20.04.2_amd64.deb ...
+Unpacking libgl1-mesa-dri:amd64 (21.2.6-0ubuntu0.1~20.04.2) ...
+Selecting previously unselected package libx11-xcb1:amd64.
+Preparing to unpack .../20-libx11-xcb1_2%3a1.6.9-2ubuntu1.2_amd64.deb ...
+Unpacking libx11-xcb1:amd64 (2:1.6.9-2ubuntu1.2) ...
+Selecting previously unselected package libxcb-dri2-0:amd64.
+Preparing to unpack .../21-libxcb-dri2-0_1.14-2_amd64.deb ...
+Unpacking libxcb-dri2-0:amd64 (1.14-2) ...
+Selecting previously unselected package libxcb-dri3-0:amd64.
+Preparing to unpack .../22-libxcb-dri3-0_1.14-2_amd64.deb ...
+Unpacking libxcb-dri3-0:amd64 (1.14-2) ...
+Selecting previously unselected package libxcb-glx0:amd64.
+Preparing to unpack .../23-libxcb-glx0_1.14-2_amd64.deb ...
+Unpacking libxcb-glx0:amd64 (1.14-2) ...
+Selecting previously unselected package libxcb-present0:amd64.
+Preparing to unpack .../24-libxcb-present0_1.14-2_amd64.deb ...
+Unpacking libxcb-present0:amd64 (1.14-2) ...
+Selecting previously unselected package libxcb-shm0:amd64.
+Preparing to unpack .../25-libxcb-shm0_1.14-2_amd64.deb ...
+Unpacking libxcb-shm0:amd64 (1.14-2) ...
+Selecting previously unselected package libxcb-sync1:amd64.
+Preparing to unpack .../26-libxcb-sync1_1.14-2_amd64.deb ...
+Unpacking libxcb-sync1:amd64 (1.14-2) ...
+Selecting previously unselected package libxcb-xfixes0:amd64.
+Preparing to unpack .../27-libxcb-xfixes0_1.14-2_amd64.deb ...
+Unpacking libxcb-xfixes0:amd64 (1.14-2) ...
+Selecting previously unselected package libxfixes3:amd64.
+Preparing to unpack .../28-libxfixes3_1%3a5.0.3-2_amd64.deb ...
+Unpacking libxfixes3:amd64 (1:5.0.3-2) ...
+Selecting previously unselected package libxshmfence1:amd64.
+Preparing to unpack .../29-libxshmfence1_1.3-1_amd64.deb ...
+Unpacking libxshmfence1:amd64 (1.3-1) ...
+Selecting previously unselected package libxxf86vm1:amd64.
+Preparing to unpack .../30-libxxf86vm1_1%3a1.1.4-1build1_amd64.deb ...
+Unpacking libxxf86vm1:amd64 (1:1.1.4-1build1) ...
+Selecting previously unselected package libglx-mesa0:amd64.
+Preparing to unpack .../31-libglx-mesa0_21.2.6-0ubuntu0.1~20.04.2_amd64.deb ...
+Unpacking libglx-mesa0:amd64 (21.2.6-0ubuntu0.1~20.04.2) ...
+Selecting previously unselected package libpython3.10:amd64.
+Preparing to unpack .../32-libpython3.10_3.10.10-1+focal1_amd64.deb ...
+Unpacking libpython3.10:amd64 (3.10.10-1+focal1) ...
+Selecting previously unselected package libpython3.10-dev:amd64.
+Preparing to unpack .../33-libpython3.10-dev_3.10.10-1+focal1_amd64.deb ...
+Unpacking libpython3.10-dev:amd64 (3.10.10-1+focal1) ...
+Selecting previously unselected package libwayland-client0:amd64.
+Preparing to unpack .../34-libwayland-client0_1.18.0-1ubuntu0.1_amd64.deb ...
+Unpacking libwayland-client0:amd64 (1.18.0-1ubuntu0.1) ...
+Selecting previously unselected package libxcb-randr0:amd64.
+Preparing to unpack .../35-libxcb-randr0_1.14-2_amd64.deb ...
+Unpacking libxcb-randr0:amd64 (1.14-2) ...
+Selecting previously unselected package mesa-vulkan-drivers:amd64.
+Preparing to unpack .../36-mesa-vulkan-drivers_21.2.6-0ubuntu0.1~20.04.2_amd64.deb ...
+Unpacking mesa-vulkan-drivers:amd64 (21.2.6-0ubuntu0.1~20.04.2) ...
+Selecting previously unselected package python3-lib2to3.
+Preparing to unpack .../37-python3-lib2to3_3.8.10-0ubuntu1~20.04_all.deb ...
+Unpacking python3-lib2to3 (3.8.10-0ubuntu1~20.04) ...
+Selecting previously unselected package python3-distutils.
+Preparing to unpack .../38-python3-distutils_3.8.10-0ubuntu1~20.04_all.deb ...
+Unpacking python3-distutils (3.8.10-0ubuntu1~20.04) ...
+Selecting previously unselected package python3-toolz.
+Preparing to unpack .../39-python3-toolz_0.9.0-1_all.deb ...
+Unpacking python3-toolz (0.9.0-1) ...
+Selecting previously unselected package libglvnd0:amd64.
+Preparing to unpack .../40-libglvnd0_1.3.2-1~ubuntu0.20.04.2_amd64.deb ...
+Unpacking libglvnd0:amd64 (1.3.2-1~ubuntu0.20.04.2) ...
+Selecting previously unselected package libglx0:amd64.
+Preparing to unpack .../41-libglx0_1.3.2-1~ubuntu0.20.04.2_amd64.deb ...
+Unpacking libglx0:amd64 (1.3.2-1~ubuntu0.20.04.2) ...
+Selecting previously unselected package libgl1:amd64.
+Preparing to unpack .../42-libgl1_1.3.2-1~ubuntu0.20.04.2_amd64.deb ...
+Unpacking libgl1:amd64 (1.3.2-1~ubuntu0.20.04.2) ...
+Setting up libx11-xcb1:amd64 (2:1.6.9-2ubuntu1.2) ...
+Setting up libpciaccess0:amd64 (0.16-0ubuntu1) ...
+Setting up libpython3.10:amd64 (3.10.10-1+focal1) ...
+Setting up libxau6:amd64 (1:1.0.9-0ubuntu1) ...
+Setting up libxdmcp6:amd64 (1:1.1.3-0ubuntu1) ...
+Setting up libxcb1:amd64 (1.14-2) ...
+Setting up libxcb-xfixes0:amd64 (1.14-2) ...
+Setting up libglvnd0:amd64 (1.3.2-1~ubuntu0.20.04.2) ...
+Setting up libxcb-glx0:amd64 (1.14-2) ...
+Setting up libsensors-config (1:3.6.0-2ubuntu1.1) ...
+Setting up libxcb-shm0:amd64 (1.14-2) ...
+Setting up libxcb-present0:amd64 (1.14-2) ...
+Setting up libexpat1-dev:amd64 (2.2.9-1ubuntu0.6) ...
+Setting up libx11-data (2:1.6.9-2ubuntu1.2) ...
+Setting up libxcb-sync1:amd64 (1.14-2) ...
+Setting up libllvm12:amd64 (1:12.0.0-3ubuntu1~20.04.5) ...
+Setting up libpython3.10-dev:amd64 (3.10.10-1+focal1) ...
+Setting up libsensors5:amd64 (1:3.6.0-2ubuntu1.1) ...
+Setting up libglapi-mesa:amd64 (21.2.6-0ubuntu0.1~20.04.2) ...
+Setting up libvulkan1:amd64 (1.2.131.2-1) ...
+Setting up libxcb-dri2-0:amd64 (1.14-2) ...
+Setting up libxshmfence1:amd64 (1.3-1) ...
+Setting up libxcb-randr0:amd64 (1.14-2) ...
+Setting up python3-toolz (0.9.0-1) ...
+Setting up libx11-6:amd64 (2:1.6.9-2ubuntu1.2) ...
+Setting up python3-lib2to3 (3.8.10-0ubuntu1~20.04) ...
+Setting up libdrm-common (2.4.107-8ubuntu1~20.04.2) ...
+Setting up libwayland-client0:amd64 (1.18.0-1ubuntu0.1) ...
+Setting up python3-distutils (3.8.10-0ubuntu1~20.04) ...
+Setting up libxcb-dri3-0:amd64 (1.14-2) ...
+Setting up libxext6:amd64 (2:1.3.4-0ubuntu1) ...
+Setting up libxxf86vm1:amd64 (1:1.1.4-1build1) ...
+Setting up libxfixes3:amd64 (1:5.0.3-2) ...
+Setting up libdrm2:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Setting up libdrm-amdgpu1:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Setting up mesa-vulkan-drivers:amd64 (21.2.6-0ubuntu0.1~20.04.2) ...
+Setting up libdrm-nouveau2:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Setting up libdrm-radeon1:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Setting up libdrm-intel1:amd64 (2.4.107-8ubuntu1~20.04.2) ...
+Setting up libgl1-mesa-dri:amd64 (21.2.6-0ubuntu0.1~20.04.2) ...
+Setting up libglx-mesa0:amd64 (21.2.6-0ubuntu0.1~20.04.2) ...
+Setting up libglx0:amd64 (1.3.2-1~ubuntu0.20.04.2) ...
+Setting up libgl1:amd64 (1.3.2-1~ubuntu0.20.04.2) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Launcher: pip install -q --upgrade pip setuptools wheel
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Running on local URL:  http://127.0.0.1:7878
+Running on public URL: https://6dd3b6f2ecc34970e3.gradio.live
+
+This share link expires in 72 hours. For free permanent hosting and GPU upgrades (NEW!), check out Spaces: https://huggingface.co/spaces
+Launcher: 설정 가져오기, "/tmp/6a9b2422c74f6c7fb967907b1c33fc842a26f417/test_settings.json"
+Launcher: 커밋 해시 변경, 이름: 2023-03-27 gradio==3.23 , 해시:955df7751eef11bb7697e2d77f6b8a6226b21e13
+Launcher: 실행 인자 추가: --no-gradio-queue
+Launcher: (1/39) 깃 저장소 다운로드, 주소: https://github.com/AUTOMATIC1111/stable-diffusion-webui.git 커밋: 955df7751eef11bb7697e2d77f6b8a6226b21e13 - 2.56%
+Launcher: (2/39) 작업 디렉터리 설정, 경로: /workspace/sd-webui/testdata - 5.13%
+Launcher: (3/39) 확장 다운로드, 이름: 한글 패치, 주소: https://github.com/36DB/stable-diffusion-webui-localization-ko_KR.git - 7.69%
+Launcher: (4/39) 확장 다운로드, 이름: 3D Model Loader, 주소: https://github.com/jtydhr88/sd-3dmodel-loader.git - 10.26%
+Launcher: (5/39) 확장 다운로드, 이름: 3D Openpose Editor, 주소: https://github.com/nonnonstop/sd-webui-3d-open-pose-editor.git - 12.82%
+Launcher: (6/39) 확장 다운로드, 이름: Booru tag autocompletion, 주소: https://github.com/DominikDoom/a1111-sd-webui-tagcomplete.git - 15.38%
+Launcher: (7/39) 확장 다운로드, 이름: Civitai Helper, 주소: https://github.com/butaixianran/Stable-Diffusion-Webui-Civitai-Helper.git - 17.95%
+Launcher: (8/39) 확장 다운로드, 이름: Composable LoRA, 주소: https://github.com/opparco/stable-diffusion-webui-composable-lora.git - 20.51%
+Launcher: (9/39) 확장 다운로드, 이름: ControlNet, 주소: https://github.com/Mikubill/sd-webui-controlnet.git - 23.08%
+Launcher: (10/39) 확장 다운로드, 이름: Cutoff, 주소: https://github.com/hnmr293/sd-webui-cutoff.git - 25.64%
+Launcher: (11/39) 확장 다운로드, 이름: DAAM, 주소: https://github.com/toriato/stable-diffusion-webui-daam.git - 28.21%
+Launcher: (12/39) 확장 다운로드, 이름: Dataset Tag Editor, 주소: https://github.com/toshiaki1729/stable-diffusion-webui-dataset-tag-editor.git - 30.77%
+Launcher: (13/39) 확장 다운로드, 이름: Detection Detailer, 주소: https://github.com/dustysys/ddetailer.git - 33.33%
+Launcher: (14/39) 확장 다운로드, 이름: Dynamic Prompts, 주소: https://github.com/adieyal/sd-dynamic-prompts.git - 35.90%
+Launcher: (15/39) 확장 다운로드, 이름: Dynamic Thresholding, 주소: https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git - 38.46%
+Launcher: (16/39) 확장 다운로드, 이름: Kohya-ss Additional Networks, 주소: https://github.com/kohya-ss/sd-webui-additional-networks.git - 41.03%
+Launcher: (17/39) 확장 다운로드, 이름: Latent Couple, 주소: https://github.com/ashen-sensored/stable-diffusion-webui-two-shot.git - 43.59%
+Launcher: (18/39) 확장 다운로드, 이름: LLuL, 주소: https://github.com/hnmr293/sd-webui-llul.git - 46.15%
+Launcher: (19/39) 확장 다운로드, 이름: LoRA Block Weight, 주소: https://github.com/hako-mikan/sd-webui-lora-block-weight.git - 48.72%
+Launcher: (20/39) 확장 다운로드, 이름: OpenPose Editor, 주소: https://github.com/fkunn1326/openpose-editor.git - 51.28%
+Launcher: (21/39) 확장 다운로드, 이름: posex, 주소: https://github.com/hnmr293/posex.git - 53.85%
+Launcher: (22/39) 확장 다운로드, 이름: Preset Utilities, 주소: https://github.com/Gerschel/sd_web_ui_preset_utils.git - 56.41%
+Launcher: (23/39) 확장 다운로드, 이름: stable-diffusion-webui-state, 주소: https://github.com/ilian6806/stable-diffusion-webui-state.git - 58.97%
+Launcher: (24/39) 확장 다운로드, 이름: System Info, 주소: https://github.com/vladmandic/sd-extension-system-info.git - 61.54%
+Launcher: (25/39) 확장 다운로드, 이름: Video Loopback, 주소: https://github.com/fishslot/video_loopback_for_webui.git - 64.10%
+Launcher: (26/39) 확장 다운로드, 이름: WD 1.4 Tagger, 주소: https://github.com/toriato/stable-diffusion-webui-wd14-tagger.git - 66.67%
+Launcher: (27/39) 확장 패치 적용, /workspace/sd-webui/extensions/ddetailer/deprecate_lib2to3.diff - 69.23%
+Launcher: (28/39) 컨트롤넷 모델 다운로드, 이름: openpose, 주소: https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors - 71.79%
+Launcher: (29/39) 컨트롤넷 모델 다운로드, 이름: canny, 주소: https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors - 74.36%
+Launcher: (30/39) 컨트롤넷 모델 다운로드, 이름: hed, 주소: https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors - 76.92%
+Launcher: (31/39) 컨트롤넷 모델 다운로드, 이름: depth, 주소: https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors - 79.49%
+Launcher: (32/39) 모델 다운로드, 이름: AOM3A1, 주소: https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors - 82.05%
+Launcher: (33/39) 로라 다운로드, 이름: Anime Tarot Card Art Style LoRA, 주소: https://civitai.com/api/download/models/19859 - 84.62%
+Launcher: (34/39) 임베딩 다운로드, 이름: EasyNegative, 주소: https://civitai.com/api/download/models/9208 - 87.18%
+Launcher: (35/39) 임베딩 다운로드, 이름: badhandv4, 주소: https://civitai.com/api/download/models/20068 - 89.74%
+Launcher: (36/39) VAEs 다운로드, 이름: kl-f8-anime2, 주소: https://huggingface.co/hakurei/waifu-diffusion-v1-4/resolve/main/vae/kl-f8-anime2.ckpt - 92.31%
+Launcher: (37/39) SD Web UI 가상 환경 설정(venv) - 94.87%
+Launcher: (38/39) SD Web UI 실행 시작, 인자: --share --ckpt-dir "/workspace/sd-webui/testdata/models/Stable-diffusion" --lora-dir "/workspace/sd-webui/testdata/models/Lora" --vae-dir "/workspace/sd-webui/testdata/models/VAE" --embeddings-dir "/workspace/sd-webui/testdata/embeddings" --ui-config-file "/workspace/sd-webui/testdata/ui-config.json" --ui-settings-file "/workspace/sd-webui/testdata/ui-config.json" --xformers  --no-gradio-queue - 97.44%
+SDWebUI: Python 3.10.10 (main, Feb  8 2023, 14:50:01) [GCC 9.4.0]
+SDWebUI: Commit hash: 955df7751eef11bb7697e2d77f6b8a6226b21e13
+SDWebUI: Installing torch and torchvision
+SDWebUI: Looking in indexes: https://pypi.org/simple, https://download.pytorch.org/whl/cu117
+SDWebUI: Collecting torch==1.13.1+cu117
+SDWebUI:   Downloading https://download.pytorch.org/whl/cu117/torch-1.13.1%2Bcu117-cp310-cp310-linux_x86_64.whl (1801.8 MB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB ? eta -:--:--
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 60.7 MB/s eta 0:00:30
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 88.8 MB/s eta 0:00:21
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 91.0 MB/s eta 0:00:20
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 103.0 MB/s eta 0:00:18
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 94.1 MB/s eta 0:00:19
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 93.5 MB/s eta 0:00:20
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 94.0 MB/s eta 0:00:19
+SDWebUI:      ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 92.5 MB/s eta 0:00:20
+SDWebUI:      ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 92.8 MB/s eta 0:00:20
+SDWebUI:      ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 90.4 MB/s eta 0:00:20
+SDWebUI:      ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 94.4 MB/s eta 0:00:19
+SDWebUI:      ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 93.3 MB/s eta 0:00:19
+SDWebUI:      ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 94.4 MB/s eta 0:00:19
+SDWebUI:      ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 91.2 MB/s eta 0:00:20
+SDWebUI:      ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/1.8 GB 90.5 MB/s eta 0:00:20
+SDWebUI:      ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 89.2 MB/s eta 0:00:20
+SDWebUI:      ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 90.5 MB/s eta 0:00:20
+SDWebUI:      ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 89.5 MB/s eta 0:00:20
+SDWebUI:      ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 87.6 MB/s eta 0:00:20
+SDWebUI:      ━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 89.4 MB/s eta 0:00:20
+SDWebUI:      ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 103.0 MB/s eta 0:00:17
+SDWebUI:      ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 122.6 MB/s eta 0:00:15
+SDWebUI:      ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 124.7 MB/s eta 0:00:14
+SDWebUI:      ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 107.4 MB/s eta 0:00:17
+SDWebUI:      ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 92.2 MB/s eta 0:00:19
+SDWebUI:      ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 86.6 MB/s eta 0:00:20
+SDWebUI:      ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 89.5 MB/s eta 0:00:20
+SDWebUI:      ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 94.4 MB/s eta 0:00:19
+SDWebUI:      ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 92.7 MB/s eta 0:00:19
+SDWebUI:      ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 90.4 MB/s eta 0:00:19
+SDWebUI:      ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 88.3 MB/s eta 0:00:20
+SDWebUI:      ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 101.5 MB/s eta 0:00:17
+SDWebUI:      ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 95.5 MB/s eta 0:00:18
+SDWebUI:      ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 87.2 MB/s eta 0:00:20
+SDWebUI:      ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 82.7 MB/s eta 0:00:21
+SDWebUI:      ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 77.7 MB/s eta 0:00:22
+SDWebUI:      ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 86.3 MB/s eta 0:00:20
+SDWebUI:      ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 93.3 MB/s eta 0:00:18
+SDWebUI:      ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 90.9 MB/s eta 0:00:19
+SDWebUI:      ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 92.2 MB/s eta 0:00:19
+SDWebUI:      ━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 95.6 MB/s eta 0:00:18
+SDWebUI:      ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 109.5 MB/s eta 0:00:16
+SDWebUI:      ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 109.5 MB/s eta 0:00:16
+SDWebUI:      ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 100.4 MB/s eta 0:00:17
+SDWebUI:      ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.1/1.8 GB 92.0 MB/s eta 0:00:18
+SDWebUI:      ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 93.9 MB/s eta 0:00:18
+SDWebUI:      ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 93.7 MB/s eta 0:00:18
+SDWebUI:      ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 91.8 MB/s eta 0:00:18
+SDWebUI:      ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 90.3 MB/s eta 0:00:19
+SDWebUI:      ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 95.1 MB/s eta 0:00:18
+SDWebUI:      ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 101.6 MB/s eta 0:00:17
+SDWebUI:      ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 101.7 MB/s eta 0:00:17
+SDWebUI:      ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 98.6 MB/s eta 0:00:17
+SDWebUI:      ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 84.1 MB/s eta 0:00:20
+SDWebUI:      ━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 79.1 MB/s eta 0:00:21
+SDWebUI:      ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 70.3 MB/s eta 0:00:24
+SDWebUI:      ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 65.7 MB/s eta 0:00:25
+SDWebUI:      ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 75.7 MB/s eta 0:00:22
+SDWebUI:      ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 89.4 MB/s eta 0:00:19
+SDWebUI:      ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 99.9 MB/s eta 0:00:17
+SDWebUI:      ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 94.9 MB/s eta 0:00:17
+SDWebUI:      ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 93.0 MB/s eta 0:00:18
+SDWebUI:      ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 93.4 MB/s eta 0:00:18
+SDWebUI:      ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 101.3 MB/s eta 0:00:16
+SDWebUI:      ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 96.4 MB/s eta 0:00:17
+SDWebUI:      ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 91.1 MB/s eta 0:00:18
+SDWebUI:      ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 91.9 MB/s eta 0:00:18
+SDWebUI:      ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 95.1 MB/s eta 0:00:17
+SDWebUI:      ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 92.1 MB/s eta 0:00:18
+SDWebUI:      ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 88.0 MB/s eta 0:00:18
+SDWebUI:      ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 80.2 MB/s eta 0:00:20
+SDWebUI:      ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 88.0 MB/s eta 0:00:18
+SDWebUI:      ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 87.2 MB/s eta 0:00:18
+SDWebUI:      ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 95.8 MB/s eta 0:00:17
+SDWebUI:      ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 89.4 MB/s eta 0:00:18
+SDWebUI:      ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 88.8 MB/s eta 0:00:18
+SDWebUI:      ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 88.3 MB/s eta 0:00:18
+SDWebUI:      ━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.2/1.8 GB 88.0 MB/s eta 0:00:18
+SDWebUI:      ━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 96.1 MB/s eta 0:00:17
+SDWebUI:      ━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 106.2 MB/s eta 0:00:15
+SDWebUI:      ━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 115.1 MB/s eta 0:00:14
+SDWebUI:      ━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 108.2 MB/s eta 0:00:15
+SDWebUI:      ━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 101.6 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 93.9 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 91.9 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 94.5 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 85.2 MB/s eta 0:00:18
+SDWebUI:      ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 82.8 MB/s eta 0:00:19
+SDWebUI:      ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 86.2 MB/s eta 0:00:18
+SDWebUI:      ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 91.8 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 96.2 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 93.7 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 93.2 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 97.9 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 103.6 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 104.5 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 94.3 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 92.7 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 101.1 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 99.8 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 93.7 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 87.6 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 103.0 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 102.3 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 104.9 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 94.0 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 92.4 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.3/1.8 GB 89.5 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 88.3 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 95.0 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 104.2 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 90.7 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 80.9 MB/s eta 0:00:18
+SDWebUI:      ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 73.6 MB/s eta 0:00:20
+SDWebUI:      ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 72.5 MB/s eta 0:00:20
+SDWebUI:      ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 92.2 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 87.5 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 88.1 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 81.1 MB/s eta 0:00:18
+SDWebUI:      ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 93.0 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 89.6 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 89.3 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 88.2 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 91.8 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 94.8 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 92.6 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 90.4 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 90.1 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 92.3 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 91.0 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 88.8 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 86.7 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 89.5 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 90.4 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 94.4 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 95.1 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 103.4 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 89.0 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 85.7 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.4/1.8 GB 82.0 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 87.0 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 88.7 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 85.5 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 85.2 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 80.4 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 85.1 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 75.1 MB/s eta 0:00:18
+SDWebUI:      ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 73.8 MB/s eta 0:00:19
+SDWebUI:      ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 75.4 MB/s eta 0:00:18
+SDWebUI:      ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 75.3 MB/s eta 0:00:18
+SDWebUI:      ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 86.5 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 87.1 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 86.5 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 92.6 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 104.0 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 107.2 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 97.0 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 88.5 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 91.2 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 94.4 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 94.5 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 93.3 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 90.1 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 92.8 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 90.2 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 89.2 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 87.2 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 87.8 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 92.8 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 91.3 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 96.7 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 94.4 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.5/1.8 GB 95.9 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 96.1 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 90.3 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 73.5 MB/s eta 0:00:17
+SDWebUI:      ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 64.2 MB/s eta 0:00:20
+SDWebUI:      ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 62.2 MB/s eta 0:00:20
+SDWebUI:      ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 66.3 MB/s eta 0:00:19
+SDWebUI:      ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 90.2 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 96.9 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 94.8 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 94.9 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 96.0 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 95.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 95.1 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 97.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 94.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 93.4 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 87.8 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 90.2 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 87.7 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 89.5 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 88.3 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 88.3 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 89.5 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 93.9 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 93.2 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 93.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 92.1 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 87.4 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 88.3 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 90.8 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 97.3 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 98.2 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ 0.6/1.8 GB 91.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 86.7 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 90.6 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 93.9 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 100.2 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 101.8 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 100.3 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 92.9 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 88.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 89.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 90.5 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 95.6 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 93.1 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 92.0 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 87.4 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 90.8 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 92.0 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 95.7 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 92.3 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 90.6 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 87.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 87.8 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 89.7 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 90.1 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 88.9 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 95.4 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 99.0 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 104.4 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 100.1 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 100.0 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 94.3 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ 0.7/1.8 GB 98.3 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 96.3 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 101.7 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 94.5 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 95.8 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 81.1 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 76.6 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 76.2 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 71.3 MB/s eta 0:00:15
+SDWebUI:      ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 79.8 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 83.5 MB/s eta 0:00:13
+SDWebUI:      ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 86.9 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 92.7 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 91.9 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 88.5 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 85.8 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 88.3 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 88.1 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 88.6 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 86.7 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 91.0 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 92.1 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 92.2 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 89.7 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 87.8 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 86.6 MB/s eta 0:00:12
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 93.2 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 102.8 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 116.8 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 113.9 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 102.7 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 92.4 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ 0.8/1.8 GB 87.3 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 91.0 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 91.6 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 96.2 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 94.3 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 89.6 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 89.3 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 90.9 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 92.2 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 91.9 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 95.0 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 93.7 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 94.4 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 90.1 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 94.5 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 108.4 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 114.5 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 107.0 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 96.4 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 95.3 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 90.0 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 89.5 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 86.3 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 90.7 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 90.4 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 96.0 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 92.2 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 88.6 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 86.3 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 84.6 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ 0.9/1.8 GB 96.8 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 110.8 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 110.3 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 102.7 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 92.1 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 83.9 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 85.0 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 92.8 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 106.4 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 108.2 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 98.0 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 90.7 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 87.0 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 91.8 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 91.6 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 91.0 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 87.1 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 88.7 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 89.1 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 87.1 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 83.0 MB/s eta 0:00:10
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 73.6 MB/s eta 0:00:11
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 58.4 MB/s eta 0:00:14
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 49.7 MB/s eta 0:00:16
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 43.2 MB/s eta 0:00:19
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 36.5 MB/s eta 0:00:22
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 32.9 MB/s eta 0:00:25
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 30.5 MB/s eta 0:00:26
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 31.4 MB/s eta 0:00:26
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 32.9 MB/s eta 0:00:24
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 113.5 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 112.8 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 108.4 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ 1.0/1.8 GB 98.7 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ 1.0/1.8 GB 94.7 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ 1.0/1.8 GB 91.9 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ 1.0/1.8 GB 93.0 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ 1.0/1.8 GB 92.7 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ 1.1/1.8 GB 94.6 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ 1.1/1.8 GB 90.5 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ 1.1/1.8 GB 91.7 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ 1.1/1.8 GB 91.5 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ 1.1/1.8 GB 90.0 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ 1.1/1.8 GB 88.0 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ 1.1/1.8 GB 86.3 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ 1.1/1.8 GB 86.6 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ 1.1/1.8 GB 87.7 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━ 1.1/1.8 GB 88.8 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 1.1/1.8 GB 95.0 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 1.1/1.8 GB 100.5 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 1.1/1.8 GB 102.4 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 1.1/1.8 GB 91.8 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 1.1/1.8 GB 86.8 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 1.1/1.8 GB 86.4 MB/s eta 0:00:09
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 1.1/1.8 GB 90.3 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ 1.1/1.8 GB 93.6 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ 1.1/1.8 GB 91.1 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ 1.1/1.8 GB 92.2 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ 1.1/1.8 GB 89.3 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ 1.1/1.8 GB 89.8 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ 1.1/1.8 GB 88.0 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ 1.1/1.8 GB 89.1 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━ 1.1/1.8 GB 90.2 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ 1.1/1.8 GB 97.7 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ 1.1/1.8 GB 96.4 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ 1.1/1.8 GB 92.7 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ 1.1/1.8 GB 90.4 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ 1.1/1.8 GB 87.9 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ 1.1/1.8 GB 87.4 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ 1.1/1.8 GB 88.0 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ 1.2/1.8 GB 89.8 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ 1.2/1.8 GB 89.4 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ 1.2/1.8 GB 91.5 MB/s eta 0:00:08
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ 1.2/1.8 GB 91.9 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ 1.2/1.8 GB 94.1 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ 1.2/1.8 GB 92.7 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━ 1.2/1.8 GB 92.0 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ 1.2/1.8 GB 90.3 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ 1.2/1.8 GB 89.7 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ 1.2/1.8 GB 96.4 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ 1.2/1.8 GB 97.8 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ 1.2/1.8 GB 98.7 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ 1.2/1.8 GB 92.6 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ 1.2/1.8 GB 88.9 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ 1.2/1.8 GB 95.7 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ 1.2/1.8 GB 102.1 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ 1.2/1.8 GB 102.7 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ 1.2/1.8 GB 95.9 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ 1.2/1.8 GB 100.1 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ 1.2/1.8 GB 107.6 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ 1.2/1.8 GB 115.2 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ 1.2/1.8 GB 106.2 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ 1.2/1.8 GB 97.1 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ 1.2/1.8 GB 92.2 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ 1.2/1.8 GB 83.1 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ 1.2/1.8 GB 85.2 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ 1.2/1.8 GB 84.7 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ 1.2/1.8 GB 83.8 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ 1.2/1.8 GB 93.1 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ 1.2/1.8 GB 92.8 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ 1.2/1.8 GB 95.4 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ 1.3/1.8 GB 91.8 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ 1.3/1.8 GB 91.3 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ 1.3/1.8 GB 92.8 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ 1.3/1.8 GB 93.9 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ 1.3/1.8 GB 94.6 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ 1.3/1.8 GB 90.7 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ 1.3/1.8 GB 88.4 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ 1.3/1.8 GB 85.1 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ 1.3/1.8 GB 84.5 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ 1.3/1.8 GB 84.1 MB/s eta 0:00:07
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━ 1.3/1.8 GB 95.6 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ 1.3/1.8 GB 112.3 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ 1.3/1.8 GB 120.2 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ 1.3/1.8 GB 120.5 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ 1.3/1.8 GB 102.3 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ 1.3/1.8 GB 91.6 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ 1.3/1.8 GB 92.0 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ 1.3/1.8 GB 110.8 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ 1.3/1.8 GB 109.1 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ 1.3/1.8 GB 102.3 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ 1.3/1.8 GB 94.7 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ 1.3/1.8 GB 91.0 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ 1.3/1.8 GB 89.6 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ 1.3/1.8 GB 87.1 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ 1.3/1.8 GB 90.0 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ 1.3/1.8 GB 96.5 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ 1.3/1.8 GB 93.1 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ 1.3/1.8 GB 90.9 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ 1.3/1.8 GB 86.9 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ 1.3/1.8 GB 87.3 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━ 1.3/1.8 GB 92.9 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ 1.4/1.8 GB 93.4 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ 1.4/1.8 GB 95.0 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ 1.4/1.8 GB 89.1 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ 1.4/1.8 GB 87.4 MB/s eta 0:00:06
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ 1.4/1.8 GB 87.6 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ 1.4/1.8 GB 90.0 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ 1.4/1.8 GB 89.3 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ 1.4/1.8 GB 88.7 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ 1.4/1.8 GB 88.4 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ 1.4/1.8 GB 92.1 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ 1.4/1.8 GB 92.3 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ 1.4/1.8 GB 91.4 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ 1.4/1.8 GB 93.8 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ 1.4/1.8 GB 100.2 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ 1.4/1.8 GB 100.5 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ 1.4/1.8 GB 96.0 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ 1.4/1.8 GB 91.3 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ 1.4/1.8 GB 90.6 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ 1.4/1.8 GB 90.2 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ 1.4/1.8 GB 96.2 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ 1.4/1.8 GB 103.1 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ 1.4/1.8 GB 103.8 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ 1.4/1.8 GB 96.6 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ 1.4/1.8 GB 91.5 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ 1.4/1.8 GB 89.0 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ 1.4/1.8 GB 91.4 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ 1.4/1.8 GB 87.8 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ 1.4/1.8 GB 85.6 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ 1.4/1.8 GB 82.1 MB/s eta 0:00:05
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ 1.4/1.8 GB 90.7 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ 1.4/1.8 GB 92.7 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ 1.5/1.8 GB 106.1 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ 1.5/1.8 GB 113.6 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ 1.5/1.8 GB 121.9 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ 1.5/1.8 GB 118.2 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ 1.5/1.8 GB 106.9 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ 1.5/1.8 GB 100.5 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ 1.5/1.8 GB 87.7 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ 1.5/1.8 GB 85.6 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ 1.5/1.8 GB 83.2 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ 1.5/1.8 GB 82.7 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ 1.5/1.8 GB 94.0 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ 1.5/1.8 GB 93.8 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ 1.5/1.8 GB 93.6 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ 1.5/1.8 GB 89.2 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ 1.5/1.8 GB 102.5 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ 1.5/1.8 GB 101.3 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ 1.5/1.8 GB 101.3 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ 1.5/1.8 GB 91.9 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ 1.5/1.8 GB 85.8 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ 1.5/1.8 GB 82.8 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ 1.5/1.8 GB 87.4 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ 1.5/1.8 GB 93.7 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ 1.5/1.8 GB 99.0 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ 1.5/1.8 GB 95.3 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ 1.5/1.8 GB 88.7 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ 1.5/1.8 GB 92.1 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ 1.5/1.8 GB 87.9 MB/s eta 0:00:04
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ 1.5/1.8 GB 91.7 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ 1.5/1.8 GB 91.3 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ 1.5/1.8 GB 89.1 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ 1.5/1.8 GB 87.5 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ 1.6/1.8 GB 89.4 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ 1.6/1.8 GB 89.2 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ 1.6/1.8 GB 91.5 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ 1.6/1.8 GB 88.2 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ 1.6/1.8 GB 90.5 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ 1.6/1.8 GB 97.5 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ 1.6/1.8 GB 100.4 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ 1.6/1.8 GB 98.5 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ 1.6/1.8 GB 87.9 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ 1.6/1.8 GB 83.5 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ 1.6/1.8 GB 84.9 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ 1.6/1.8 GB 88.8 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ 1.6/1.8 GB 95.7 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ 1.6/1.8 GB 106.9 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ 1.6/1.8 GB 108.0 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ 1.6/1.8 GB 100.7 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ 1.6/1.8 GB 92.1 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ 1.6/1.8 GB 90.6 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ 1.6/1.8 GB 90.0 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ 1.6/1.8 GB 91.4 MB/s eta 0:00:03
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ 1.6/1.8 GB 95.5 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ 1.6/1.8 GB 95.9 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ 1.6/1.8 GB 94.1 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ 1.6/1.8 GB 89.5 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ 1.6/1.8 GB 89.1 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ 1.6/1.8 GB 97.2 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ 1.6/1.8 GB 101.2 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ 1.6/1.8 GB 100.4 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ 1.6/1.8 GB 93.9 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ 1.6/1.8 GB 88.8 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ 1.6/1.8 GB 87.7 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ 1.7/1.8 GB 90.2 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ 1.7/1.8 GB 95.4 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ 1.7/1.8 GB 96.0 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ 1.7/1.8 GB 98.4 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ 1.7/1.8 GB 99.7 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ 1.7/1.8 GB 86.0 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ 1.7/1.8 GB 84.9 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ 1.7/1.8 GB 81.3 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ 1.7/1.8 GB 85.2 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ 1.7/1.8 GB 88.5 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ 1.7/1.8 GB 90.8 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ 1.7/1.8 GB 95.6 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ 1.7/1.8 GB 95.5 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ 1.7/1.8 GB 91.1 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ 1.7/1.8 GB 87.6 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ 1.7/1.8 GB 91.6 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ 1.7/1.8 GB 95.0 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ 1.7/1.8 GB 100.7 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ 1.7/1.8 GB 97.1 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 96.5 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 104.9 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 110.1 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 107.2 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 96.3 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 81.7 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 67.2 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 60.4 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ 1.7/1.8 GB 58.5 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ 1.7/1.8 GB 60.7 MB/s eta 0:00:02
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ 1.7/1.8 GB 77.2 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ 1.7/1.8 GB 92.3 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ 1.7/1.8 GB 88.1 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ 1.7/1.8 GB 88.6 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ 1.8/1.8 GB 92.1 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ 1.8/1.8 GB 93.7 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ 1.8/1.8 GB 93.9 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ 1.8/1.8 GB 89.5 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ 1.8/1.8 GB 91.9 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ 1.8/1.8 GB 100.5 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ 1.8/1.8 GB 98.2 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ 1.8/1.8 GB 96.5 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 95.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 95.3 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 101.9 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 93.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 93.9 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 91.1 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 91.7 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 1.8/1.8 GB 96.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 GB 3.8 MB/s eta 0:00:00
+SDWebUI: Collecting torchvision==0.14.1+cu117
+SDWebUI:   Downloading https://download.pytorch.org/whl/cu117/torchvision-0.14.1%2Bcu117-cp310-cp310-linux_x86_64.whl (24.3 MB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/24.3 MB ? eta -:--:--
+SDWebUI:      ━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/24.3 MB 63.2 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.5/24.3 MB 80.5 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━ 8.8/24.3 MB 85.9 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━ 11.4/24.3 MB 87.5 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 14.6/24.3 MB 89.6 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ 17.7/24.3 MB 87.4 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━ 20.7/24.3 MB 89.0 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ 24.0/24.3 MB 90.4 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ 24.3/24.3 MB 90.8 MB/s eta 0:00:01
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 24.3/24.3 MB 58.0 MB/s eta 0:00:00
+SDWebUI: Collecting typing-extensions
+SDWebUI:   Using cached typing_extensions-4.5.0-py3-none-any.whl (27 kB)
+SDWebUI: Collecting pillow!=8.3.*,>=5.3.0
+SDWebUI:   Using cached Pillow-9.4.0-cp310-cp310-manylinux_2_28_x86_64.whl (3.4 MB)
+SDWebUI: Collecting requests
+SDWebUI:   Using cached requests-2.28.2-py3-none-any.whl (62 kB)
+SDWebUI: Collecting numpy
+SDWebUI:   Using cached numpy-1.24.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.3 MB)
+SDWebUI: Collecting urllib3<1.27,>=1.21.1
+SDWebUI:   Downloading urllib3-1.26.15-py2.py3-none-any.whl (140 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/140.9 kB ? eta -:--:--
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.9/140.9 kB 13.2 MB/s eta 0:00:00
+SDWebUI: Collecting charset-normalizer<4,>=2
+SDWebUI:   Downloading charset_normalizer-3.1.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (199 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/199.3 kB ? eta -:--:--
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 199.3/199.3 kB 22.0 MB/s eta 0:00:00
+SDWebUI: Collecting certifi>=2017.4.17
+SDWebUI:   Downloading https://download.pytorch.org/whl/certifi-2022.12.7-py3-none-any.whl (155 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/155.3 kB ? eta -:--:--
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 155.3/155.3 kB 19.4 MB/s eta 0:00:00
+SDWebUI: Collecting idna<4,>=2.5
+SDWebUI:   Downloading https://download.pytorch.org/whl/idna-3.4-py3-none-any.whl (61 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/61.5 kB ? eta -:--:--
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.5/61.5 kB 7.1 MB/s eta 0:00:00
+SDWebUI: Installing collected packages: urllib3, typing-extensions, pillow, numpy, idna, charset-normalizer, certifi, torch, requests, torchvision
+SDWebUI: Successfully installed certifi-2022.12.7 charset-normalizer-3.1.0 idna-3.4 numpy-1.24.2 pillow-9.4.0 requests-2.28.2 torch-1.13.1+cu117 torchvision-0.14.1+cu117 typing-extensions-4.5.0 urllib3-1.26.15
+SDWebUI: Installing gfpgan
+SDWebUI: Installing clip
+SDWebUI: Installing open_clip
+SDWebUI: Installing xformers
+SDWebUI: Cloning Stable Diffusion into /workspace/sd-webui/repositories/stable-diffusion-stability-ai...
+SDWebUI: Cloning Taming Transformers into /workspace/sd-webui/repositories/taming-transformers...
+SDWebUI: Cloning K-diffusion into /workspace/sd-webui/repositories/k-diffusion...
+SDWebUI: Cloning CodeFormer into /workspace/sd-webui/repositories/CodeFormer...
+SDWebUI: Cloning BLIP into /workspace/sd-webui/repositories/BLIP...
+SDWebUI: Installing requirements for CodeFormer
+SDWebUI: Installing requirements for Web UI
+SDWebUI: Downloading pose_landmark_full.tflite...
+SDWebUI: Downloading pose_web.binarypb...
+SDWebUI: Downloading pose_solution_packed_assets.data...
+SDWebUI: Downloading pose_solution_simd_wasm_bin.wasm...
+SDWebUI: Downloading pose_solution_packed_assets_loader.js...
+SDWebUI: Downloading pose_solution_simd_wasm_bin.js...
+SDWebUI: 
+SDWebUI: Installing sd-webui-controlnet requirement: svglib
+SDWebUI: 
+SDWebUI: 
+SDWebUI: Installing sd-dynamic-prompts requirements.txt
+SDWebUI: 
+SDWebUI: 
+SDWebUI: Launching Web UI with arguments: --share --ckpt-dir /workspace/sd-webui/testdata/models/Stable-diffusion --lora-dir /workspace/sd-webui/testdata/models/Lora --vae-dir /workspace/sd-webui/testdata/models/VAE --embeddings-dir /workspace/sd-webui/testdata/embeddings --ui-config-file /workspace/sd-webui/testdata/ui-config.json --ui-settings-file /workspace/sd-webui/testdata/ui-config.json --xformers --no-gradio-queue
+SDWebUI: Civitai Helper: Get Custom Model Folder
+SDWebUI: Civitai Helper: Load setting from: /workspace/sd-webui/extensions/Stable-Diffusion-Webui-Civitai-Helper/setting.json
+SDWebUI: Civitai Helper: No setting file, use default
+SDWebUI: Installing openmim
+SDWebUI: Installing mmcv-full
+SDWebUI: Installing mmdet
+SDWebUI: Find site packages path
+SDWebUI: Deprecate lib2to3
+SDWebUI: No detection models found, downloading...
+SDWebUI: Downloading: "https://huggingface.co/dustysys/ddetailer/resolve/main/mmdet/bbox/mmdet_anime-face_yolov3.pth" to /workspace/sd-webui/models/mmdet/bbox/mmdet_anime-face_yolov3.pth
+SDWebUI: 
+SDWebUI: 
+SDWebUI:   0%|          | 0.00/235M [00:00<?, ?B/s]
+SDWebUI:   3%|▎         | 8.06M/235M [00:00<00:02, 84.0MB/s]
+SDWebUI:   7%|▋         | 16.6M/235M [00:00<00:02, 87.2MB/s]
+SDWebUI:  11%|█         | 24.9M/235M [00:00<00:02, 85.6MB/s]
+SDWebUI:  14%|█▍        | 33.4M/235M [00:00<00:02, 86.8MB/s]
+SDWebUI:  18%|█▊        | 41.8M/235M [00:00<00:02, 87.3MB/s]
+SDWebUI:  22%|██▏       | 51.0M/235M [00:00<00:02, 90.3MB/s]
+SDWebUI:  26%|██▌       | 60.2M/235M [00:00<00:01, 92.4MB/s]
+SDWebUI:  29%|██▉       | 69.0M/235M [00:00<00:02, 83.2MB/s]
+SDWebUI:  33%|███▎      | 77.8M/235M [00:00<00:01, 85.7MB/s]
+SDWebUI:  37%|███▋      | 86.5M/235M [00:01<00:01, 87.3MB/s]
+SDWebUI:  41%|████      | 95.5M/235M [00:01<00:01, 89.4MB/s]
+SDWebUI:  44%|████▍     | 104M/235M [00:01<00:01, 84.2MB/s] 
+SDWebUI:  48%|████▊     | 112M/235M [00:01<00:01, 83.9MB/s]
+SDWebUI:  51%|█████▏    | 121M/235M [00:01<00:01, 85.3MB/s]
+SDWebUI:  55%|█████▌    | 130M/235M [00:01<00:01, 87.4MB/s]
+SDWebUI:  59%|█████▊    | 138M/235M [00:01<00:01, 83.5MB/s]
+SDWebUI:  62%|██████▏   | 147M/235M [00:01<00:01, 85.5MB/s]
+SDWebUI:  66%|██████▌   | 155M/235M [00:01<00:01, 83.0MB/s]
+SDWebUI:  69%|██████▉   | 163M/235M [00:01<00:00, 81.6MB/s]
+SDWebUI:  73%|███████▎  | 171M/235M [00:02<00:00, 84.2MB/s]
+SDWebUI:  77%|███████▋  | 180M/235M [00:02<00:00, 87.1MB/s]
+SDWebUI:  80%|████████  | 189M/235M [00:02<00:00, 84.5MB/s]
+SDWebUI:  84%|████████▍ | 197M/235M [00:02<00:00, 85.9MB/s]
+SDWebUI:  88%|████████▊ | 206M/235M [00:02<00:00, 86.8MB/s]
+SDWebUI:  91%|█████████ | 214M/235M [00:02<00:00, 81.5MB/s]
+SDWebUI:  94%|█████████▍| 222M/235M [00:02<00:00, 78.4MB/s]
+SDWebUI:  98%|█████████▊| 230M/235M [00:02<00:00, 80.8MB/s]
+SDWebUI: 100%|██████████| 235M/235M [00:02<00:00, 84.5MB/s]
+SDWebUI: Downloading: "https://huggingface.co/dustysys/ddetailer/raw/main/mmdet/bbox/mmdet_anime-face_yolov3.py" to /workspace/sd-webui/models/mmdet/bbox/mmdet_anime-face_yolov3.py
+SDWebUI: 
+SDWebUI: 
+SDWebUI:   0%|          | 0.00/2.28k [00:00<?, ?B/s]
+SDWebUI: 100%|██████████| 2.28k/2.28k [00:00<00:00, 22.1MB/s]
+SDWebUI: Downloading: "https://huggingface.co/dustysys/ddetailer/resolve/main/mmdet/segm/mmdet_dd-person_mask2former.pth" to /workspace/sd-webui/models/mmdet/segm/mmdet_dd-person_mask2former.pth
+SDWebUI: 
+SDWebUI: 
+SDWebUI:   0%|          | 0.00/504M [00:00<?, ?B/s]
+SDWebUI:   2%|▏         | 9.05M/504M [00:00<00:05, 94.9MB/s]
+SDWebUI:   4%|▎         | 18.1M/504M [00:00<00:05, 94.5MB/s]
+SDWebUI:   5%|▌         | 27.1M/504M [00:00<00:05, 93.3MB/s]
+SDWebUI:   7%|▋         | 36.2M/504M [00:00<00:05, 94.1MB/s]
+SDWebUI:   9%|▉         | 45.2M/504M [00:00<00:05, 93.3MB/s]
+SDWebUI:  11%|█         | 54.1M/504M [00:00<00:05, 89.8MB/s]
+SDWebUI:  13%|█▎        | 63.2M/504M [00:00<00:05, 91.5MB/s]
+SDWebUI:  14%|█▍        | 71.9M/504M [00:00<00:04, 91.5MB/s]
+SDWebUI:  16%|█▌        | 80.7M/504M [00:00<00:04, 90.3MB/s]
+SDWebUI:  18%|█▊        | 89.8M/504M [00:01<00:04, 91.8MB/s]
+SDWebUI:  20%|█▉        | 98.5M/504M [00:01<00:04, 91.7MB/s]
+SDWebUI:  21%|██▏       | 108M/504M [00:01<00:04, 93.6MB/s] 
+SDWebUI:  23%|██▎       | 117M/504M [00:01<00:04, 94.2MB/s]
+SDWebUI:  25%|██▌       | 126M/504M [00:01<00:04, 92.1MB/s]
+SDWebUI:  27%|██▋       | 135M/504M [00:01<00:04, 92.5MB/s]
+SDWebUI:  29%|██▊       | 144M/504M [00:01<00:04, 89.0MB/s]
+SDWebUI:  30%|███       | 152M/504M [00:01<00:04, 88.8MB/s]
+SDWebUI:  32%|███▏      | 161M/504M [00:01<00:04, 89.5MB/s]
+SDWebUI:  34%|███▎      | 170M/504M [00:01<00:03, 88.3MB/s]
+SDWebUI:  35%|███▌      | 178M/504M [00:02<00:04, 84.6MB/s]
+SDWebUI:  37%|███▋      | 186M/504M [00:02<00:03, 83.9MB/s]
+SDWebUI:  39%|███▊      | 195M/504M [00:02<00:03, 87.1MB/s]
+SDWebUI:  41%|████      | 204M/504M [00:02<00:03, 89.3MB/s]
+SDWebUI:  42%|████▏     | 214M/504M [00:02<00:03, 91.7MB/s]
+SDWebUI:  44%|████▍     | 223M/504M [00:02<00:03, 92.3MB/s]
+SDWebUI:  46%|████▌     | 232M/504M [00:02<00:03, 93.3MB/s]
+SDWebUI:  48%|████▊     | 241M/504M [00:02<00:02, 94.3MB/s]
+SDWebUI:  50%|████▉     | 250M/504M [00:02<00:02, 94.7MB/s]
+SDWebUI:  51%|█████▏    | 259M/504M [00:02<00:02, 92.5MB/s]
+SDWebUI:  53%|█████▎    | 268M/504M [00:03<00:02, 90.5MB/s]
+SDWebUI:  55%|█████▍    | 277M/504M [00:03<00:02, 91.6MB/s]
+SDWebUI:  57%|█████▋    | 286M/504M [00:03<00:02, 90.6MB/s]
+SDWebUI:  58%|█████▊    | 294M/504M [00:03<00:02, 91.3MB/s]
+SDWebUI:  60%|██████    | 303M/504M [00:03<00:02, 90.9MB/s]
+SDWebUI:  62%|██████▏   | 312M/504M [00:03<00:02, 91.5MB/s]
+SDWebUI:  64%|██████▎   | 321M/504M [00:03<00:02, 92.1MB/s]
+SDWebUI:  65%|██████▌   | 330M/504M [00:03<00:01, 92.7MB/s]
+SDWebUI:  67%|██████▋   | 339M/504M [00:03<00:01, 93.0MB/s]
+SDWebUI:  69%|██████▉   | 348M/504M [00:03<00:01, 91.3MB/s]
+SDWebUI:  71%|███████   | 357M/504M [00:04<00:01, 90.7MB/s]
+SDWebUI:  73%|███████▎  | 365M/504M [00:04<00:01, 91.3MB/s]
+SDWebUI:  74%|███████▍  | 375M/504M [00:04<00:01, 92.8MB/s]
+SDWebUI:  76%|███████▌  | 383M/504M [00:04<00:01, 88.9MB/s]
+SDWebUI:  78%|███████▊  | 392M/504M [00:04<00:01, 89.1MB/s]
+SDWebUI:  80%|███████▉  | 401M/504M [00:04<00:01, 90.0MB/s]
+SDWebUI:  81%|████████  | 409M/504M [00:04<00:01, 89.7MB/s]
+SDWebUI:  83%|████████▎ | 418M/504M [00:04<00:00, 90.2MB/s]
+SDWebUI:  85%|████████▍ | 427M/504M [00:04<00:00, 90.3MB/s]
+SDWebUI:  86%|████████▋ | 435M/504M [00:05<00:00, 88.8MB/s]
+SDWebUI:  88%|████████▊ | 444M/504M [00:05<00:00, 83.6MB/s]
+SDWebUI:  90%|████████▉ | 452M/504M [00:05<00:00, 84.9MB/s]
+SDWebUI:  91%|█████████▏| 461M/504M [00:05<00:00, 85.8MB/s]
+SDWebUI:  93%|█████████▎| 469M/504M [00:05<00:00, 80.0MB/s]
+SDWebUI:  95%|█████████▍| 478M/504M [00:05<00:00, 83.3MB/s]
+SDWebUI:  96%|█████████▋| 486M/504M [00:05<00:00, 84.3MB/s]
+SDWebUI:  98%|█████████▊| 495M/504M [00:05<00:00, 85.9MB/s]
+SDWebUI: 100%|█████████▉| 504M/504M [00:05<00:00, 88.7MB/s]
+SDWebUI: 100%|██████████| 504M/504M [00:05<00:00, 90.0MB/s]
+SDWebUI: Downloading: "https://huggingface.co/dustysys/ddetailer/raw/main/mmdet/segm/mmdet_dd-person_mask2former.py" to /workspace/sd-webui/models/mmdet/segm/mmdet_dd-person_mask2former.py
+SDWebUI: 
+SDWebUI: 
+SDWebUI:   0%|          | 0.00/11.7k [00:00<?, ?B/s]
+SDWebUI: 100%|██████████| 11.7k/11.7k [00:00<00:00, 65.2MB/s]
+SDWebUI: [AddNet] Updating model hashes...
+SDWebUI: 
+SDWebUI: 0it [00:00, ?it/s]
+SDWebUI: 0it [00:00, ?it/s]
+SDWebUI: [AddNet] Updating model hashes...
+SDWebUI: 
+SDWebUI: 0it [00:00, ?it/s]
+SDWebUI: 0it [00:00, ?it/s]
+SDWebUI: Thank you for using:https://github.com/Gerschel/sd_web_ui_preset_utils/
+SDWebUI: 
+SDWebUI: ______                   _    ___  ___                                  
+SDWebUI: | ___ \                 | |   |  \/  |                                  
+SDWebUI: | |_/ / __ ___  ___  ___| |_  | .  . | __ _ _ __   __ _  __ _  ___ _ __ 
+SDWebUI: |  __/ '__/ _ \/ __|/ _ \ __| | |\/| |/ _` | '_ \ / _` |/ _` |/ _ \ '__|
+SDWebUI: | |  | | |  __/\__ \  __/ |_  | |  | | (_| | | | | (_| | (_| |  __/ |   
+SDWebUI: \_|  |_|  \___||___/\___|\__| \_|  |_/\__,_|_| |_|\__,_|\__, |\___|_|   
+SDWebUI:                                                          __/ |          
+SDWebUI:                                                         |___/           
+SDWebUI: 
+SDWebUI: By: Gerschel Payne
+SDWebUI: Preset Manager: Checking for pre-existing configuration files.
+SDWebUI: Created: additional_configs.json
+SDWebUI: Created: presets.json
+SDWebUI: Calculating sha256 for /workspace/sd-webui/testdata/models/Stable-diffusion/AOM3A1_orangemixs.safetensors: f303d108122ddd43a34c160bd46dbb08cb0e088e979acda0bf168a7a1f5820e0
+SDWebUI: Loading weights [f303d10812] from /workspace/sd-webui/testdata/models/Stable-diffusion/AOM3A1_orangemixs.safetensors
+SDWebUI: Creating model from config: /workspace/sd-webui/configs/v1-inference.yaml
+SDWebUI: LatentDiffusion: Running in eps-prediction mode
+SDWebUI: DiffusionWrapper has 859.52 M params.
+SDWebUI: 
+SDWebUI: Downloading (…)olve/main/vocab.json:   0%|          | 0.00/961k [00:00<?, ?B/s]
+SDWebUI: Downloading (…)olve/main/vocab.json: 100%|██████████| 961k/961k [00:02<00:00, 455kB/s]
+SDWebUI: Downloading (…)olve/main/vocab.json: 100%|██████████| 961k/961k [00:02<00:00, 454kB/s]
+SDWebUI: 
+SDWebUI: Downloading (…)olve/main/merges.txt:   0%|          | 0.00/525k [00:00<?, ?B/s]
+SDWebUI: Downloading (…)olve/main/merges.txt: 100%|██████████| 525k/525k [00:00<00:00, 590kB/s]
+SDWebUI: Downloading (…)olve/main/merges.txt: 100%|██████████| 525k/525k [00:00<00:00, 590kB/s]
+SDWebUI: 
+SDWebUI: Downloading (…)cial_tokens_map.json:   0%|          | 0.00/389 [00:00<?, ?B/s]
+SDWebUI: Downloading (…)cial_tokens_map.json: 100%|██████████| 389/389 [00:00<00:00, 695kB/s]
+SDWebUI: 
+SDWebUI: Downloading (…)okenizer_config.json:   0%|          | 0.00/905 [00:00<?, ?B/s]
+SDWebUI: Downloading (…)okenizer_config.json: 100%|██████████| 905/905 [00:00<00:00, 1.76MB/s]
+SDWebUI: 
+SDWebUI: Downloading (…)lve/main/config.json:   0%|          | 0.00/4.52k [00:00<?, ?B/s]
+SDWebUI: Downloading (…)lve/main/config.json: 100%|██████████| 4.52k/4.52k [00:00<00:00, 7.94MB/s]
+SDWebUI: Applying xformers cross attention optimization.
+SDWebUI: Textual inversion embeddings loaded(2): easynegative, badhandv4
+SDWebUI: Model loaded in 34.4s (calculate hash: 5.4s, load weights from disk: 0.2s, create model: 10.0s, apply weights to model: 14.3s, apply half(): 3.5s, load VAE: 0.7s, move model to device: 0.2s).
+SDWebUI: Running on local URL:  http://127.0.0.1:7860
+Launcher: (39/39) SD Web UI 실행 완료, Running on local URL:  http://127.0.0.1:7860
+ - 100.00%
+Launcher: 실행까지 걸린 시간: 00:05:41
+SDWebUI: Running on public URL: https://3b2102bada956456c1.gradio.live
+Launcher: (40/39) SD Web UI 실행 완료, Running on public URL: https://3b2102bada956456c1.gradio.live
+ - 102.56%
+Launcher: 실행까지 걸린 시간: 00:05:44
+SDWebUI: 
+SDWebUI: This share link expires in 72 hours. For free permanent hosting and GPU upgrades (NEW!), check out Spaces: https://huggingface.co/spaces
+SDWebUI: Startup time: 74.6s (import torch: 0.7s, import gradio: 0.6s, import ldm: 0.2s, other imports: 0.7s, load scripts: 33.4s, load SD checkpoint: 34.5s, create ui: 0.7s, gradio launch: 3.8s).

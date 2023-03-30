@@ -1,0 +1,129 @@
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 20.04.5 LTS
+Release:	20.04
+Codename:	focal
+model name	: Intel(R) Xeon(R) CPU @ 2.00GHz
+cpu cores	: 1
+    Product Name                          : Tesla T4
+
+Launcher: python -m pip install --upgrade pip
+Launcher: pip -q install "gradio>=3.21"
+Launcher: apt-get update -qq -y
+Launcher: apt-get install -y aria2
+Launcher: dpkg -l libunwind8-dev
+Launcher: curl --location --output libgoogle-perftools-dev_2.5-2.2ubuntu3_amd64.deb http://launchpadlibrarian.net/367274644/libgoogle-perftools-dev_2.5-2.2ubuntu3_amd64.deb
+Launcher: curl --location --output google-perftools_2.5-2.2ubuntu3_all.deb https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/google-perftools_2.5-2.2ubuntu3_all.deb
+Launcher: curl --location --output libtcmalloc-minimal4_2.5-2.2ubuntu3_amd64.deb https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libtcmalloc-minimal4_2.5-2.2ubuntu3_amd64.deb
+Launcher: curl --location --output libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb
+Launcher: apt install -qq libunwind8-dev
+Launcher: dpkg -i *.deb
+Launcher: rm *.deb
+Colab notebook detected. This cell will run indefinitely so that you can see errors and logs. To turn off, set debug=False in launch().
+Running on public URL: https://fe922e8cc4bd3e1dc3.gradio.live
+
+This share link expires in 72 hours. For free permanent hosting and GPU upgrades (NEW!), check out Spaces: https://huggingface.co/spaces
+Launcher: 설정 가져오기, "/tmp/6a9b2422c74f6c7fb967907b1c33fc842a26f417/test_settings.json"
+Launcher: 설정 초기화, "settings/default_settings.json"
+Launcher: 커밋 해시 변경, 이름: 2023-03-27 gradio==3.23 , 해시:955df7751eef11bb7697e2d77f6b8a6226b21e13
+Launcher: 실행 인자 추가: --no-gradio-queue
+Launcher: (1/13) 깃 저장소 다운로드, 주소: https://github.com/AUTOMATIC1111/stable-diffusion-webui.git 커밋: 955df7751eef11bb7697e2d77f6b8a6226b21e13 - 7.69%
+Launcher: (2/13) 작업 디렉터리 설정, 경로: /content/sd-webui/testdata - 15.38%
+Launcher: (3/13) 구글 드라이브 연결, 경로: /content/sd-webui/testdata -> /content/drive/MyDrive/testdata - 23.08%
+Mounted at /content/drive
+Launcher: (4/13) 확장 다운로드, 이름: System Info, 주소: https://github.com/vladmandic/sd-extension-system-info - 30.77%
+Launcher: (5/13) 모델 다운로드, 이름: AOM3A1, 주소: https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors - 38.46%
+Launcher: (6/13) 로라 다운로드, 이름: Anime Tarot Card Art Style LoRA, 주소: https://civitai.com/api/download/models/19859 - 46.15%
+Launcher: (7/13) 임베딩 다운로드, 이름: EasyNegative, 주소: https://civitai.com/api/download/models/9208 - 53.85%
+Launcher: (8/13) 임베딩 다운로드, 이름: badhandv4, 주소: https://civitai.com/api/download/models/20068 - 61.54%
+Launcher: (9/13) VAEs 다운로드, 이름: kl-f8-anime2, 주소: https://huggingface.co/hakurei/waifu-diffusion-v1-4/resolve/main/vae/kl-f8-anime2.ckpt - 69.23%
+Launcher: (10/13) SD Web UI 가상 환경 설정(venv) - 76.92%
+Launcher: (11/13) SD Web UI 실행 시작, 인자: --share --ckpt-dir "/content/sd-webui/testdata/models/Stable-diffusion" --lora-dir "/content/sd-webui/testdata/models/Lora" --vae-dir "/content/sd-webui/testdata/models/VAE" --embeddings-dir "/content/sd-webui/testdata/embeddings" --ui-config-file "/content/sd-webui/testdata/ui-config.json" --ui-settings-file "/content/sd-webui/testdata/ui-config.json" --xformers --no-gradio-queue - 84.62%
+SDWebUI: Python 3.9.16 (main, Dec  7 2022, 01:11:51) 
+SDWebUI: [GCC 9.4.0]
+SDWebUI: Commit hash: 955df7751eef11bb7697e2d77f6b8a6226b21e13
+SDWebUI: Installing torch and torchvision
+SDWebUI: Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/, https://download.pytorch.org/whl/cu117
+SDWebUI: Collecting torch==1.13.1+cu117
+SDWebUI:   Downloading https://download.pytorch.org/whl/cu117/torch-1.13.1%2Bcu117-cp39-cp39-linux_x86_64.whl (1801.8 MB)
+SDWebUI: tcmalloc: large alloc 1801773056 bytes == 0x24b2000 @  0x7f03548241e7 0x6e6e9e 0x629594 0x685a9c 0x564b38 0x564bcf 0x53f72a 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c1d3 0x62c60f 0x5ab826 0x62c994 0x5ac335 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x548478 0x537b6a 0x6a2ad6
+SDWebUI: tcmalloc: large alloc 2252218368 bytes == 0x6db00000 @  0x7f0354825615 0x629504 0x685a9c 0x564b38 0x564bcf 0x53f72a 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c1d3 0x62c60f 0x5ab826 0x62c994 0x5ac335 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x548478 0x537b6a 0x6a2ad6 0x5afd01
+SDWebUI: tcmalloc: large alloc 1801773056 bytes == 0x24b2000 @  0x7f03548241e7 0x62e9b6 0x630070 0x53f72a 0x5ab826 0x62c994 0x5ab826 0x62c994 0x5ab826 0x62c994 0x548478 0x537b6a 0x6a2ad6 0x5afd01 0x62c1d3 0x5482c4 0x5afd01 0x5a9eb4 0x5483e1 0x5afd01 0x62c1d3 0x62c60f 0x5ab826 0x5a9eb4 0x5483e1 0x5ac335 0x53d523 0x5abacc 0x53d523 0x5abacc 0x53d523
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 GB 922.5 kB/s eta 0:00:00
+SDWebUI: Collecting torchvision==0.14.1+cu117
+SDWebUI:   Downloading https://download.pytorch.org/whl/cu117/torchvision-0.14.1%2Bcu117-cp39-cp39-linux_x86_64.whl (24.3 MB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 24.3/24.3 MB 46.3 MB/s eta 0:00:00
+SDWebUI: Collecting typing-extensions
+SDWebUI:   Downloading typing_extensions-4.5.0-py3-none-any.whl (27 kB)
+SDWebUI: Collecting pillow!=8.3.*,>=5.3.0
+SDWebUI:   Downloading Pillow-9.4.0-cp39-cp39-manylinux_2_28_x86_64.whl (3.4 MB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.4/3.4 MB 6.6 MB/s eta 0:00:00
+SDWebUI: Collecting requests
+SDWebUI:   Downloading requests-2.28.2-py3-none-any.whl (62 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.8/62.8 kB 7.2 MB/s eta 0:00:00
+SDWebUI: Collecting numpy
+SDWebUI:   Downloading numpy-1.24.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.3 MB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 17.3/17.3 MB 9.4 MB/s eta 0:00:00
+SDWebUI: Collecting urllib3<1.27,>=1.21.1
+SDWebUI:   Downloading urllib3-1.26.15-py2.py3-none-any.whl (140 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.9/140.9 kB 6.1 MB/s eta 0:00:00
+SDWebUI: Collecting idna<4,>=2.5
+SDWebUI:   Downloading https://download.pytorch.org/whl/idna-3.4-py3-none-any.whl (61 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.5/61.5 kB 9.1 MB/s eta 0:00:00
+SDWebUI: Collecting certifi>=2017.4.17
+SDWebUI:   Downloading https://download.pytorch.org/whl/certifi-2022.12.7-py3-none-any.whl (155 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 155.3/155.3 kB 15.6 MB/s eta 0:00:00
+SDWebUI: Collecting charset-normalizer<4,>=2
+SDWebUI:   Downloading charset_normalizer-3.1.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (199 kB)
+SDWebUI:      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 199.2/199.2 kB 7.1 MB/s eta 0:00:00
+SDWebUI: Installing collected packages: urllib3, typing-extensions, pillow, numpy, idna, charset-normalizer, certifi, torch, requests, torchvision
+SDWebUI: Successfully installed certifi-2022.12.7 charset-normalizer-3.1.0 idna-3.4 numpy-1.24.2 pillow-9.4.0 requests-2.28.2 torch-1.13.1+cu117 torchvision-0.14.1+cu117 typing-extensions-4.5.0 urllib3-1.26.15
+SDWebUI: Installing gfpgan
+SDWebUI: Installing clip
+SDWebUI: Installing open_clip
+SDWebUI: Installing xformers
+SDWebUI: Cloning Stable Diffusion into /content/sd-webui/repositories/stable-diffusion-stability-ai...
+SDWebUI: Cloning Taming Transformers into /content/sd-webui/repositories/taming-transformers...
+SDWebUI: Cloning K-diffusion into /content/sd-webui/repositories/k-diffusion...
+SDWebUI: Cloning CodeFormer into /content/sd-webui/repositories/CodeFormer...
+SDWebUI: Cloning BLIP into /content/sd-webui/repositories/BLIP...
+SDWebUI: Installing requirements for CodeFormer
+SDWebUI: Installing requirements for Web UI
+SDWebUI: 
+SDWebUI: Launching Web UI with arguments: --share --ckpt-dir /content/sd-webui/testdata/models/Stable-diffusion --lora-dir /content/sd-webui/testdata/models/Lora --vae-dir /content/sd-webui/testdata/models/VAE --embeddings-dir /content/sd-webui/testdata/embeddings --ui-config-file /content/sd-webui/testdata/ui-config.json --ui-settings-file /content/sd-webui/testdata/ui-config.json --xformers --no-gradio-queue
+SDWebUI: Calculating sha256 for /content/sd-webui/testdata/models/Stable-diffusion/AOM3A1_orangemixs.safetensors: f303d108122ddd43a34c160bd46dbb08cb0e088e979acda0bf168a7a1f5820e0
+SDWebUI: Loading weights [f303d10812] from /content/sd-webui/testdata/models/Stable-diffusion/AOM3A1_orangemixs.safetensors
+SDWebUI: Creating model from config: /content/sd-webui/configs/v1-inference.yaml
+SDWebUI: LatentDiffusion: Running in eps-prediction mode
+SDWebUI: DiffusionWrapper has 859.52 M params.
+SDWebUI: 
+SDWebUI: Downloading (…)olve/main/vocab.json:   0%|          | 0.00/961k [00:00<?, ?B/s]
+SDWebUI: Downloading (…)olve/main/vocab.json: 100%|██████████| 961k/961k [00:00<00:00, 2.26MB/s]
+SDWebUI: Downloading (…)olve/main/vocab.json: 100%|██████████| 961k/961k [00:00<00:00, 2.25MB/s]
+SDWebUI: 
+SDWebUI: Downloading (…)olve/main/merges.txt:   0%|          | 0.00/525k [00:00<?, ?B/s]
+SDWebUI: Downloading (…)olve/main/merges.txt: 100%|██████████| 525k/525k [00:00<00:00, 1.54MB/s]
+SDWebUI: Downloading (…)olve/main/merges.txt: 100%|██████████| 525k/525k [00:00<00:00, 1.53MB/s]
+SDWebUI: 
+SDWebUI: Downloading (…)cial_tokens_map.json:   0%|          | 0.00/389 [00:00<?, ?B/s]
+SDWebUI: Downloading (…)cial_tokens_map.json: 100%|██████████| 389/389 [00:00<00:00, 94.0kB/s]
+SDWebUI: 
+SDWebUI: Downloading (…)okenizer_config.json:   0%|          | 0.00/905 [00:00<?, ?B/s]
+SDWebUI: Downloading (…)okenizer_config.json: 100%|██████████| 905/905 [00:00<00:00, 237kB/s]
+SDWebUI: 
+SDWebUI: Downloading (…)lve/main/config.json:   0%|          | 0.00/4.52k [00:00<?, ?B/s]
+SDWebUI: Downloading (…)lve/main/config.json: 100%|██████████| 4.52k/4.52k [00:00<00:00, 585kB/s]
+SDWebUI: Applying xformers cross attention optimization.
+SDWebUI: Textual inversion embeddings loaded(2): easynegative, badhandv4
+SDWebUI: Model loaded in 51.2s (calculate hash: 29.4s, load weights from disk: 0.7s, create model: 5.7s, apply weights to model: 7.0s, apply half(): 1.4s, load VAE: 4.2s, move model to device: 1.0s, load textual inversion embeddings: 1.7s).
+SDWebUI: Running on local URL:  http://127.0.0.1:7860
+Launcher: (12/13) SD Web UI 실행 완료, Running on local URL:  http://127.0.0.1:7860
+ - 92.31%
+Launcher: 실행까지 걸린 시간: 00:08:22
+SDWebUI: Running on public URL: https://5753796cbc6d388a3d.gradio.live
+Launcher: (13/13) SD Web UI 실행 완료, Running on public URL: https://5753796cbc6d388a3d.gradio.live
+ - 100.00%
+Launcher: 실행까지 걸린 시간: 00:08:25
+SDWebUI: 
+SDWebUI: This share link expires in 72 hours. For free permanent hosting and GPU upgrades (NEW!), check out Spaces: https://huggingface.co/spaces
+SDWebUI: Startup time: 63.7s (import torch: 1.1s, import gradio: 0.9s, import ldm: 0.5s, other imports: 1.1s, list SD models: 0.7s, load scripts: 1.0s, load SD checkpoint: 51.3s, create ui: 3.7s, gradio launch: 3.5s).
