@@ -378,59 +378,59 @@ class Launcher(ABC):
             with open(filename, "r", encoding="utf8") as f:
                 settings = json.load(f)
 
-            return [
-                gr.Checkbox.update(
+            return {
+                workspace_googledrive: gr.Checkbox.update(
                     value=settings["workspace"].get("googledrive", False),
                 ),
-                gr.Text.update(
+                workspace_name: gr.Text.update(
                     value=settings["workspace"].get("name", None),
                 ),
-                gr.DataFrame.update(
+                extensions: gr.DataFrame.update(
                     value=settings["downloads"].get("extensions", None),
                 ),
-                gr.DataFrame.update(
+                controlnet_models: gr.DataFrame.update(
                     value=settings["downloads"].get("controlnet_models", None),
                 ),
-                gr.DataFrame.update(
+                models: gr.DataFrame.update(
                     value=settings["downloads"].get("models", None),
                 ),
-                gr.DataFrame.update(
+                loras: gr.DataFrame.update(
                     value=settings["downloads"].get("loras", None),
                 ),
-                gr.DataFrame.update(
+                embeddings: gr.DataFrame.update(
                     value=settings["downloads"].get("embeddings", None),
                 ),
-                gr.DataFrame.update(
+                vaes: gr.DataFrame.update(
                     value=settings["downloads"].get("vaes", None),
                 ),
-                gr.Text.update(
+                auth_method: gr.Text.update(
                     value=settings["authentication"].get("auth_method", None),
                 ),
-                gr.Text.update(
+                auth_username: gr.Text.update(
                     value=settings["authentication"].get("auth_username", None),
                 ),
-                gr.Text.update(
+                auth_password: gr.Text.update(
                     value=settings["authentication"].get("auth_password", None),
                 ),
-                gr.Text.update(
+                auth_token: gr.Text.update(
                     value=settings["authentication"].get("auth_token", None),
                 ),
-                gr.Text.update(
+                extra_cmdline_args: gr.Text.update(
                     value=settings.get("cmdline_args", None),
                 ),
-                gr.Text.update(
+                git_url: gr.Text.update(
                     value=settings.get("git_url", None),
                 ),
-                gr.Text.update(
+                git_commit: gr.Text.update(
                     value=settings.get("git_commit", None),
                 ),
-                gr.Checkbox.update(
+                use_virtualenv: gr.Checkbox.update(
                     value=settings.get("use_virtualenv", False),
                 ),
-                gr.Checkbox.update(
+                ddetailer_install_with_pip: gr.Checkbox.update(
                     value=settings.get("ddetailer_install_with_pip", True),
                 ),
-            ]
+            }
 
         def on_default_settings():
             filepath = Path("settings", "default_settings.json")
@@ -440,16 +440,37 @@ class Launcher(ABC):
                 with open(filepath, "w", encoding="utf8") as f:
                     f.write(DEFAULT_SETTINGS)
 
-            return load_settings(filepath) + [
-                gr.File.update(label="디폴트 설정 파일", value=filepath, visible=True)
-            ]
+            return {
+                **load_settings(filepath),
+                settings_file: gr.File.update(
+                    label="디폴트 설정 파일", value=filepath, visible=True
+                ),
+            }
 
         def on_import_settings(filewrap):
             filepath = filewrap.name
             print(f'Launcher: 설정 가져오기, "{filepath}"')
-            return load_settings(filepath) + [
-                gr.File.update(label="가져온 설정 파일", value=filepath, visible=True)
-            ]
+
+            return {
+                **load_settings(filepath),
+                settings_file: gr.File.update(
+                    label="가져온 설정 파일", value=filepath, visible=True
+                ),
+            }
+
+        def on_load_last_settings():
+            filepath = Path("settings", "last_settings.json")
+            if not filepath.exists():
+                return {settings_file: gr.File.update(visible=False)}
+
+            print(f'Launcher: 마지막 실행한 설정 불러오기, "{filepath}"')
+
+            return {
+                **load_settings(filepath),
+                settings_file: gr.File.update(
+                    label="불러온 설정 파일", value=filepath, visible=True
+                ),
+            }
 
         def save_settings(
             filepath,
@@ -1762,11 +1783,11 @@ class Launcher(ABC):
                 outputs=progress,
             )
 
-            # gr.Accordion이 모두 open 되어 있어야만 호출됨, LocalLauncher에서만 기본 설정값 로드
+            # gr.Accordion이 모두 open 되어 있어야만 호출됨, LocalLauncher에서만 마지막 실행한 설정 값 로드
             demo.load(
-                fn=on_default_settings,
+                fn=on_load_last_settings,
                 inputs=None,
-                outputs=settings + [settings_file],
+                outputs=[*settings, settings_file],
             )
 
         demo.launch(
