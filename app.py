@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.5"  # @param {type:"string"}
+VERSION = "v0.2.6rc1"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, ⚠️보기 <font color="blue">편안</font>)
@@ -1046,7 +1046,7 @@ class Launcher(ABC):
                         )
 
                         # try install with pip
-                        # https://mmcv.readthedocs.io/en/latest/get_started/installation.html#install-with-pipv
+                        # https://mmcv.readthedocs.io/en/latest/get_started/installation.html#install-with-pip
                         try:
                             torch_version = "torch" + self.run(
                                 f'"{python_path}" -c \'import torch;print(torch.__version__[0:4], end="");\'',
