@@ -533,6 +533,48 @@ class Launcher(ABC):
             )
             return gr.File.update(label="내보낸 설정 파일", value=filepath, visible=True)
 
+        def on_execute_settings(
+            workspace_googledrive,
+            workspace_name,
+            extensions,
+            controlnet_models,
+            models,
+            loras,
+            embeddings,
+            vaes,
+            auth_method,
+            auth_username,
+            auth_password,
+            auth_token,
+            extra_cmdline_args,
+            git_url,
+            git_commit,
+            use_virtualenv,
+        ):
+            filepath = Path("settings", "last_settings.json")
+            print(f'Launcher: 설정 내보내기, "{filepath}"')
+            filepath.parent.mkdir(parents=True, exist_ok=True)
+            save_settings(
+                filepath,
+                workspace_googledrive,
+                workspace_name,
+                extensions,
+                controlnet_models,
+                models,
+                loras,
+                embeddings,
+                vaes,
+                auth_method,
+                auth_username,
+                auth_password,
+                auth_token,
+                extra_cmdline_args,
+                git_url,
+                git_commit,
+                use_virtualenv,
+            )
+            return gr.File.update(label="마지막 설정 파일", value=filepath, visible=True)
+
         def on_change_workspace(workspace, googledrive):
             from pathlib import PurePosixPath, PureWindowsPath
 
@@ -650,7 +692,7 @@ class Launcher(ABC):
 
             return cmdline_args
 
-        def on_execute(
+        def on_execute_webui(
             workspace_googledrive,
             workspace_name,
             extensions,
@@ -1623,7 +1665,15 @@ class Launcher(ABC):
                     settings_file,
                     progress_tooltip,
                 ],
-            ).then(fn=on_execute, inputs=settings, outputs=progress)
+            ).then(
+                fn=on_execute_settings,
+                inputs=settings,
+                outputs=settings_file,
+            ).then(
+                fn=on_execute_webui,
+                inputs=settings,
+                outputs=progress,
+            )
 
             # gr.Accordion이 모두 open 되어 있어야만 호출됨, LocalLauncher에서만 기본 설정값 로드
             demo.load(
