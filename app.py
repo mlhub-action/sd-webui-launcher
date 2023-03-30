@@ -8,7 +8,7 @@ USE_GRADIO_LIVE = True  # @param {type:"boolean"}
 
 # @markdown ## <br> 2. 필요한 경우 아래 기본 설정 및 즐겨찾기 편집 ##
 # @markdown #### <br> 2.1 기본 설정 ####
-# @markdown > 예제
+# @markdown > 예제 JSON 형식
 DEFAULT_SETTINGS = """
 {
     "workspace": {
@@ -53,6 +53,10 @@ DEFAULT_SETTINGS = """
                 [
                     "depth",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors"
+                ],
+                [
+                    "",
+                    ""
                 ]
             ]
         },
@@ -133,7 +137,9 @@ DEFAULT_SETTINGS = """
     },
     "cmdline_args": "--xformers",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
-    "git_commit": ""
+    "git_commit": "",
+    "use_virtualenv": false,
+    "ddetailer_install_with_pip": true
 }
 """
 
