@@ -133,6 +133,10 @@
                 [
                     "depth",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors"
+                ],
+                [
+                    "",
+                    ""
                 ]
             ]
         },
@@ -213,5 +217,7 @@
     },
     "cmdline_args": "--xformers --update-all-extensions",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
-    "git_commit": ""
+    "git_commit": "",
+    "use_virtualenv": false,
+    "ddetailer_install_with_pip": true
 }

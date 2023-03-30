@@ -2,8 +2,8 @@
 VERSION = "v0.2.5"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
-# @markdown - 체크시 : 웹 브라우저 창에 표시(응답 <font color="red">느림</font>, 보기 <font color="blue">편안</font>)
-# @markdown - 해제시 : 노트북 결과창에 직접 표시(응답 <font color="blue">빠름</font>, 보기 <font color="red">불편</font>)
+# @markdown - 체크시 : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, ⚠️보기 <font color="blue">편안</font>)
+# @markdown - 해제시 : 노트북 결과창에 직접 표시(🐇응답 <font color="blue">빠름</font>, ♥️보기 <font color="red">불편</font>)
 USE_GRADIO_LIVE = True  # @param {type:"boolean"}
 
 # @markdown ## <br> 2. 필요한 경우 아래 기본 설정 및 즐겨찾기 편집 ##
@@ -421,6 +421,9 @@ class Launcher(ABC):
                 gr.Checkbox.update(
                     value=settings.get("use_virtualenv", False),
                 ),
+                gr.Checkbox.update(
+                    value=settings.get("ddetailer_install_with_pip", True),
+                ),
             ]
 
         def on_default_settings():
@@ -460,6 +463,7 @@ class Launcher(ABC):
             git_url,
             git_commit,
             use_virtualenv,
+            ddetailer_install_with_pip,
         ):
             import json
 
@@ -488,6 +492,7 @@ class Launcher(ABC):
                         "git_url": gr.Text(git_url).value,
                         "git_commit": gr.Text(git_commit).value,
                         "use_virtualenv": use_virtualenv,
+                        "ddetailer_install_with_pip": ddetailer_install_with_pip,
                     },
                     f,
                     ensure_ascii=False,
@@ -510,6 +515,7 @@ class Launcher(ABC):
             git_url,
             git_commit,
             use_virtualenv,
+            ddetailer_install_with_pip,
         ):
             filepath = Path("settings", "my_settings.json")
             print(f'Launcher: 설정 내보내기, "{filepath}"')
@@ -532,6 +538,7 @@ class Launcher(ABC):
                 git_url,
                 git_commit,
                 use_virtualenv,
+                ddetailer_install_with_pip,
             )
             return gr.File.update(label="내보낸 설정 파일", value=filepath, visible=True)
 
@@ -552,6 +559,7 @@ class Launcher(ABC):
             git_url,
             git_commit,
             use_virtualenv,
+            ddetailer_install_with_pip,
         ):
             filepath = Path("settings", "last_settings.json")
             print(f'Launcher: 설정 내보내기, "{filepath}"')
@@ -574,6 +582,7 @@ class Launcher(ABC):
                 git_url,
                 git_commit,
                 use_virtualenv,
+                ddetailer_install_with_pip,
             )
             return gr.File.update(label="마지막 설정 파일", value=filepath, visible=True)
 
@@ -694,6 +703,9 @@ class Launcher(ABC):
 
             return cmdline_args
 
+        def has_extension_settings(extensions, name):
+            return not [url for url in extensions["주소"].values if name in url]
+
         def on_execute_webui(
             workspace_googledrive,
             workspace_name,
@@ -711,6 +723,7 @@ class Launcher(ABC):
             git_url,
             git_commit,
             use_virtualenv,
+            ddetailer_install_with_pip,
             progress=lambda x, desc: "",  # gr.Blocks.queue 사용시 응답이 느려서 gr.Progress 대신 콘솔창에 출력
         ):
             def update_progress(progress, steps, total, desc):
@@ -739,11 +752,19 @@ class Launcher(ABC):
                 controlnet_models.query(f'주소 == ""').index
             )
 
-            include_controlnet = [
-                url for url in extensions["주소"].values if "sd-webui-controlnet" in url
-            ]
+            include_controlnet = has_extension_settings(
+                extensions, "sd-webui-controlnet"
+            )
             if include_controlnet:
                 total += controlnet_models.count()["주소"]
+
+            include_ddetailer = has_extension_settings(extensions, "ddetailer")
+            if include_ddetailer:
+                total += ddetailer_install_with_pip
+
+            # TODO : 선택 옵션으로 제공
+            apply_ddetailer_patches = True
+            total += include_ddetailer and apply_ddetailer_patches
 
             models = models.drop(models.query(f'주소 == ""').index)
             total += models.count()["주소"]
@@ -879,30 +900,6 @@ class Launcher(ABC):
                     self.run(
                         f'git -C "{repository_path}" fetch --depth=1'
                     )  # SD Web UI의 Check for updates 기능을 위해
-                time.sleep(0.5)
-
-            # Patch extensions dependencies
-            for index, (name, url) in enumerate(
-                zip(extensions["이름"], extensions["주소"])
-            ):
-                assert url
-                if repositoryname(url) == "ddetailer":
-                    diff_path = Path(
-                        extensions_path, repositoryname(url), "deprecate_lib2to3.diff"
-                    )
-                    steps += 1
-                    update_progress(
-                        progress,
-                        steps,
-                        total,
-                        desc=f"확장 패치 적용, {diff_path}",
-                    )
-                    self.run(
-                        f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
-                    )
-                    self.run(
-                        f'patch -N -d "{diff_path.parent}" -p1 < "{diff_path}" || true'
-                    )
                 time.sleep(0.5)
 
             def download(url, cwd=None):
@@ -1059,6 +1056,73 @@ class Launcher(ABC):
             else:
                 python_path = "python"
                 webui_environ = self.environ.copy()
+
+            # Patch extensions dependencies
+            for index, (name, url) in enumerate(
+                zip(extensions["이름"], extensions["주소"])
+            ):
+                assert url
+                if repositoryname(url) == "ddetailer":
+                    if ddetailer_install_with_pip:
+                        steps += 1
+                        update_progress(
+                            progress,
+                            steps,
+                            total,
+                            desc=f"{repositoryname(url)} 확장 의존 패키지 설치",
+                        )
+
+                        # try install with pip
+                        # https://mmcv.readthedocs.io/en/latest/get_started/installation.html#install-with-pipv
+                        try:
+                            torch_version = "torch" + self.run(
+                                f'"{python_path}" -c \'import torch;print(torch.__version__[0:4], end="");\'',
+                                check=True,
+                                live=False,
+                            )
+                            cuda_version = "cu" + self.run(
+                                f'"{python_path}" -c \'import torch;print(torch.version.cuda.replace(".","")[0:3], end="");\'',
+                                check=True,
+                                live=False,
+                            )
+
+                        except RuntimeError:  # re-raise ModuleNotFoundError
+                            torch_version = "torch1.13"
+                            cuda_version = "cu117"
+
+                        try:
+                            self.run(
+                                f'"{python_path}" -m pip install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/{cuda_version}/{torch_version}/index.html',
+                                check=False,
+                                live=True,
+                            )
+                        except:
+                            # Fallback install from source
+                            pass
+
+                    if apply_ddetailer_patches:
+                        diff_path = Path(
+                            extensions_path,
+                            repositoryname(url),
+                            "deprecate_lib2to3.diff",
+                        )
+                        steps += 1
+                        update_progress(
+                            progress,
+                            steps,
+                            total,
+                            desc=f"확장 패치 적용, {diff_path}",
+                        )
+
+                        self.run(
+                            f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
+                        )
+                        self.run(
+                            f'patch -N -d "{diff_path.parent}" -p1 < "{diff_path}" || true',
+                            check=False,
+                        )
+                    break
+                time.sleep(0.5)
 
             """
             SD Web UI 실행 시작
@@ -1278,15 +1342,26 @@ class Launcher(ABC):
                                     col_count=(2, "fixed"),
                                     interactive=True,
                                 )
-                            with gr.Tab("컨트롤넷 모델"):
-                                with gr.Column(scale=0.8):
-                                    controlnet_models = gr.Dataframe(
-                                        headers=["이름", "주소"],
-                                        datatype=["str", "str"],
-                                        row_count=3,
-                                        col_count=(2, "fixed"),
-                                        interactive=True,
-                                    )
+                            with gr.Tab("ControlNet 모델") as controlnet_tab:
+                                controlnet_models = gr.Dataframe(
+                                    headers=["이름", "주소"],
+                                    datatype=["str", "str"],
+                                    row_count=3,
+                                    col_count=(2, "fixed"),
+                                    interactive=True,
+                                )
+                            with gr.Tab("Detection Detailer") as ddetailer_tab:
+                                ddetailer_install_with_pip = gr.Checkbox(
+                                    label="미리 빌드된 의존성 패키지 설치",
+                                    info="기본값, 체크",
+                                    value=True,
+                                )
+                                gr.Markdown(
+                                    """
+                                    > 📝체크시: mmcv-full 패키지를 pip로 설치 => 🐇설치 속도 빠름, ⚠️버전 호환성 나쁨
+                                    > 📝해제시: mmcv-full 소스 코드로 빌드/설치 =🐢설치 속도 느림, ♥️전호환성 좋음
+                                    """
+                                )
                         with gr.Column(scale=0.2):
                             gr.Markdown(
                                 "[확장 인덱스](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)"
@@ -1507,13 +1582,15 @@ class Launcher(ABC):
                             )
                         with gr.Tab("(선택) 가상 환경"):
                             use_virtualenv = gr.Checkbox(
-                                label="Python 가상 환경 venv 사용", info="기본값, 사용 안함"
+                                label="Python 가상 환경 venv 사용",
+                                info="기본값, 체크",
+                                value=False,
                             )
                             gr.Markdown(
-                                """
-                                > 📝체크시: 가상 환경 venv 생성 => 설치 속도 느림, 버전 호환성 좋음
-                                > 📝해제시: 코랩/런팟 기본 환경 사용 => 설치 속도 빠름, 버전 호환성 나쁨
-                                > ⚠️단, 로컬은 가상 환경 사용이 강제
+                                f"""
+                                > 📝체크시: 가상 환경 venv 생성 => 🐢설치 속도 느림, ♥️버전 호환성 좋음
+                                > 📝해제시: 코랩/런팟 기본 환경 사용 => 🐇설치 속도 빠름, ⚠️버전 호환성 나쁨
+                                {"> ⚠️단, 로컬은 가상 환경 사용이 강제" if self.force_virtualenv() else ''}
                                 """
                             )
                     with gr.Column(scale=0.2):
@@ -1602,6 +1679,7 @@ class Launcher(ABC):
                 git_url,
                 git_commit,
                 use_virtualenv,
+                ddetailer_install_with_pip,
             ]
 
             default_settings.click(
