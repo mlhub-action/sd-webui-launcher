@@ -230,7 +230,6 @@ FAVORITES_COMMITS = [
 ]
 # fmt: on
 
-
 import os
 import shutil
 from pathlib import Path, PurePath
@@ -2021,12 +2020,19 @@ class RunPodLauncher(LinuxPlatform):
     def setup(self):
         super().setup()
 
-        # For ddetailer extension
         self.run(
-            "apt-get install -qq -y libgl1 libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
+            "apt-get install -qq -y libgl1",
             check=True,
             live=True,
         )
+
+        # For ddetailer extension, mmdet dependency
+        self.run(
+            "apt-get install -qq -y libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
+            check=True,
+            live=True,
+        )
+        # And
         self.run(
             "pip install -q --upgrade pip setuptools wheel",
             check=True,
