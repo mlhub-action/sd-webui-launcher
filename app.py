@@ -526,92 +526,18 @@ class Launcher(ABC):
                     indent=4,
                 )
 
-        def on_export_settings(
-            workspace_googledrive,
-            workspace_name,
-            extensions,
-            controlnet_models,
-            models,
-            loras,
-            embeddings,
-            vaes,
-            auth_method,
-            auth_username,
-            auth_password,
-            auth_token,
-            extra_cmdline_args,
-            git_url,
-            git_commit,
-            use_virtualenv,
-            ddetailer_install_with_pip,
-        ):
+        def on_export_settings(*settings):
             filepath = Path("settings", "my_settings.json")
             print(f'Launcher: 설정 내보내기, "{filepath}"')
             filepath.parent.mkdir(parents=True, exist_ok=True)
-            save_settings(
-                filepath,
-                workspace_googledrive,
-                workspace_name,
-                extensions,
-                controlnet_models,
-                models,
-                loras,
-                embeddings,
-                vaes,
-                auth_method,
-                auth_username,
-                auth_password,
-                auth_token,
-                extra_cmdline_args,
-                git_url,
-                git_commit,
-                use_virtualenv,
-                ddetailer_install_with_pip,
-            )
+            save_settings(filepath, *settings)
             return gr.File.update(label="내보낸 설정 파일", value=filepath, visible=True)
 
-        def on_execute_settings(
-            workspace_googledrive,
-            workspace_name,
-            extensions,
-            controlnet_models,
-            models,
-            loras,
-            embeddings,
-            vaes,
-            auth_method,
-            auth_username,
-            auth_password,
-            auth_token,
-            extra_cmdline_args,
-            git_url,
-            git_commit,
-            use_virtualenv,
-            ddetailer_install_with_pip,
-        ):
+        def on_execute_settings(*settings):
             filepath = Path("settings", "last_settings.json")
             print(f'Launcher: 설정 내보내기, "{filepath}"')
             filepath.parent.mkdir(parents=True, exist_ok=True)
-            save_settings(
-                filepath,
-                workspace_googledrive,
-                workspace_name,
-                extensions,
-                controlnet_models,
-                models,
-                loras,
-                embeddings,
-                vaes,
-                auth_method,
-                auth_username,
-                auth_password,
-                auth_token,
-                extra_cmdline_args,
-                git_url,
-                git_commit,
-                use_virtualenv,
-                ddetailer_install_with_pip,
-            )
+            save_settings(filepath, *settings)
             return gr.File.update(label="마지막 설정 파일", value=filepath, visible=True)
 
         def on_change_workspace(workspace, googledrive):
@@ -1713,19 +1639,19 @@ class Launcher(ABC):
             default_settings.click(
                 fn=on_default_settings,
                 inputs=None,
-                outputs=settings + [settings_file],
+                outputs=[*settings, settings_file],
             )
 
             import_settings.upload(
                 fn=on_import_settings,
                 inputs=import_settings,
-                outputs=settings + [settings_file],
+                outputs=[*settings, settings_file],
             )
 
             settings_file.upload(
                 fn=on_import_settings,
                 inputs=settings_file,
-                outputs=settings + [settings_file],
+                outputs=[*settings, settings_file],
             )
 
             export_settings.click(
