@@ -1092,7 +1092,7 @@ class Launcher(ABC):
         """
         with gr.Blocks(
             gr.themes.Soft(),
-            css="#info {background-color: Gainsboro} #progress {background-color: DarkSeaGreen}",
+            css="#info-box {background-color: Gainsboro} #progress-box {background-color: DarkSeaGreen} #progress-tooltip {color:DeepPink !important; text-align: center;}",
         ) as demo:
             gr.Markdown(
                 f"""
@@ -1120,11 +1120,12 @@ class Launcher(ABC):
                 )
 
             with gr.Box():
-                gr.Markdown(
-                    f'<p style="color:DeepPink !important; text-align: center;"><em>진행 과정은 {service_type} 출력창에서 확인해 주세요</em></p>'
+                progress_tooltip = gr.Markdown(
+                    f'<p style="color:DeepPink !important; text-align: center;"><em>진행 과정은 {service_type} 출력창에서 확인해 주세요</em></p>',
+                    elem_id="progress-tooltip",
                 )
                 progress = gr.Text(
-                    elem_id="progress", show_label=False, interactive=False
+                    elem_id="progress-box", show_label=False, interactive=False
                 )
 
             with gr.Box():
@@ -1150,7 +1151,7 @@ class Launcher(ABC):
                         )
                         workspace_tooltip = gr.Markdown(visible=False)
                         workspace_path = gr.Textbox(
-                            elem_id="info",
+                            elem_id="info-box",
                             label="경로",
                             info="  이름을 입력하면 아래에 실제 경로가 표시됩니다",
                             interactive=False,
@@ -1381,7 +1382,7 @@ class Launcher(ABC):
                                 interactive=True,
                             )
                             cmdline_args = gr.Text(
-                                elem_id="info",
+                                elem_id="info-box",
                                 label="전체 실행 인자",
                                 info="  실행 인자를 입력하면 아래에 전체 실행 인자가 표시됩니다",
                                 interactive=False,
@@ -1582,7 +1583,7 @@ class Launcher(ABC):
                 outputs=settings_file,
             )
 
-            def disable_buttons():
+            def disable_reexecution():
                 return {
                     # UploadButton이 interactive=False 업데이트가 안되서 visible=False로
                     default_settings: gr.Button.update(
@@ -1605,10 +1606,13 @@ class Launcher(ABC):
                         visible=False,
                         interactive=False,
                     ),
+                    progress_tooltip: gr.Markdown.update(
+                        value=f'<p style="color:DeepPink !important; text-align: center;"><em>진행 과정은 {service_type} 출력창에서 확인해 주세요</em></p><p style="color:DeepPink !important; text-align: center;"><em>이제 웹 페이지를 닫으셔도 됩니다</em></p>'
+                    ),
                 }
 
             execute_webui.click(
-                fn=disable_buttons,
+                fn=disable_reexecution,
                 inputs=None,
                 outputs=[
                     default_settings,
@@ -1616,6 +1620,7 @@ class Launcher(ABC):
                     export_settings,
                     execute_webui,
                     settings_file,
+                    progress_tooltip,
                 ],
             ).then(fn=on_execute, inputs=settings, outputs=progress)
 
@@ -1775,7 +1780,7 @@ class ColabLauncher(LinuxPlatform):
     @staticmethod
     def service_name():
         return "코랩(colab)"
-    
+
     @staticmethod
     def service_type():
         return "노트북"
@@ -1824,7 +1829,7 @@ class RunPodLauncher(LinuxPlatform):
     @staticmethod
     def service_type():
         return "노트북"
-    
+
     @staticmethod
     def is_support_googledrive():
         return False
@@ -1856,7 +1861,7 @@ class LocalLauncher(WindowsPlatform):
     @staticmethod
     def service_name():
         return "로컬(windows)"
-    
+
     @staticmethod
     def service_type():
         return "터미널"
