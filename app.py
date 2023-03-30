@@ -1707,13 +1707,13 @@ class LinuxPlatform(Launcher):
         self.run("apt-get update -qq -y", check=True, live=True)
 
         if not self.has_executable("git"):
-            self.run("apt-get install -q -y git", check=True, live=True)
+            self.run("apt-get install -qq -y git", check=True, live=True)
 
         if not self.has_executable("curl"):
-            self.run("apt-get install -q -y curl", check=True, live=True)
+            self.run("apt-get install -qq -y curl", check=True, live=True)
 
         if not self.has_executable("aria2c"):
-            self.run("apt-get install -q -y aria2", check=True, live=True)
+            self.run("apt-get install -qq -y aria2", check=True, live=True)
 
     @staticmethod
     def shell():
@@ -1863,7 +1863,7 @@ class RunPodLauncher(LinuxPlatform):
 
         # For ddetailer extension
         self.run(
-            "apt-get install -q -y libgl1 libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
+            "apt-get install -qq -y libgl1 libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
             check=True,
             live=True,
         )
