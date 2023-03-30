@@ -242,7 +242,8 @@ class Launcher(ABC):
         except NameError:
             pass
 
-        self.run('python -m pip -q install --upgrade pip', check=False, live=True)
+        # Suppress pip version upgrade warning
+        self.run("python -m pip -q install --upgrade pip", check=False, live=True)
 
         if not self.is_installed("gradio"):
             self.run('pip -q install "gradio>=3.21"', check=True, live=True)
