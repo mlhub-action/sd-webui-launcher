@@ -658,7 +658,11 @@ class Launcher(ABC):
             return cmdline_args
 
         def has_extension_settings(extensions, name):
-            return not [url for url in extensions["주소"].values if name in url]
+            return (
+                True
+                if [url for url in extensions["주소"].values if name in url]
+                else False
+            )
 
         def on_execute_webui(
             workspace_googledrive,
