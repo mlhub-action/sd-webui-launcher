@@ -418,14 +418,20 @@ class Launcher(ABC):
                 extra_cmdline_args: gr.Text.update(
                     value=settings.get("cmdline_args", None),
                 ),
+                torch_command: gr.Text.update(
+                    value=settings.get("torch_command", None),
+                ),
+                xformers_package: gr.Text.update(
+                    value=settings.get("xformers_package", None),
+                ),
+                use_virtualenv: gr.Checkbox.update(
+                    value=settings.get("use_virtualenv", False),
+                ),
                 git_url: gr.Text.update(
                     value=settings.get("git_url", None),
                 ),
                 git_commit: gr.Text.update(
                     value=settings.get("git_commit", None),
-                ),
-                use_virtualenv: gr.Checkbox.update(
-                    value=settings.get("use_virtualenv", False),
                 ),
                 ddetailer_install_with_pip: gr.Checkbox.update(
                     value=settings.get("ddetailer_install_with_pip", True),
@@ -487,9 +493,11 @@ class Launcher(ABC):
             auth_password,
             auth_token,
             extra_cmdline_args,
+            torch_command,
+            xformers_package,
+            use_virtualenv,
             git_url,
             git_commit,
-            use_virtualenv,
             ddetailer_install_with_pip,
         ):
             import json
@@ -516,9 +524,11 @@ class Launcher(ABC):
                             "auth_token": gr.Text(auth_token).value,
                         },
                         "cmdline_args": gr.Text(extra_cmdline_args).value,
+                        "torch_command": gr.Text(torch_command).value,
+                        "xformers_package": gr.Text(xformers_package).value,
+                        "use_virtualenv": use_virtualenv,
                         "git_url": gr.Text(git_url).value,
                         "git_commit": gr.Text(git_commit).value,
-                        "use_virtualenv": use_virtualenv,
                         "ddetailer_install_with_pip": ddetailer_install_with_pip,
                     },
                     f,
@@ -674,9 +684,11 @@ class Launcher(ABC):
             auth_password,
             auth_token,
             extra_cmdline_args,
+            torch_command,
+            xformers_package,
+            use_virtualenv,
             git_url,
             git_commit,
-            use_virtualenv,
             ddetailer_install_with_pip,
             progress=lambda x, desc: "",  # gr.Blocks.queue 사용시 응답이 느려서 gr.Progress 대신 콘솔창에 출력
         ):
@@ -714,7 +726,7 @@ class Launcher(ABC):
 
             include_ddetailer = has_extension_settings(extensions, "ddetailer")
             if include_ddetailer:
-                total += ddetailer_install_with_pip
+                total += not torch_command and ddetailer_install_with_pip
 
             # TODO : 선택 옵션으로 제공
             apply_ddetailer_patches = True
@@ -1011,13 +1023,20 @@ class Launcher(ABC):
                 python_path = "python"
                 webui_environ = self.environ.copy()
 
+            if torch_command:
+                webui_environ["TORCH_COMMAND"] = torch_command
+
+            if xformers_package:
+                webui_environ["XFORMERS_PACKAGE"] = xformers_package
+
             # Patch extensions dependencies
             for index, (name, url) in enumerate(
                 zip(extensions["이름"], extensions["주소"])
             ):
                 assert url
                 if repositoryname(url) == "ddetailer":
-                    if ddetailer_install_with_pip:
+                    # torch_command가 기본값이 아니면 호환성 때문에 pip로 설치하지 않음
+                    if not torch_command and ddetailer_install_with_pip:
                         steps += 1
                         update_progress(
                             progress,
@@ -1041,6 +1060,7 @@ class Launcher(ABC):
                             )
 
                         except RuntimeError:  # re-raise ModuleNotFoundError
+                            # TODO:나중에 기본값이 달라지면 코드 수정 필요
                             torch_version = "torch1.13"
                             cuda_version = "cu117"
 
@@ -1534,6 +1554,79 @@ class Launcher(ABC):
                                 ],
                                 outputs=cmdline_args,
                             )
+                        with gr.Tab("(선택) Torch+xFormers"):
+                            with gr.Box():
+                                # https://pytorch.org/get-started/locally/
+                                torch_command_mapping = {
+                                    "1.13.1+cu116": "pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116",
+                                    "1.13.1+cu117(기본값)": "pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117",
+                                    "2.0.0+cu118": "pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118",
+                                    "직접 입력": "",
+                                }
+                                torch_command_dropdown = gr.Dropdown(
+                                    label="Torch 버전",
+                                    info="  Torch 버전을 선택해 주세요",
+                                    value="1.13.1+cu117(기본값)",
+                                    choices=[*torch_command_mapping.keys()],
+                                    interactive=True,
+                                )
+                                torch_command = gr.Text(
+                                    elem_id="info-box",
+                                    label="TORCH_COMMAND",
+                                    info="  Torch 버전을 선택하면 아래에 TORCH_COMMAND 환경 변수가 표시됩니다",
+                                    value=torch_command_mapping[
+                                        torch_command_dropdown.value
+                                    ],
+                                    interactive=False,
+                                )
+
+                                def on_select_torch_command(evt: gr.SelectData):
+                                    value = torch_command_mapping[evt.value]
+                                    return gr.Text.update(
+                                        value=value, interactive=not value
+                                    )
+
+                                torch_command_dropdown.select(
+                                    fn=on_select_torch_command,
+                                    inputs=None,
+                                    outputs=torch_command,
+                                )
+                            with gr.Box():
+                                # https://pypi.org/project/xformers/#history
+                                xformers_package_mapping = {
+                                    "0.0.16rc425(기본값)": "xformers==0.0.16rc425",
+                                    "0.0.17(torch==2.0.0)": "xformers==0.0.17",
+                                    "직접 입력": "",
+                                }
+
+                                xformers_package_dropdown = gr.Dropdown(
+                                    label="xFormers 버전",
+                                    info="  xFormers 패키지 버전을 선택해 주세요",
+                                    value="0.0.16rc425(기본값)",
+                                    choices=[*xformers_package_mapping.keys()],
+                                    interactive=True,
+                                )
+                                xformers_package = gr.Text(
+                                    elem_id="info-box",
+                                    label="XFORMERS_PACKAGE",
+                                    info="  xFormers 패키지 버전을 선택하면 아래에 XFORMERS_PACKAGE 환경 변수가 표시됩니다",
+                                    value=xformers_package_mapping[
+                                        xformers_package_dropdown.value
+                                    ],
+                                    interactive=False,
+                                )
+
+                                def on_select_xformers_command(evt: gr.SelectData):
+                                    value = xformers_package_mapping[evt.value]
+                                    return gr.Text.update(
+                                        value=value, interactive=not value
+                                    )
+
+                                xformers_package_dropdown.select(
+                                    fn=on_select_xformers_command,
+                                    inputs=None,
+                                    outputs=xformers_package,
+                                )
                         with gr.Tab("(선택) 가상 환경"):
                             use_virtualenv = gr.Checkbox(
                                 label="Python 가상 환경 venv 사용",
@@ -1630,9 +1723,13 @@ class Launcher(ABC):
                 auth_password,
                 auth_token,
                 extra_cmdline_args,
+                # SD Web UI에서 기본값이 달라질 수 있기 때문에, SD Web UI에 결정하도록
+                torch_command if "기본값" in torch_command_dropdown.value else "",
+                # SD Web UI에서 기본값이 달라질 수 있기 때문에, SD Web UI에 결정하도록
+                xformers_package if "기본값" in xformers_package_dropdown.value else "",
+                use_virtualenv,
                 git_url,
                 git_commit,
-                use_virtualenv,
                 ddetailer_install_with_pip,
             ]
 
