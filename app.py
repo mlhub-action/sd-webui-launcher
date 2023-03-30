@@ -1773,6 +1773,8 @@ class ColabLauncher(LinuxPlatform):
 
         # https://github.com/googlecolab/colabtools/issues/3412
         self.environ["LD_PRELOAD"] = "libtcmalloc.so"
+        # Deactivate tensorflow print standard error
+        self.environ["TF_CPP_MIN_LOG_LEVEL"] = 3
 
     @staticmethod
     def working_dir():
