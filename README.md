@@ -4,7 +4,7 @@
 > 기능이 완벽하지 않거나 버그가 있을 수 있습니다
 </br>
 
-| 노트북 이름 | 설명 | 링크 |
+| 노트북 이름 | 설명 | 코랩 링크 |
 | --- | --- | --- | 
 | [SD Web UI 런처](https://github.com/mlhub-action/sd-webui-launcher/blob/main/notebooks/SD-Web-UI-Launcher.ipynb) | Stable Diffusion Web UI 런처 | [![코랩에서 열기](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mlhub-action/sd-webui-launcher/blob/main/notebooks/SD-Web-UI-Launcher.ipynb) | 
 </br>
