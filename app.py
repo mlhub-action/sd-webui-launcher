@@ -1092,7 +1092,7 @@ class Launcher(ABC):
 
                         try:
                             self.run(
-                                f'"{python_path}" -m pip install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/{cuda_version}/{torch_version}/index.html',
+                                f'"{python_path}" -m pip -q install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/{cuda_version}/{torch_version}/index.html',
                                 check=False,
                                 live=True,
                             )
