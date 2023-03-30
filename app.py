@@ -212,16 +212,13 @@ FAVORITES_ARGS = [
 # @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
     [
+        "2023-03-29 gradio==3.23[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/22bcc7be428c94e9408f589966c2040187245d81)"
+    ],
+    [
         "2023-03-27 gradio==3.23[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/955df7751eef11bb7697e2d77f6b8a6226b21e13)"
     ],
     [
         "2023-03-25 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/a9eab236d7e8afa4d6205127904a385b2c43bb24)"
-    ],
-    [
-        "2023-03-24 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/280ed8f00fde0ece026339acdd42888ac4dc3167)"
-    ],
-    [
-        "2023-03-20 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/64fc936738d296f5eb2ff495006e298c2aeb51bf)"
     ],
     [
         "2023-02-11 fastapi==0.90.1[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/4f4debbadbf665c483416ee02e12c9b987765103)"
