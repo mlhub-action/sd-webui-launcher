@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.6rc1"  # @param {type:"string"}
+VERSION = "v0.2.6rc3"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, ⚠️보기 <font color="blue">편안</font>)
@@ -12,7 +12,7 @@ USE_GRADIO_LIVE = True  # @param {type:"boolean"}
 DEFAULT_SETTINGS = """
 {
     "workspace": {
-        "name": "userdata",
+        "name": "",
         "googledrive": false
     },
     "downloads": {
