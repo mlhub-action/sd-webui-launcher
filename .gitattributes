@@ -4,3 +4,5 @@
 # Declare files that will always have CRLF line endings on checkout.
 *.bat text eol=crlf
 *.reg text eol=crlf
+*.txt text eol=crlf
+*.ps1 text eol=crlf
