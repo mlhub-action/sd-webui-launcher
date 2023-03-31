@@ -2,7 +2,7 @@
 VERSION = "v0.2.7"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
-# @markdown - 체크시 : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
+# @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
 # @markdown - 해제시 : 노트북 결과창에 직접 표시(🐇응답 <font color="blue">빠름</font>, ⚠️보기 <font color="red">불편</font>)
 USE_GRADIO_LIVE = True  # @param {type:"boolean"}
 
