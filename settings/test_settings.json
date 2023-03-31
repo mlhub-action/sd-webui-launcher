@@ -75,6 +75,10 @@
                     "https://github.com/hnmr293/sd-webui-llul.git"
                 ],
                 [
+                    "Locon",
+                    "https://github.com/KohakuBlueleaf/a1111-sd-webui-locon.git"
+                ],
+                [
                     "LoRA Block Weight",
                     "https://github.com/hako-mikan/sd-webui-lora-block-weight.git"
                 ],
@@ -215,8 +219,11 @@
         "auth_password": "",
         "auth_token": ""
     },
-    "cmdline_args": "--xformers --no-gradio-queue --update-all-extensions",
+    "cmdline_args": "--xformers --no-gradio-queue",
+    "torch_command": null,
+    "xformers_package": null,
+    "use_virtualenv": false,
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
-    "git_commit": "",
-    "use_virtualenv": false
+    "git_commit": "22bcc7be428c94e9408f589966c2040187245d81",
+    "apply_ddetailer_patches": true
 }

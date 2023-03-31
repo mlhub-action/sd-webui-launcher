@@ -163,6 +163,7 @@ FAVORITES_EXTENSIONS = [
     ["Dynamic Thresholding[⧉](https://github.com/mcmonkeyprojects/sd-dynamic-thresholding)"],
     ["Kohya-ss Additional Networks[⧉](https://github.com/kohya-ss/sd-webui-additional-networks)"],
     ["Latent Couple[⧉](https://github.com/ashen-sensored/stable-diffusion-webui-two-shot.git)"],
+    ["Locon[⧉](https://github.com/KohakuBlueleaf/a1111-sd-webui-locon.git)"],
     ["Preset Utilities[⧉](https://github.com/Gerschel/sd_web_ui_preset_utils.git)"],
     ["stable-diffusion-webui-state[⧉](https://github.com/ilian6806/stable-diffusion-webui-state.git)"],
     ["System Info[⧉](https://github.com/vladmandic/sd-extension-system-info)"],
