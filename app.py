@@ -766,7 +766,7 @@ class Launcher(ABC):
             else:
                 self.run(f'git -C "{sd_webui_path}" pull origin master')
 
-            time.sleep(0.5)
+            time.sleep(0.1)
 
             """
             작업 디렉터리 설정
@@ -828,7 +828,7 @@ class Launcher(ABC):
             embeddings_path = Path(sd_webui_path, userdata, "embeddings")
             embeddings_path.mkdir(parents=True, exist_ok=True)
 
-            time.sleep(0.5)
+            time.sleep(0.1)
 
             """
             확장 다운로드
@@ -863,7 +863,7 @@ class Launcher(ABC):
                     self.run(
                         f'git -C "{repository_path}" fetch --depth=1'
                     )  # SD Web UI의 Check for updates 기능을 위해
-                time.sleep(0.5)
+                time.sleep(0.1)
 
             def download(url, cwd=None):
                 from urllib.parse import urlparse
@@ -922,7 +922,7 @@ class Launcher(ABC):
                         desc=f"컨트롤넷 모델 다운로드, 이름: {name}, 주소: {url}",
                     )
                     download(url, cwd=controlnet_models_path)
-                time.sleep(0.5)
+                time.sleep(0.1)
 
             """
             모델 다운로드
@@ -937,7 +937,7 @@ class Launcher(ABC):
                     desc=f"모델 다운로드, 이름: {name}, 주소: {url}",
                 )
                 download(url, cwd=ckpt_path)
-                time.sleep(0.5)
+                time.sleep(0.1)
 
             """
             로라 다운로드
@@ -952,7 +952,7 @@ class Launcher(ABC):
                     desc=f"로라 다운로드, 이름: {name}, 주소: {url}",
                 )
                 download(url, cwd=lora_path)
-                time.sleep(0.5)
+                time.sleep(0.1)
 
             """
             임베딩 다운로드
@@ -969,7 +969,7 @@ class Launcher(ABC):
                     desc=f"임베딩 다운로드, 이름: {name}, 주소: {url}",
                 )
                 download(url, cwd=embeddings_path)
-                time.sleep(0.5)
+                time.sleep(0.1)
 
             """
             VAEs 다운로드
@@ -984,7 +984,7 @@ class Launcher(ABC):
                     desc=f"VAEs 다운로드, 이름: {name}, 주소: {url}",
                 )
                 download(url, cwd=vae_path)
-                time.sleep(0.5)
+                time.sleep(0.1)
 
             if use_virtualenv or self.force_virtualenv():
                 """
@@ -1065,7 +1065,7 @@ class Launcher(ABC):
                             check=False,
                         )
                     break
-                time.sleep(0.5)
+                time.sleep(0.1)
 
             """
             SD Web UI 실행 시작
@@ -1090,7 +1090,7 @@ class Launcher(ABC):
                 desc=f"SD Web UI 실행 시작, 인자: {cmdline_args}",
             )
 
-            time.sleep(0.5)
+            time.sleep(0.1)
 
             import subprocess
 
