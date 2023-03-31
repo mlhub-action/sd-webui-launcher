@@ -1223,8 +1223,9 @@ class Launcher(ABC):
                 gr.Markdown(
                     """
                     # 2. 다운로드 주소
-                    [civitai](https://civitai.com/) 또는 [huggingface](https://huggingface.co/)에서 다운로드 할 주소 목록을 작성해주세요. 이름은 표시 용도니 자유롭게 정하세요.
-                    테이블의 셀을 더블 클릭하면 편집/삭제 가능합니다.
+                    [civitai](https://civitai.com/) 또는 [huggingface](https://huggingface.co/)에서 다운로드 할 주소 목록을 작성해주세요.
+                    > 💡 이름은 표시 용도니 자유롭게 정하세요.
+                    > 💡 테이블의 셀을 더블 클릭하면 편집/삭제 가능합니다.
                     """
                 )
 
@@ -1301,8 +1302,8 @@ class Launcher(ABC):
                                 )
                                 gr.Markdown(
                                     """
-                                    > 📝체크시: No module named 'lib2to3' 문제 해결 => ⚠️버전 호환성 나쁨
-                                    > 📝해제시: 패치 안함 => 👍버전 호환성 좋음
+                                    > 📝 체크시: No module named 'lib2to3' 문제 해결 => ⚠️버전 호환성 나쁨
+                                    > 📝 해제시: 패치 안함 => 👍버전 호환성 좋음
                                     """
                                 )
                         with gr.Column(scale=0.2):
@@ -1390,7 +1391,7 @@ class Launcher(ABC):
                 gr.Markdown(
                     """
                     # 3. 접속 방법
-                    Web UI에 접속할 방법을 선택해 주세요.
+                    SD Web UI에 접속할 방법을 선택해 주세요.
                     """
                 )
                 auth_method = gr.Text(visible=False, value="gradio")
@@ -1431,12 +1432,18 @@ class Launcher(ABC):
                 gr.Markdown(
                     """
                     # 4. 실행 방법
-                    [Web UI 실행 인자](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings#all-command-line-arguments)를 입력해 주세요.
+                    [SD Web UI 실행 인자](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings#all-command-line-arguments)를 입력해 주세요.
                     """
                 )
                 with gr.Row():
                     with gr.Column(scale=0.8):
                         with gr.Tab("실행 인자"):
+                            gr.Markdown(
+                                """
+                                > 💡 팁: 설치된 확장을 모두 업데이트 하려면, --update-all-extensions 실행 인자를 추가해 주세요
+                                """
+                            )
+
                             extra_cmdline_args = gr.Text(
                                 label="추가 실행 인자",
                                 info="  추가 실행 인자를 입력해 주세요",
@@ -1536,7 +1543,7 @@ class Launcher(ABC):
 
                                 torch_command_dropdown = gr.Dropdown(
                                     label="Torch 버전",
-                                    info="  Torch 버전을 선택해 주세요. 재설치 하려면 --reinstall-torch 실행 인자를 사용해 주세요",
+                                    info="  Torch 버전을 선택해 주세요. 재설치 하려면 --reinstall-torch 실행 인자를 추가해 주세요",
                                     value="빈칸(기본값)",
                                     choices=[*torch_command_mapping.keys()],
                                     interactive=True,
@@ -1548,6 +1555,13 @@ class Launcher(ABC):
                                     info="  Torch 버전을 선택하면 아래에 TORCH_COMMAND 환경 변수가 표시됩니다",
                                     # value=torch_command_mapping[torch_command_dropdown.value],
                                     interactive=False,
+                                )
+
+                                gr.Markdown(
+                                    """
+                                    > ⚠️ Torch 2.0.0 버전은 아직 공식 지원 버전이 아닙니다 
+                                    > ⚠️ 따라서 호환되지 않은 확장이 있을 수 있습니다
+                                    """
                                 )
 
                                 def resolve_torch_command(torch_command):
@@ -1600,7 +1614,7 @@ class Launcher(ABC):
 
                                 xformers_package_dropdown = gr.Dropdown(
                                     label="xFormers 버전",
-                                    info="  xFormers 패키지 버전을 선택해 주세요. 재설치 하려면 --reinstall-xformers 실행 인자를 사용해 주세요",
+                                    info="  xFormers 패키지 버전을 선택해 주세요. 재설치 하려면 --reinstall-xformers 실행 인자를 추가해 주세요",
                                     value="빈칸(기본값)",
                                     choices=[*xformers_package_mapping.keys()],
                                     interactive=True,
@@ -1664,9 +1678,9 @@ class Launcher(ABC):
                             )
                             gr.Markdown(
                                 f"""
-                                > 📝체크시: 가상 환경 venv 생성 => 🐢설치 속도 느림, 👍버전 호환성 좋음
-                                > 📝해제시: 코랩/런팟 기본 환경 사용 => 🐇설치 속도 빠름, ⚠️버전 호환성 나쁨
-                                {"> ⚠️단, 로컬은 가상 환경 사용이 강제" if self.force_virtualenv() else ''}
+                                > 📝 체크시: 가상 환경 venv 생성 => 🐢설치 속도 느림, 👍버전 호환성 좋음
+                                > 📝 해제시: 코랩/런팟 기본 환경 사용 => 🐇설치 속도 빠름, ⚠️버전 호환성 나쁨
+                                {"> ⚠️ 단, 로컬은 가상 환경 사용이 강제" if self.force_virtualenv() else ''}
                                 """
                             )
                     with gr.Column(scale=0.2):
@@ -1694,7 +1708,7 @@ class Launcher(ABC):
                 gr.Markdown(
                     """
                     # 5. 깃 저장소 설정
-                    [Web UI 깃 저장소](https://github.com/AUTOMATIC1111/stable-diffusion-webui.git)를 입력해 주세요.
+                    [SD Web UI 깃 저장소](https://github.com/AUTOMATIC1111/stable-diffusion-webui.git)를 입력해 주세요.
                     """
                 )
                 with gr.Row():
