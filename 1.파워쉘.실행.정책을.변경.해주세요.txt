@@ -1,0 +1,12 @@
+﻿# 처음 한번만 수행
+
+파워쉘(PowerShell) 터미널을 관리자 권한으로 열고,
+
+아래 명령어를 입력해 주세요.
+
+ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+그런 다음 "3.런처로.SD.Web.UI.실행.ps1" 파일을 마우스 우클릭 속성 -> 차단 해제해 주세요.
+
+참고 : 실행 정책 설명
+https://learn.microsoft.com/ko-kr/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1#remotesigned
