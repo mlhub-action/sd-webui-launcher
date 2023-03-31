@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.6"  # @param {type:"string"}
+VERSION = "v0.2.7"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, ⚠️보기 <font color="blue">편안</font>)
@@ -260,6 +260,9 @@ class Launcher(ABC):
 
         if not self.has_executable("gdown"):
             self.run("pip -q install gdown", check=True, live=True)
+
+        if not self.has_executable("GitPython"):
+            self.run("pip -q install GitPython", check=False, live=True)
 
     @staticmethod
     def is_installed(package):
@@ -670,6 +673,32 @@ class Launcher(ABC):
                 else False
             )
 
+        def commit_url_from(git_url, hash):
+            from urllib.parse import urljoin
+
+            git_url = git_url.rstrip("/")
+            return f"{urljoin(git_url, reponame_from(git_url))}/commit/{hash}"
+
+        def git_url_from(commit_url: str):
+            from urllib.parse import urljoin
+
+            return commit_url.rpartition("/commit/")[0]
+
+        def reponame_from(git_url):
+            from urllib.parse import urlparse, unquote
+            from pathlib import PurePath
+
+            git_url = git_url.rstrip("/")
+            return PurePath(unquote(urlparse(git_url).path)).stem  # .git
+
+        def filename_from(url, rstrip=True):
+            from urllib.parse import urlparse, unquote
+            from pathlib import PurePath
+
+            if rstrip:
+                url = url.rstrip("/")
+            return PurePath(unquote(urlparse(url).path)).name
+
         def on_execute_webui(
             workspace_googledrive,
             workspace_name,
@@ -833,17 +862,6 @@ class Launcher(ABC):
             """
             확장 다운로드
             """
-
-            def repositoryname(url):
-                from urllib.parse import urlparse
-
-                name = urlparse(url.rstrip("/")).path.rpartition("/")[2]
-                suffix = ".git"
-                if name.endswith(suffix):
-                    return name[: -len(suffix)]
-                else:
-                    return name
-
             for index, (name, url) in enumerate(
                 zip(extensions["이름"], extensions["주소"])
             ):
@@ -855,7 +873,7 @@ class Launcher(ABC):
                     total,
                     desc=f"확장 다운로드, 이름: {name}, 주소: {url}",
                 )
-                repository_path = Path(extensions_path, repositoryname(url))
+                repository_path = Path(extensions_path, reponame_from(url))
                 if not repository_path.exists():
                     self.run(
                         f'git -C "{extensions_path}" clone --recursive --depth=1 {url}'
@@ -1042,11 +1060,11 @@ class Launcher(ABC):
                 zip(extensions["이름"], extensions["주소"])
             ):
                 assert url
-                if repositoryname(url) == "ddetailer":
+                if reponame_from(url) == "ddetailer":
                     if apply_ddetailer_patches:
                         diff_path = Path(
                             extensions_path,
-                            repositoryname(url),
+                            reponame_from(url),
                             "deprecate_lib2to3.diff",
                         )
                         steps += 1
@@ -1152,7 +1170,7 @@ class Launcher(ABC):
                 - [최신 버전](https://github.com/mlhub-action/sd-webui-launcher)
                 - [이슈/버그 리포트](https://github.com/mlhub-action/sd-webui-launcher/issues)
                 > 💡 팁1: 인증 정보가 담긴 설정 파일을 다른 사람과 공유하지 마세요
-                {"> 💡 팁2: 설정을 settings/default_settings.json 파일에 저장하면 웹 페이지가 로드될 때 자동으로 가져옵니다" if self.is_support_load() else ''}
+                {"> 💡 팁2: 웹 페이지가 로드될 때 마지막 실행한 설정을 불러 옵니다" if self.is_support_load() else ''}
                 """
             )
 
@@ -1232,27 +1250,34 @@ class Launcher(ABC):
                 def favorite_tuple(markdown: str):
                     from bs4 import BeautifulSoup
 
-                    soup = BeautifulSoup(markdown, features="lxml")
-                    return soup.p.text.rstrip("⧉"), soup.a.get("href")
+                    try:
+                        soup = BeautifulSoup(markdown, features="lxml")
+                        return soup.p.text.rstrip("⧉"), soup.a.get("href")
+                    except Exception as error:
+                        message = "즐겨찾기 형식이 올바르지 않습니다"
+                        print(f"Launcher: {message}, error: {error}")
+                        return "", ""
 
                 def on_click_favorites(table, evt: gr.SelectData):
                     import pandas
 
                     name, url = favorite_tuple(evt.value[0])
+                    if url:
+                        print(f"Launcher: 즐겨찾기 추가 이름: {name} 주소: {url}")
 
-                    print(f"Launcher: 즐겨찾기 추가 이름: {name} 주소: {url}")
-
-                    exist = table.query(f'주소 == "{url}"')
-                    if len(exist.index.tolist()) > 0:
-                        return table
+                        exist = table.query(f'주소 == "{url}"')
+                        if len(exist.index.tolist()) > 0:
+                            return table
+                        else:
+                            empty = table.query(f'이름 == "" and 주소 == ""')
+                            table = table.drop(empty.index)
+                            favorite = pandas.DataFrame({"이름": [name], "주소": [url]})
+                            editable = pandas.DataFrame({"이름": [""], "주소": [""]})
+                            return pandas.concat(
+                                [table, favorite, editable], ignore_index=True
+                            )
                     else:
-                        empty = table.query(f'이름 == "" and 주소 == ""')
-                        table = table.drop(empty.index)
-                        favorite = pandas.DataFrame({"이름": [name], "주소": [url]})
-                        editable = pandas.DataFrame({"이름": [""], "주소": [""]})
-                        return pandas.concat(
-                            [table, favorite, editable], ignore_index=True
-                        )
+                        return gr.DataFrame.update()
 
                 with gr.Accordion("모델", open=True):
                     with gr.Row():
@@ -1314,6 +1339,7 @@ class Launcher(ABC):
                                 components=[gr.Markdown(visible=False)],
                                 label="즐겨찾기",
                                 samples=FAVORITES_EXTENSIONS,
+                                samples_per_page=10,
                             )
                             extensions_favorites.select(
                                 fn=on_click_favorites,
@@ -1727,30 +1753,114 @@ class Launcher(ABC):
                             interactive=True,
                         )
                     with gr.Column(scale=0.2):
-                        commit_favorites = gr.Dataset(
-                            components=[gr.Markdown(visible=False)],
-                            label="즐겨찾기",
-                            samples=FAVORITES_COMMITS,
-                        )
-
-                        def on_click_commit_favorites(evt: gr.SelectData):
-                            from urllib.parse import urlparse
-
-                            def filename(url):
-                                return urlparse(url.rstrip("/")).path.rpartition("/")[2]
-
-                            name, url = favorite_tuple(evt.value[0])
-                            commit = filename(url)
-                            print(f"Launcher: 커밋 해시 변경, 이름: {name} , 해시:{commit}")
-                            return gr.Text.update(
-                                value=commit, label=f"Commit hash - {name}"
+                        with gr.Tab("사전에 등록된"):
+                            commit_favorites = gr.Dataset(
+                                components=[gr.Markdown(visible=False)],
+                                label="즐겨찾기",
+                                samples=FAVORITES_COMMITS,
                             )
 
-                        commit_favorites.select(
-                            fn=on_click_commit_favorites,
-                            inputs=None,
-                            outputs=git_commit,
-                        )
+                            def on_click_commit_favorites(evt: gr.SelectData):
+                                name, commit_url = favorite_tuple(evt.value[0])
+                                commit = filename_from(commit_url)
+                                print(f"Launcher: 커밋 해시 변경, 이름: {name} , 해시:{commit}")
+                                return {
+                                    git_url: gr.Text.update(
+                                        value=git_url_from(commit_url)
+                                    ),
+                                    git_commit: gr.Text.update(
+                                        value=commit, label=f"Commit hash - {name}"
+                                    ),
+                                }
+
+                            commit_favorites.select(
+                                fn=on_click_commit_favorites,
+                                inputs=None,
+                                outputs=[git_url, git_commit],
+                            )
+
+                        with gr.Tab("최근 5일간 변경 내역") as commit_since5days_tab:
+                            commit_since5days = gr.Dataset(
+                                components=[gr.Markdown(visible=False)],
+                                label="즐겨찾기",
+                                samples=[[""]],
+                            )
+
+                            def on_click_commit_since5days(evt: gr.SelectData):
+                                name, commit_url = favorite_tuple(evt.value[0])
+                                if commit_url:
+                                    commit = filename_from(commit_url)
+                                    print(
+                                        f"Launcher: 커밋 해시 변경, 이름: {name} , 해시:{commit}"
+                                    )
+                                    return {
+                                        git_url: gr.Text.update(
+                                            value=git_url_from(commit_url)
+                                        ),
+                                        git_commit: gr.Text.update(
+                                            value=commit, label=f"Commit hash - {name}"
+                                        ),
+                                    }
+                                else:
+                                    return {
+                                        git_url: gr.Text.update(),
+                                        git_commit: gr.Text.update(),
+                                    }
+
+                            commit_since5days.select(
+                                fn=on_click_commit_since5days,
+                                inputs=None,
+                                outputs=[git_url, git_commit],
+                            )
+
+                            def on_select_commit_since5days_tab(git_url):
+
+                                try:
+                                    import git
+
+                                    if not sd_webui_path.exists():
+                                        samples = [[f"<p>다운로드 받은 저장소 없음</p>"]]
+                                    else:
+                                        repo = git.Repo(sd_webui_path)
+                                        repo.remotes.origin.fetch()
+                                        since5days = [
+                                            entry.split(" ", 2)
+                                            for entry in git.Git(sd_webui_path)
+                                            .log(
+                                                "--since=5.days",
+                                                "--format=%cd %H %s",
+                                                "--date=short",
+                                            )
+                                            .split("\n")
+                                        ]
+                                        if not since5days:
+                                            samples = [[f"<p>변경 내역 없음</p>"]]
+                                        else:
+                                            samples = list()
+                                            only_lastest_per_day = set()
+                                            for log in since5days:
+                                                (date, hash, msg) = log
+                                                if not date in only_lastest_per_day:
+                                                    only_lastest_per_day.add(date)
+                                                    samples.append(
+                                                        # Actual html markdown
+                                                        [
+                                                            f'<p>{date}<a href="{commit_url_from(repo.remotes.origin.url, hash)}" target="_blank">⧉</a></p>\n'
+                                                        ]
+                                                    )
+
+                                except Exception as error:
+                                    message = "변경 내역 가져오기 실패"
+                                    print(f"Launcher: 최근 5일간 {message}, {error}")
+                                    samples = [[f"<p>{message}</p>"]]
+
+                                return gr.Dataset.update(samples=samples)
+
+                            commit_since5days_tab.select(
+                                fn=on_select_commit_since5days_tab,
+                                inputs=git_url,
+                                outputs=commit_since5days,
+                            )
 
             settings = [
                 workspace_googledrive,
