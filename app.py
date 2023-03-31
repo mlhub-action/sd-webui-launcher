@@ -2070,7 +2070,7 @@ class LocalLauncher(WindowsPlatform):
         super().setup()
         from os import system
 
-        system("title " + "SD Web UI 런처")
+        system("title " + "SD Web UI 런처 127.0.0.1:7878")
 
     @staticmethod
     def working_dir():
