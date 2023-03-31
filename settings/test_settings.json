@@ -215,9 +215,8 @@
         "auth_password": "",
         "auth_token": ""
     },
-    "cmdline_args": "--xformers --update-all-extensions",
+    "cmdline_args": "--xformers --no-gradio-queue --update-all-extensions",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
-    "use_virtualenv": false,
-    "ddetailer_install_with_pip": true
+    "use_virtualenv": false
 }

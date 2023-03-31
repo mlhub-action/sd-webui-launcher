@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.5"  # @param {type:"string"}
+VERSION = "v0.2.6rc4"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시 : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, ⚠️보기 <font color="blue">편안</font>)
@@ -12,7 +12,7 @@ USE_GRADIO_LIVE = True  # @param {type:"boolean"}
 DEFAULT_SETTINGS = """
 {
     "workspace": {
-        "name": "userdata",
+        "name": "",
         "googledrive": false
     },
     "downloads": {
@@ -135,11 +135,11 @@ DEFAULT_SETTINGS = """
         "auth_password": "",
         "auth_token": ""
     },
-    "cmdline_args": "--xformers",
+    "cmdline_args": "--xformers --no-gradio-queue",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
     "use_virtualenv": false,
-    "ddetailer_install_with_pip": true
+    "apply_ddetailer_patches": true
 }
 """
 
@@ -213,23 +213,19 @@ FAVORITES_ARGS = [
 # @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
     [
+        "2023-03-29 gradio==3.23[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/22bcc7be428c94e9408f589966c2040187245d81)"
+    ],
+    [
         "2023-03-27 gradio==3.23[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/955df7751eef11bb7697e2d77f6b8a6226b21e13)"
     ],
     [
         "2023-03-25 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/a9eab236d7e8afa4d6205127904a385b2c43bb24)"
     ],
     [
-        "2023-03-24 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/280ed8f00fde0ece026339acdd42888ac4dc3167)"
-    ],
-    [
-        "2023-03-20 gradio==3.16.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/64fc936738d296f5eb2ff495006e298c2aeb51bf)"
-    ],
-    [
         "2023-02-11 fastapi==0.90.1[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/4f4debbadbf665c483416ee02e12c9b987765103)"
     ],
 ]
 # fmt: on
-
 
 import os
 import shutil
@@ -378,59 +374,65 @@ class Launcher(ABC):
             with open(filename, "r", encoding="utf8") as f:
                 settings = json.load(f)
 
-            return [
-                gr.Checkbox.update(
+            return {
+                workspace_googledrive: gr.Checkbox.update(
                     value=settings["workspace"].get("googledrive", False),
                 ),
-                gr.Text.update(
+                workspace_name: gr.Text.update(
                     value=settings["workspace"].get("name", None),
                 ),
-                gr.DataFrame.update(
+                extensions: gr.DataFrame.update(
                     value=settings["downloads"].get("extensions", None),
                 ),
-                gr.DataFrame.update(
+                controlnet_models: gr.DataFrame.update(
                     value=settings["downloads"].get("controlnet_models", None),
                 ),
-                gr.DataFrame.update(
+                models: gr.DataFrame.update(
                     value=settings["downloads"].get("models", None),
                 ),
-                gr.DataFrame.update(
+                loras: gr.DataFrame.update(
                     value=settings["downloads"].get("loras", None),
                 ),
-                gr.DataFrame.update(
+                embeddings: gr.DataFrame.update(
                     value=settings["downloads"].get("embeddings", None),
                 ),
-                gr.DataFrame.update(
+                vaes: gr.DataFrame.update(
                     value=settings["downloads"].get("vaes", None),
                 ),
-                gr.Text.update(
+                auth_method: gr.Text.update(
                     value=settings["authentication"].get("auth_method", None),
                 ),
-                gr.Text.update(
+                auth_username: gr.Text.update(
                     value=settings["authentication"].get("auth_username", None),
                 ),
-                gr.Text.update(
+                auth_password: gr.Text.update(
                     value=settings["authentication"].get("auth_password", None),
                 ),
-                gr.Text.update(
+                auth_token: gr.Text.update(
                     value=settings["authentication"].get("auth_token", None),
                 ),
-                gr.Text.update(
+                extra_cmdline_args: gr.Text.update(
                     value=settings.get("cmdline_args", None),
                 ),
-                gr.Text.update(
-                    value=settings.get("git_url", None),
+                torch_command: gr.Text.update(
+                    value=settings.get("torch_command", None),
                 ),
-                gr.Text.update(
-                    value=settings.get("git_commit", None),
+                xformers_package: gr.Text.update(
+                    value=settings.get("xformers_package", None),
                 ),
-                gr.Checkbox.update(
+                use_virtualenv: gr.Checkbox.update(
                     value=settings.get("use_virtualenv", False),
                 ),
-                gr.Checkbox.update(
-                    value=settings.get("ddetailer_install_with_pip", True),
+                git_url: gr.Text.update(
+                    value=settings.get("git_url", None),
                 ),
-            ]
+                git_commit: gr.Text.update(
+                    value=settings.get("git_commit", None),
+                ),
+                apply_ddetailer_patches: gr.Checkbox.update(
+                    value=settings.get("apply_ddetailer_patches", True),
+                ),
+            }
 
         def on_default_settings():
             filepath = Path("settings", "default_settings.json")
@@ -440,16 +442,37 @@ class Launcher(ABC):
                 with open(filepath, "w", encoding="utf8") as f:
                     f.write(DEFAULT_SETTINGS)
 
-            return load_settings(filepath) + [
-                gr.File.update(label="디폴트 설정 파일", value=filepath, visible=True)
-            ]
+            return {
+                **load_settings(filepath),
+                settings_file: gr.File.update(
+                    label="디폴트 설정 파일", value=filepath, visible=True
+                ),
+            }
 
         def on_import_settings(filewrap):
             filepath = filewrap.name
             print(f'Launcher: 설정 가져오기, "{filepath}"')
-            return load_settings(filepath) + [
-                gr.File.update(label="가져온 설정 파일", value=filepath, visible=True)
-            ]
+
+            return {
+                **load_settings(filepath),
+                settings_file: gr.File.update(
+                    label="가져온 설정 파일", value=filepath, visible=True
+                ),
+            }
+
+        def on_load_last_settings():
+            filepath = Path("settings", "last_settings.json")
+            if not filepath.exists():
+                return {settings_file: gr.File.update(visible=False)}
+
+            print(f'Launcher: 마지막 실행한 설정 불러오기, "{filepath}"')
+
+            return {
+                **load_settings(filepath),
+                settings_file: gr.File.update(
+                    label="불러온 설정 파일", value=filepath, visible=True
+                ),
+            }
 
         def save_settings(
             filepath,
@@ -466,10 +489,12 @@ class Launcher(ABC):
             auth_password,
             auth_token,
             extra_cmdline_args,
+            torch_command,
+            xformers_package,
+            use_virtualenv,
             git_url,
             git_commit,
-            use_virtualenv,
-            ddetailer_install_with_pip,
+            apply_ddetailer_patches,
         ):
             import json
 
@@ -495,101 +520,30 @@ class Launcher(ABC):
                             "auth_token": gr.Text(auth_token).value,
                         },
                         "cmdline_args": gr.Text(extra_cmdline_args).value,
+                        "torch_command": gr.Text(torch_command).value,
+                        "xformers_package": gr.Text(xformers_package).value,
+                        "use_virtualenv": use_virtualenv,
                         "git_url": gr.Text(git_url).value,
                         "git_commit": gr.Text(git_commit).value,
-                        "use_virtualenv": use_virtualenv,
-                        "ddetailer_install_with_pip": ddetailer_install_with_pip,
+                        "apply_ddetailer_patches": apply_ddetailer_patches,
                     },
                     f,
                     ensure_ascii=False,
+                    indent=4,
                 )
 
-        def on_export_settings(
-            workspace_googledrive,
-            workspace_name,
-            extensions,
-            controlnet_models,
-            models,
-            loras,
-            embeddings,
-            vaes,
-            auth_method,
-            auth_username,
-            auth_password,
-            auth_token,
-            extra_cmdline_args,
-            git_url,
-            git_commit,
-            use_virtualenv,
-            ddetailer_install_with_pip,
-        ):
+        def on_export_settings(*settings):
             filepath = Path("settings", "my_settings.json")
             print(f'Launcher: 설정 내보내기, "{filepath}"')
             filepath.parent.mkdir(parents=True, exist_ok=True)
-            save_settings(
-                filepath,
-                workspace_googledrive,
-                workspace_name,
-                extensions,
-                controlnet_models,
-                models,
-                loras,
-                embeddings,
-                vaes,
-                auth_method,
-                auth_username,
-                auth_password,
-                auth_token,
-                extra_cmdline_args,
-                git_url,
-                git_commit,
-                use_virtualenv,
-                ddetailer_install_with_pip,
-            )
+            save_settings(filepath, *settings)
             return gr.File.update(label="내보낸 설정 파일", value=filepath, visible=True)
 
-        def on_execute_settings(
-            workspace_googledrive,
-            workspace_name,
-            extensions,
-            controlnet_models,
-            models,
-            loras,
-            embeddings,
-            vaes,
-            auth_method,
-            auth_username,
-            auth_password,
-            auth_token,
-            extra_cmdline_args,
-            git_url,
-            git_commit,
-            use_virtualenv,
-            ddetailer_install_with_pip,
-        ):
+        def on_execute_settings(*settings):
             filepath = Path("settings", "last_settings.json")
             print(f'Launcher: 설정 내보내기, "{filepath}"')
             filepath.parent.mkdir(parents=True, exist_ok=True)
-            save_settings(
-                filepath,
-                workspace_googledrive,
-                workspace_name,
-                extensions,
-                controlnet_models,
-                models,
-                loras,
-                embeddings,
-                vaes,
-                auth_method,
-                auth_username,
-                auth_password,
-                auth_token,
-                extra_cmdline_args,
-                git_url,
-                git_commit,
-                use_virtualenv,
-                ddetailer_install_with_pip,
-            )
+            save_settings(filepath, *settings)
             return gr.File.update(label="마지막 설정 파일", value=filepath, visible=True)
 
         def on_change_workspace(workspace, googledrive):
@@ -710,7 +664,11 @@ class Launcher(ABC):
             return cmdline_args
 
         def has_extension_settings(extensions, name):
-            return not [url for url in extensions["주소"].values if name in url]
+            return (
+                True
+                if [url for url in extensions["주소"].values if name in url]
+                else False
+            )
 
         def on_execute_webui(
             workspace_googledrive,
@@ -726,10 +684,12 @@ class Launcher(ABC):
             auth_password,
             auth_token,
             extra_cmdline_args,
+            torch_command,
+            xformers_package,
+            use_virtualenv,
             git_url,
             git_commit,
-            use_virtualenv,
-            ddetailer_install_with_pip,
+            apply_ddetailer_patches,
             progress=lambda x, desc: "",  # gr.Blocks.queue 사용시 응답이 느려서 gr.Progress 대신 콘솔창에 출력
         ):
             def update_progress(progress, steps, total, desc):
@@ -761,16 +721,13 @@ class Launcher(ABC):
             include_controlnet = has_extension_settings(
                 extensions, "sd-webui-controlnet"
             )
+
             if include_controlnet:
                 total += controlnet_models.count()["주소"]
 
             include_ddetailer = has_extension_settings(extensions, "ddetailer")
             if include_ddetailer:
-                total += ddetailer_install_with_pip
-
-            # TODO : 선택 옵션으로 제공
-            apply_ddetailer_patches = True
-            total += include_ddetailer and apply_ddetailer_patches
+                total += apply_ddetailer_patches
 
             models = models.drop(models.query(f'주소 == ""').index)
             total += models.count()["주소"]
@@ -1063,49 +1020,29 @@ class Launcher(ABC):
                 python_path = "python"
                 webui_environ = self.environ.copy()
 
+            # Repect SD Web UI default
+            if torch_command:
+                webui_environ["TORCH_COMMAND"] = torch_command
+
+            # Repect SD Web UI default
+            if xformers_package:
+                webui_environ["XFORMERS_PACKAGE"] = xformers_package
+
+            def torch_cuda_version(torch_command):
+                import re
+
+                pattern = re.compile(
+                    r"pip\s+install\s+torch==([0-9]+\.[0-9]+\.[0-9]+)\+cu(\d\d\d)\s+.*",
+                    re.IGNORECASE,
+                )
+                return pattern.match(torch_command)
+
             # Patch extensions dependencies
             for index, (name, url) in enumerate(
                 zip(extensions["이름"], extensions["주소"])
             ):
                 assert url
                 if repositoryname(url) == "ddetailer":
-                    if ddetailer_install_with_pip:
-                        steps += 1
-                        update_progress(
-                            progress,
-                            steps,
-                            total,
-                            desc=f"{repositoryname(url)} 확장 의존 패키지 설치",
-                        )
-
-                        # try install with pip
-                        # https://mmcv.readthedocs.io/en/latest/get_started/installation.html#install-with-pipv
-                        try:
-                            torch_version = "torch" + self.run(
-                                f'"{python_path}" -c \'import torch;print(torch.__version__[0:4], end="");\'',
-                                check=True,
-                                live=False,
-                            )
-                            cuda_version = "cu" + self.run(
-                                f'"{python_path}" -c \'import torch;print(torch.version.cuda.replace(".","")[0:3], end="");\'',
-                                check=True,
-                                live=False,
-                            )
-
-                        except RuntimeError:  # re-raise ModuleNotFoundError
-                            torch_version = "torch1.13"
-                            cuda_version = "cu117"
-
-                        try:
-                            self.run(
-                                f'"{python_path}" -m pip -q install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/{cuda_version}/{torch_version}/index.html',
-                                check=False,
-                                live=True,
-                            )
-                        except:
-                            # Fallback install from source
-                            pass
-
                     if apply_ddetailer_patches:
                         diff_path = Path(
                             extensions_path,
@@ -1357,15 +1294,15 @@ class Launcher(ABC):
                                     interactive=True,
                                 )
                             with gr.Tab("Detection Detailer") as ddetailer_tab:
-                                ddetailer_install_with_pip = gr.Checkbox(
-                                    label="미리 빌드된 의존성 패키지 설치",
+                                apply_ddetailer_patches = gr.Checkbox(
+                                    label="설치 문제 패치 적용",
                                     info="기본값, 체크",
                                     value=True,
                                 )
                                 gr.Markdown(
                                     """
-                                    > 📝체크시: mmcv-full 패키지를 pip로 설치 => 🐇설치 속도 빠름, ⚠️버전 호환성 나쁨
-                                    > 📝해제시: mmcv-full 소스 코드로 빌드/설치 =🐢설치 속도 느림, 👍전호환성 좋음
+                                    > 📝체크시: No module named 'lib2to3' 문제 해결 => ⚠️버전 호환성 나쁨
+                                    > 📝해제시: 패치 안함 => 👍버전 호환성 좋음
                                     """
                                 )
                         with gr.Column(scale=0.2):
@@ -1586,6 +1523,139 @@ class Launcher(ABC):
                                 ],
                                 outputs=cmdline_args,
                             )
+                        with gr.Tab("(선택) Torch+xFormers"):
+                            with gr.Box():
+                                # https://pytorch.org/get-started/locally/
+                                torch_command_mapping = {
+                                    "빈칸(기본값)": "",
+                                    "1.13.1+cu116": "pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116",
+                                    "1.13.1+cu117": "pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117",
+                                    "2.0.0+cu118": "pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118",
+                                    "직접 입력": "",
+                                }
+
+                                torch_command_dropdown = gr.Dropdown(
+                                    label="Torch 버전",
+                                    info="  Torch 버전을 선택해 주세요. 재설치 하려면 --reinstall-torch 실행 인자를 사용해 주세요",
+                                    value="빈칸(기본값)",
+                                    choices=[*torch_command_mapping.keys()],
+                                    interactive=True,
+                                )
+
+                                torch_command = gr.Text(
+                                    elem_id="info-box",
+                                    label="TORCH_COMMAND",
+                                    info="  Torch 버전을 선택하면 아래에 TORCH_COMMAND 환경 변수가 표시됩니다",
+                                    # value=torch_command_mapping[torch_command_dropdown.value],
+                                    interactive=False,
+                                )
+
+                                def resolve_torch_command(torch_command):
+                                    if not torch_command:
+                                        for (
+                                            key,
+                                            value,
+                                        ) in torch_command_mapping.items():
+                                            if "기본값" in key:
+                                                break
+                                        return key, value
+                                    else:
+                                        for (
+                                            key,
+                                            value,
+                                        ) in torch_command_mapping.items():
+                                            if torch_command == value:
+                                                break
+                                        return key, value
+
+                                def on_change_torch_command(torch_command):
+                                    key, value = resolve_torch_command(torch_command)
+                                    return gr.Dropdown.update(value=key)
+
+                                torch_command.change(
+                                    fn=on_change_torch_command,
+                                    inputs=torch_command,
+                                    outputs=torch_command_dropdown,
+                                )
+
+                                def on_select_torch_command(evt: gr.SelectData):
+                                    value = torch_command_mapping[evt.value]
+                                    return gr.Text.update(
+                                        value=value, interactive=not value
+                                    )
+
+                                torch_command_dropdown.select(
+                                    fn=on_select_torch_command,
+                                    inputs=None,
+                                    outputs=torch_command,
+                                )
+                            with gr.Box():
+                                # https://pypi.org/project/xformers/#history
+                                xformers_package_mapping = {
+                                    "빈칸(기본값)": "",
+                                    "0.0.16rc425": "xformers==0.0.16rc425",
+                                    "0.0.17(torch2.0.0 필요)": "xformers==0.0.17",
+                                    "직접 입력": "",
+                                }
+
+                                xformers_package_dropdown = gr.Dropdown(
+                                    label="xFormers 버전",
+                                    info="  xFormers 패키지 버전을 선택해 주세요. 재설치 하려면 --reinstall-xformers 실행 인자를 사용해 주세요",
+                                    value="빈칸(기본값)",
+                                    choices=[*xformers_package_mapping.keys()],
+                                    interactive=True,
+                                )
+
+                                xformers_package = gr.Text(
+                                    elem_id="info-box",
+                                    label="XFORMERS_PACKAGE",
+                                    info="  xFormers 패키지 버전을 선택하면 아래에 XFORMERS_PACKAGE 환경 변수가 표시됩니다",
+                                    # value=xformers_package_mapping[xformers_package_dropdown.value],
+                                    interactive=False,
+                                )
+
+                                def resolve_xformers_package(xformers_package):
+                                    if not xformers_package:
+                                        for (
+                                            key,
+                                            value,
+                                        ) in xformers_package_mapping.items():
+                                            if "기본값" in key:
+                                                break
+                                        return key, value
+                                    else:
+                                        for (
+                                            key,
+                                            value,
+                                        ) in xformers_package_mapping.items():
+                                            if xformers_package == value:
+                                                break
+                                        return key, value
+
+                                def on_change_xformers_command(xformers_package):
+                                    key, value = resolve_xformers_package(
+                                        xformers_package
+                                    )
+                                    return gr.Dropdown.update(value=key)
+
+                                xformers_package.change(
+                                    fn=on_change_xformers_command,
+                                    inputs=xformers_package,
+                                    outputs=xformers_package_dropdown,
+                                )
+
+                                def on_select_xformers_command(evt: gr.SelectData):
+                                    value = xformers_package_mapping[evt.value]
+                                    return gr.Text.update(
+                                        value=value, interactive=not value
+                                    )
+
+                                xformers_package_dropdown.select(
+                                    fn=on_select_xformers_command,
+                                    inputs=None,
+                                    outputs=xformers_package,
+                                )
+
                         with gr.Tab("(선택) 가상 환경"):
                             use_virtualenv = gr.Checkbox(
                                 label="Python 가상 환경 venv 사용",
@@ -1682,28 +1752,30 @@ class Launcher(ABC):
                 auth_password,
                 auth_token,
                 extra_cmdline_args,
+                torch_command,
+                xformers_package,
+                use_virtualenv,
                 git_url,
                 git_commit,
-                use_virtualenv,
-                ddetailer_install_with_pip,
+                apply_ddetailer_patches,
             ]
 
             default_settings.click(
                 fn=on_default_settings,
                 inputs=None,
-                outputs=settings + [settings_file],
+                outputs=[*settings, settings_file],
             )
 
             import_settings.upload(
                 fn=on_import_settings,
                 inputs=import_settings,
-                outputs=settings + [settings_file],
+                outputs=[*settings, settings_file],
             )
 
             settings_file.upload(
                 fn=on_import_settings,
                 inputs=settings_file,
-                outputs=settings + [settings_file],
+                outputs=[*settings, settings_file],
             )
 
             export_settings.click(
@@ -1761,11 +1833,11 @@ class Launcher(ABC):
                 outputs=progress,
             )
 
-            # gr.Accordion이 모두 open 되어 있어야만 호출됨, LocalLauncher에서만 기본 설정값 로드
+            # gr.Accordion이 모두 open 되어 있어야만 호출됨, LocalLauncher에서만 마지막 실행한 설정 값 로드
             demo.load(
-                fn=on_default_settings,
+                fn=on_load_last_settings,
                 inputs=None,
-                outputs=settings + [settings_file],
+                outputs=[*settings, settings_file],
             )
 
         demo.launch(
@@ -1945,12 +2017,19 @@ class RunPodLauncher(LinuxPlatform):
     def setup(self):
         super().setup()
 
-        # For ddetailer extension
         self.run(
-            "apt-get install -qq -y libgl1 libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
+            "apt-get install -qq -y libgl1",
             check=True,
             live=True,
         )
+
+        # For ddetailer extension, mmcv, mmdet dependency
+        self.run(
+            "apt-get install -qq -y libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
+            check=True,
+            live=True,
+        )
+        # And
         self.run(
             "pip install -q --upgrade pip setuptools wheel",
             check=True,
