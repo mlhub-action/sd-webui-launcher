@@ -1237,6 +1237,11 @@ class Launcher(ABC):
                             inputs=[workspace_name, workspace_googledrive],
                             outputs=[workspace_path, workspace_tooltip],
                         )
+                        workspace_name.submit(
+                            fn=on_change_workspace,
+                            inputs=[workspace_name, workspace_googledrive],
+                            outputs=[workspace_path, workspace_tooltip],
+                        )
 
             with gr.Box():
                 gr.Markdown(
