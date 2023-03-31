@@ -138,7 +138,8 @@ DEFAULT_SETTINGS = """
     "cmdline_args": "--xformers --no-gradio-queue",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
-    "use_virtualenv": false
+    "use_virtualenv": false,
+    "apply_ddetailer_patches": true
 }
 """
 
@@ -428,6 +429,9 @@ class Launcher(ABC):
                 git_commit: gr.Text.update(
                     value=settings.get("git_commit", None),
                 ),
+                apply_ddetailer_patches: gr.Checkbox.update(
+                    value=settings.get("apply_ddetailer_patches", True),
+                ),
             }
 
         def on_default_settings():
@@ -490,6 +494,7 @@ class Launcher(ABC):
             use_virtualenv,
             git_url,
             git_commit,
+            apply_ddetailer_patches,
         ):
             import json
 
@@ -520,6 +525,7 @@ class Launcher(ABC):
                         "use_virtualenv": use_virtualenv,
                         "git_url": gr.Text(git_url).value,
                         "git_commit": gr.Text(git_commit).value,
+                        "apply_ddetailer_patches": apply_ddetailer_patches,
                     },
                     f,
                     ensure_ascii=False,
@@ -683,6 +689,7 @@ class Launcher(ABC):
             use_virtualenv,
             git_url,
             git_commit,
+            apply_ddetailer_patches,
             progress=lambda x, desc: "",  # gr.Blocks.queue 사용시 응답이 느려서 gr.Progress 대신 콘솔창에 출력
         ):
             def update_progress(progress, steps, total, desc):
@@ -717,6 +724,10 @@ class Launcher(ABC):
 
             if include_controlnet:
                 total += controlnet_models.count()["주소"]
+
+            include_ddetailer = has_extension_settings(extensions, "ddetailer")
+            if include_ddetailer:
+                total += apply_ddetailer_patches
 
             models = models.drop(models.query(f'주소 == ""').index)
             total += models.count()["주소"]
@@ -1026,6 +1037,36 @@ class Launcher(ABC):
                 )
                 return pattern.match(torch_command)
 
+            # Patch extensions dependencies
+            for index, (name, url) in enumerate(
+                zip(extensions["이름"], extensions["주소"])
+            ):
+                assert url
+                if repositoryname(url) == "ddetailer":
+                    if apply_ddetailer_patches:
+                        diff_path = Path(
+                            extensions_path,
+                            repositoryname(url),
+                            "deprecate_lib2to3.diff",
+                        )
+                        steps += 1
+                        update_progress(
+                            progress,
+                            steps,
+                            total,
+                            desc=f"확장 패치 적용, {diff_path}",
+                        )
+
+                        self.run(
+                            f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
+                        )
+                        self.run(
+                            f'patch -N -d "{diff_path.parent}" -p1 < "{diff_path}" || true',
+                            check=False,
+                        )
+                    break
+                time.sleep(0.5)
+
             """
             SD Web UI 실행 시작
             """
@@ -1251,6 +1292,18 @@ class Launcher(ABC):
                                     row_count=3,
                                     col_count=(2, "fixed"),
                                     interactive=True,
+                                )
+                            with gr.Tab("Detection Detailer") as ddetailer_tab:
+                                apply_ddetailer_patches = gr.Checkbox(
+                                    label="설치 문제 패치 적용",
+                                    info="기본값, 체크",
+                                    value=True,
+                                )
+                                gr.Markdown(
+                                    """
+                                    > 📝체크시: No module named 'lib2to3' 문제 해결 => ⚠️버전 호환성 나쁨
+                                    > 📝해제시: 패치 안함 => 👍버전 호환성 좋음
+                                    """
                                 )
                         with gr.Column(scale=0.2):
                             gr.Markdown(
@@ -1704,6 +1757,7 @@ class Launcher(ABC):
                 use_virtualenv,
                 git_url,
                 git_commit,
+                apply_ddetailer_patches,
             ]
 
             default_settings.click(
