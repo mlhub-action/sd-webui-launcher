@@ -661,7 +661,7 @@ class Launcher(ABC):
                 if not "--ui-config-file" in override_args:
                     cmdline_args += [f'--ui-config-file "{ui_config_path}"']
                 if not "--ui-settings-file" in override_args:
-                    cmdline_args += [f'--ui-settings-file "{ui_config_path}"']
+                    cmdline_args += [f'--ui-settings-file "{ui_settings_path}"']
 
             cmdline_args += [f"{extra_args}"]
 
