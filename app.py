@@ -826,10 +826,9 @@ class Launcher(ABC):
                     f'git -C "{sd_webui_path.parent}" clone {git_url} {sd_webui_path.name}',
                     check=True,
                 )
-            else:
-                self.run(f'git -C "{sd_webui_path}" fetch origin master')
 
             if git_commit:
+                self.run(f'git -C "{sd_webui_path}" fetch origin master')
                 self.run(f'git -C "{sd_webui_path}" checkout {git_commit}')
             else:
                 self.run(f'git -C "{sd_webui_path}" pull origin master')
