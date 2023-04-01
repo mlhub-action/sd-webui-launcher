@@ -359,7 +359,7 @@ class Launcher(ABC):
 
     @staticmethod
     @abstractmethod
-    def python_path(venv_path):
+    def python_path(venv_path=None):
         pass
 
     @staticmethod
@@ -1115,27 +1115,32 @@ class Launcher(ABC):
                 )
 
                 venv_path = Path(sd_webui_path, "venv")
-                self.run(
-                    f'python -m venv "{venv_path}" --without-pip',
-                    check=True,
-                )
+                if not venv_path.exists():
+                    self.run(
+                        f'python -m venv "{venv_path}" --without-pip',
+                        check=True,
+                    )
 
                 python_path = self.python_path(venv_path)
+            else:
+                python_path = self.python_path()
 
-                webui_environ = self.environ.copy()
-                webui_environ["PATH"] = (
-                    str(python_path.parent) + os.pathsep + webui_environ["PATH"]
-                )
+            webui_environ = self.environ.copy()
+            webui_environ["PATH"] = (
+                str(python_path.parent) + os.pathsep + webui_environ["PATH"]
+            )
 
+            pip_path = python_path.with_stem("pip")
+            if not pip_path.exists():
                 # curl https://bootstrap.pypa.io/get-pip.py 방법은 SSL certificate 문제가 있음
                 self.run(
                     f'"{python_path}" -m ensurepip --upgrade',
                     check=True,
                     env=webui_environ,
                 )
-            else:
-                python_path = "python"
-                webui_environ = self.environ.copy()
+                self.run(
+                    f'"{python_path}" -m pip --help', check=True, env=webui_environ
+                )
 
             # Repect SD Web UI default
             if torch_command:
@@ -2125,8 +2130,11 @@ class LinuxPlatform(Launcher):
         return "/usr/bin/bash"
 
     @staticmethod
-    def python_path(venv_path):
-        return Path(venv_path, "bin", "python")
+    def python_path(venv_path=None):
+        if venv_path:
+            return Path(venv_path, "bin", "python")
+        else:
+            return Path(shutil.which("python"))
 
 
 class WindowsPlatform(Launcher):
@@ -2199,8 +2207,11 @@ class WindowsPlatform(Launcher):
         return str(Path(shutil.which("bash", path=path)))
 
     @staticmethod
-    def python_path(venv_path):
-        return Path(venv_path, "Scripts", "python.exe")
+    def python_path(venv_path=None):
+        if venv_path:
+            return Path(venv_path, "Scripts", "python.exe")
+        else:
+            return Path(shutil.which("python"))
 
 
 class ColabLauncher(LinuxPlatform):
