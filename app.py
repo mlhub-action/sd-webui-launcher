@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.9"  # @param {type:"string"}
+VERSION = "v0.3.0"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
@@ -1095,8 +1095,9 @@ class Launcher(ABC):
                     str(python_path.parent) + os.pathsep + webui_environ["PATH"]
                 )
 
+                # curl https://bootstrap.pypa.io/get-pip.py 방법은 SSL certificate 문제가 있음
                 self.run(
-                    f'curl https://bootstrap.pypa.io/get-pip.py | "{python_path}"',
+                    f'"{python_path}" -m ensurepip --upgrade',
                     check=True,
                     env=webui_environ,
                 )
