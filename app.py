@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.8"  # @param {type:"string"}
+VERSION = "v0.2.9"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
@@ -935,6 +935,28 @@ class Launcher(ABC):
             """
             if userdata and copy_extensions_config:
                 steps += 1
+                extensions_path_target = Path(userdata_path, "extensions")
+                assert extensions_path_target != extensions_path
+
+                import glob
+
+                # 하위 경로의 모든 json 파일 복사
+                for file in glob.glob(
+                    str(Path(extensions_path_target, "**/*.json")),
+                    recursive=True,
+                ):
+                    src = Path(file).absolute()
+                    rel = src.relative_to(extensions_path_target)
+                    dst = Path(extensions_path, rel).absolute()
+
+                    update_progress(
+                        progress,
+                        steps,
+                        total,
+                        desc=f"확장 설정 파일 복사, 경로: {src} -> {dst}",
+                    )
+                    shutil.copyfile(src, dst)
+
                 for index, (name, url) in enumerate(
                     zip(extensions["이름"], extensions["주소"])
                 ):
@@ -961,29 +983,6 @@ class Launcher(ABC):
                             )
                             shutil.copytree(src, dst, dirs_exist_ok=True)
 
-                        # 단순 복사
-                        else:
-                            extensions_path_target = Path(userdata_path, "extensions")
-                            assert extensions_path_target != extensions_path
-
-                            import glob
-
-                            # 하위 경로의 모든 json 파일 복사
-                            for file in glob.glob(
-                                str(Path(extensions_path_target, "**/*.json")),
-                                recursive=True,
-                            ):
-                                src = Path(file).absolute()
-                                rel = src.relative_to(extensions_path_target)
-                                dst = Path(extensions_path, rel).absolute()
-
-                                update_progress(
-                                    progress,
-                                    steps,
-                                    total,
-                                    desc=f"확장 설정 파일 복사, 이름: {reponame}, 경로: {src} -> {dst}",
-                                )
-                                shutil.copyfile(src, dst)
                     time.sleep(0.1)
 
             """
