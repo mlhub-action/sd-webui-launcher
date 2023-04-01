@@ -239,6 +239,7 @@ import logging
 import logging.handlers
 
 logger = logging.getLogger("Launcher")
+logger.setLevel(logging.INFO)
 
 
 class Launcher(ABC):
@@ -247,43 +248,46 @@ class Launcher(ABC):
 
     def setup(self):
         global logger
-        logging_level = logging.INFO
-        logging_fmt = "%(message)s"
         try:
-            root_logger = logging.getLogger()
-            root_logger.setLevel(logging_level)
-            root_handler = root_logger.handlers[0]
-            root_handler.setFormatter(logging.Formatter(logging_fmt))
+            console_log_lvl = logging.INFO
+            console_log_fmt = "%(message)s"
+            if not logger.handlers:
+                if self.service_type() != "노트북":
+                    # 노트북에서는 콘솔 로그가 두번 출력되지 않도록 핸들러를 등록하지 않음
+                    console_handler = logging.StreamHandler(sys.stdout)
+                    console_handler.setLevel(console_log_lvl)
+                    console_handler.setFormatter(logging.Formatter(console_log_fmt))
+                    logger.addHandler(console_handler)
+                else:
+                    root_logger = logging.getLogger()
+                    root_logger.setLevel(console_log_lvl)
+                    root_handler = root_logger.handlers[0]
+                    root_handler.setFormatter(logging.Formatter(console_log_fmt))
+
+                log_filename = Path("log", "launcher.log")
+                log_filename.parent.mkdir(parents=True, exist_ok=True)
+                file_handler = logging.handlers.RotatingFileHandler(
+                    log_filename, maxBytes=(1024 * 512), backupCount=3, encoding="utf8"
+                )
+                file_handler.setFormatter(
+                    logging.Formatter(
+                        "%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s",
+                        datefmt="%Y-%m-%dT%H:%M:%S",
+                    )
+                )
+                file_handler.setLevel(logging.DEBUG)
+                logger.addHandler(file_handler)
+
+            # 노트북 재실행할 경우 terminator 복구
+            for handler in (
+                logging.getLogger("Launcher").handlers + logging.getLogger().handlers
+            ):
+                handler.terminator = "\n"
+
         except IndexError:
-            if self.service_type() == "노트북":
-                logging.basicConfig(
-                    level=logging_level, format=logging_fmt, encoding="utf8"
-                )
-
-        for handler in logger.handlers:
-            handler.terminator = "\n"
-
-        if not logger.handlers:
-            log_filename = Path("log", "launcher.log")
-            log_filename.parent.mkdir(parents=True, exist_ok=True)
-            file_handler = logging.handlers.RotatingFileHandler(
-                log_filename, maxBytes=(1024 * 512), backupCount=3, encoding="utf8"
+            logging.basicConfig(
+                level=console_log_lvl, format=console_log_fmt, encoding="utf8"
             )
-            file_handler.setFormatter(
-                logging.Formatter(
-                    "%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s",
-                    datefmt="%Y-%m-%dT%H:%M:%S",
-                )
-            )
-            file_handler.setLevel(logging.DEBUG)
-            logger.addHandler(file_handler)
-
-            # 노트북에서는 콘솔 로그가 두번 출력되는 문제
-            if self.service_type() != "노트북":
-                console_handler = logging.StreamHandler(sys.stdout)
-                console_handler.setFormatter(logging.Formatter("%(message)s"))
-                console_handler.setLevel(logging.INFO)
-                logger.addHandler(console_handler)
 
         try:
             if SUPPORT_LAUNCHER_NGROK and not self.is_installed("pyngrok"):
@@ -1262,7 +1266,10 @@ class Launcher(ABC):
                 cwd=sd_webui_path,
                 env=webui_environ,
             ) as proc:
-                for handler in logger.handlers:
+                for handler in (
+                    logging.getLogger("Launcher").handlers
+                    + logging.getLogger().handlers
+                ):
                     handler.terminator = ""
                 for line in proc.stdout:
                     logger.info("SDWebUI: " + line)
