@@ -239,33 +239,6 @@ import logging
 import logging.handlers
 
 logger = logging.getLogger("Launcher")
-logger.setLevel(logging.DEBUG)
-log_formatter = logging.Formatter(
-    "%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s", datefmt="%Y-%m-%dT%H:%M:%S"
-)
-
-for handler in logger.handlers:
-    handler.terminator = "\n"
-
-if not logger.handlers:
-    log_filename = Path("log", "launcher.log")
-    log_filename.parent.mkdir(parents=True, exist_ok=True)
-    file_handler = logging.handlers.RotatingFileHandler(
-        log_filename, maxBytes=(1024 * 512), backupCount=3, encoding="utf-8"
-    )
-    file_handler.setFormatter(
-        logging.Formatter(
-            "%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s",
-            datefmt="%Y-%m-%dT%H:%M:%S",
-        )
-    )
-    file_handler.setLevel(logging.DEBUG)
-    logger.addHandler(file_handler)
-
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(logging.Formatter("%(message)s"))
-    console_handler.setLevel(logging.INFO)
-    logger.addHandler(console_handler)
 
 
 class Launcher(ABC):
@@ -273,6 +246,33 @@ class Launcher(ABC):
         self.environ = os.environ.copy()
 
     def setup(self):
+        logger.setLevel(logging.DEBUG)
+
+        for handler in logger.handlers:
+            handler.terminator = "\n"
+
+        if not logger.handlers:
+            log_filename = Path("log", "launcher.log")
+            log_filename.parent.mkdir(parents=True, exist_ok=True)
+            file_handler = logging.handlers.RotatingFileHandler(
+                log_filename, maxBytes=(1024 * 512), backupCount=3, encoding="utf-8"
+            )
+            file_handler.setFormatter(
+                logging.Formatter(
+                    "%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s",
+                    datefmt="%Y-%m-%dT%H:%M:%S",
+                )
+            )
+            file_handler.setLevel(logging.DEBUG)
+            logger.addHandler(file_handler)
+
+            # 노트북에서는 콘솔 로그가 두번 출력되는 문제
+            if self.service_type() != "노트북":
+                console_handler = logging.StreamHandler(sys.stdout)
+                console_handler.setFormatter(logging.Formatter("%(message)s"))
+                console_handler.setLevel(logging.INFO)
+                logger.addHandler(console_handler)
+
         try:
             if SUPPORT_LAUNCHER_NGROK and not self.is_installed("pyngrok"):
                 self.run('pip -q install "pyngrok"', check=True, live=True)
