@@ -246,7 +246,19 @@ class Launcher(ABC):
         self.environ = os.environ.copy()
 
     def setup(self):
-        logger.setLevel(logging.DEBUG)
+        global logger
+        logging_level = logging.INFO
+        logging_fmt = "%(message)s"
+        try:
+            root_logger = logging.getLogger()
+            root_logger.setLevel(logging_level)
+            root_handler = root_logger.handlers[0]
+            root_handler.setFormatter(logging.Formatter(logging_fmt))
+        except IndexError:
+            if self.service_type() == "노트북":
+                logging.basicConfig(
+                    level=logging_level, format=logging_fmt, encoding="utf8"
+                )
 
         for handler in logger.handlers:
             handler.terminator = "\n"
@@ -255,7 +267,7 @@ class Launcher(ABC):
             log_filename = Path("log", "launcher.log")
             log_filename.parent.mkdir(parents=True, exist_ok=True)
             file_handler = logging.handlers.RotatingFileHandler(
-                log_filename, maxBytes=(1024 * 512), backupCount=3, encoding="utf-8"
+                log_filename, maxBytes=(1024 * 512), backupCount=3, encoding="utf8"
             )
             file_handler.setFormatter(
                 logging.Formatter(
