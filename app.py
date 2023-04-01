@@ -230,9 +230,37 @@ FAVORITES_COMMITS = [
 # fmt: on
 
 import os
+import sys
 import shutil
 from pathlib import Path, PurePath
 from abc import ABC, abstractmethod
+
+import logging
+import logging.handlers
+
+logger = logging.getLogger("Launcher")
+logger.setLevel(logging.DEBUG)
+log_formatter = logging.Formatter(
+    "%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s", datefmt="%Y-%m-%dT%H:%M:%S"
+)
+
+
+file_handler = logging.handlers.RotatingFileHandler(
+    Path("log", "launcher.log"), maxBytes=(1024 * 512), backupCount=3
+)
+file_handler.setFormatter(
+    logging.Formatter(
+        "%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s",
+        datefmt="%Y-%m-%dT%H:%M:%S",
+    )
+)
+file_handler.setLevel(logging.DEBUG)
+logger.addHandler(file_handler)
+
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(logging.Formatter("%(message)s"))
+console_handler.setLevel(logging.INFO)
+logger.addHandler(console_handler)
 
 
 class Launcher(ABC):
@@ -246,7 +274,7 @@ class Launcher(ABC):
         except NameError:
             pass
 
-        print(f"Launcher: 시작, 버전: {VERSION}")
+        logger.info(f"Launcher: 시작, 버전: {VERSION}")
 
         # Suppress pip version upgrade warning
         self.run("python -m pip -q install --upgrade pip", check=False, live=True)
@@ -287,7 +315,7 @@ class Launcher(ABC):
         import subprocess
 
         if live:
-            print(f"Launcher: {command}")
+            logger.info(f"Launcher: {command}")
             proc = subprocess.run(
                 [self.shell(), "-c", command],
                 encoding="utf8",
@@ -300,10 +328,11 @@ class Launcher(ABC):
                 if check:
                     raise RuntimeError(message)
                 else:
-                    print(f"Launcher: {message}")
+                    logger.info(f"Launcher: {message}")
 
             return ""
         else:
+            logger.debug(f"Launcher: {command}")
             proc = subprocess.run(
                 [self.shell(), "-c", command],
                 stdout=subprocess.PIPE,
@@ -319,7 +348,7 @@ class Launcher(ABC):
                 if check:
                     raise RuntimeError(message)
                 else:
-                    print(f"Launcher: {message}")
+                    logger.warning(f"Launcher: {message}")
 
             return proc.stdout
 
@@ -444,7 +473,7 @@ class Launcher(ABC):
 
         def on_default_settings():
             filepath = Path("settings", "default_settings.json")
-            print(f'Launcher: 설정 초기화, "{filepath}"')
+            logger.info(f'Launcher: 설정 초기화, "{filepath}"')
             if not filepath.exists():
                 filepath.parent.mkdir(parents=True, exist_ok=True)
                 with open(filepath, "w", encoding="utf8") as f:
@@ -459,7 +488,7 @@ class Launcher(ABC):
 
         def on_import_settings(filewrap):
             filepath = filewrap.name
-            print(f'Launcher: 설정 가져오기, "{filepath}"')
+            logger.info(f'Launcher: 설정 가져오기, "{filepath}"')
 
             return {
                 **load_settings(filepath),
@@ -473,7 +502,7 @@ class Launcher(ABC):
             if not filepath.exists():
                 return {settings_file: gr.File.update(visible=False)}
 
-            print(f'Launcher: 마지막 실행한 설정 불러오기, "{filepath}"')
+            logger.info(f'Launcher: 마지막 실행한 설정 불러오기, "{filepath}"')
 
             return {
                 **load_settings(filepath),
@@ -544,14 +573,14 @@ class Launcher(ABC):
 
         def on_export_settings(*settings):
             filepath = Path("settings", "my_settings.json")
-            print(f'Launcher: 설정 내보내기, "{filepath}"')
+            logger.info(f'Launcher: 설정 내보내기, "{filepath}"')
             filepath.parent.mkdir(parents=True, exist_ok=True)
             save_settings(filepath, *settings)
             return gr.File.update(label="내보낸 설정 파일", value=filepath, visible=True)
 
         def on_execute_settings(*settings):
             filepath = Path("settings", "last_settings.json")
-            print(f'Launcher: 설정 내보내기, "{filepath}"')
+            logger.info(f'Launcher: 설정 내보내기, "{filepath}"')
             filepath.parent.mkdir(parents=True, exist_ok=True)
             save_settings(filepath, *settings)
             return gr.File.update(label="마지막 설정 파일", value=filepath, visible=True)
@@ -731,7 +760,7 @@ class Launcher(ABC):
         ):
             def update_progress(progress, steps, total, desc):
                 desc = f"({steps}/{total}) {desc}"
-                print(f"Launcher: {desc} - {steps/total*100:.2f}%")
+                logger.info(f"Launcher: {desc} - {steps/total*100:.2f}%")
                 progress(steps / total, desc=desc)
 
             start_time_execute = time.perf_counter()
@@ -821,7 +850,7 @@ class Launcher(ABC):
             )
 
             if self.is_support_googledrive() and workspace_googledrive and not userdata:
-                print(f"Launcher: 작업 디렉터리 이름이 없어서 구글 드라이브에 연결하지 않고 진행합니다")
+                logger.warning(f"Launcher: 작업 디렉터리 이름이 없어서 구글 드라이브에 연결하지 않고 진행합니다")
 
             if self.is_support_googledrive() and workspace_googledrive and userdata:
                 googledrive_path = Path(self.working_dir(), "drive")
@@ -843,7 +872,9 @@ class Launcher(ABC):
                 if userdata_path.is_symlink():
                     userdata_path.unlink(missing_ok=True)
                 elif userdata_path.exists():
-                    print(f'Launcher: 기존 "{userdata_path}" 디렉터리를 삭제하고 구글 드라이브에 연결 합니다')
+                    logger.warning(
+                        f'Launcher: 기존 "{userdata_path}" 디렉터리를 삭제하고 구글 드라이브에 연결 합니다'
+                    )
                     shutil.rmtree(userdata_path, ignore_errors=True)
 
                 userdata_path_target.mkdir(parents=True, exist_ok=True)
@@ -1197,8 +1228,10 @@ class Launcher(ABC):
                 cwd=sd_webui_path,
                 env=webui_environ,
             ) as proc:
+                for handler in logger.handlers:
+                    handler.terminator = ""
                 for line in proc.stdout:
-                    print("SDWebUI: " + line, end="")
+                    logger.info("SDWebUI: " + line)
 
                     if line.startswith("ngrok connected to"):
                         tunnel = line
@@ -1211,7 +1244,7 @@ class Launcher(ABC):
                             progress,
                             steps,
                             total,
-                            desc=f"SD Web UI 실행 완료, {tunnel if tunnel else line}",
+                            desc=f"SD Web UI 실행 완료, {tunnel if tunnel else line}\n",
                         )
                         from datetime import datetime as dt
                         from datetime import timedelta
@@ -1221,7 +1254,9 @@ class Launcher(ABC):
                                 seconds=end_time_execute - start_time_execute
                             ).total_seconds()
                         )
-                        print(f'Launcher: 실행까지 걸린 시간: {duration.strftime("%H:%M:%S")}')
+                        logger.info(
+                            f'Launcher: 실행까지 걸린 시간: {duration.strftime("%H:%M:%S")}\n'
+                        )
 
             return f"SD Web UI 실행 종료"
 
@@ -1328,7 +1363,7 @@ class Launcher(ABC):
                         return soup.p.text.rstrip("⧉"), soup.a.get("href")
                     except Exception as error:
                         message = "즐겨찾기 형식이 올바르지 않습니다"
-                        print(f"Launcher: {message}, error: {error}")
+                        logger.info(f"Launcher: {message}, error: {error}")
                         return "", ""
 
                 def on_click_favorites(table, evt: gr.SelectData):
@@ -1336,7 +1371,7 @@ class Launcher(ABC):
 
                     name, url = favorite_tuple(evt.value[0])
                     if url:
-                        print(f"Launcher: 즐겨찾기 추가 이름: {name} 주소: {url}")
+                        logger.info(f"Launcher: 즐겨찾기 추가 이름: {name} 주소: {url}")
 
                         exist = table.query(f'주소 == "{url}"')
                         if len(exist.index.tolist()) > 0:
@@ -1804,7 +1839,7 @@ class Launcher(ABC):
 
                         def on_click_args_favorites(cmdargs: str, evt: gr.SelectData):
                             arg = evt.value[0]
-                            print(f"Launcher: 실행 인자 추가: {arg}")
+                            logger.info(f"Launcher: 실행 인자 추가: {arg}")
                             if cmdargs.find(evt.value[0]) != -1:
                                 return cmdargs
                             else:
@@ -1849,7 +1884,9 @@ class Launcher(ABC):
                             def on_click_commit_favorites(evt: gr.SelectData):
                                 name, commit_url = favorite_tuple(evt.value[0])
                                 commit = filename_from(commit_url)
-                                print(f"Launcher: 커밋 해시 변경, 이름: {name} , 해시:{commit}")
+                                logger.info(
+                                    f"Launcher: 커밋 해시 변경, 이름: {name} , 해시:{commit}"
+                                )
                                 return {
                                     git_url: gr.Text.update(
                                         value=git_url_from(commit_url)
@@ -1876,7 +1913,7 @@ class Launcher(ABC):
                                 name, commit_url = favorite_tuple(evt.value[0])
                                 if commit_url:
                                     commit = filename_from(commit_url)
-                                    print(
+                                    logger.info(
                                         f"Launcher: 커밋 해시 변경, 이름: {name} , 해시:{commit}"
                                     )
                                     return {
@@ -1937,7 +1974,7 @@ class Launcher(ABC):
 
                                 except Exception as error:
                                     message = "변경 내역 가져오기 실패"
-                                    print(f"Launcher: 최근 5일간 {message}, {error}")
+                                    logger.info(f"Launcher: 최근 5일간 {message}, {error}")
                                     samples = [[f"<p>{message}</p>"]]
 
                                 return gr.Dataset.update(samples=samples)
