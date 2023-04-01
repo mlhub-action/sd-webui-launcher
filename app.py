@@ -943,6 +943,7 @@ class Launcher(ABC):
                             --min-split-size=8M \
                             --max-connection-per-server=8 \
                             --max-concurrent-downloads=8 \
+                            --lowest-speed-limit=256K \
                         """
                     )
                 )
