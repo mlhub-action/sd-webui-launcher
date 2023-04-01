@@ -766,7 +766,7 @@ class Launcher(ABC):
             if include_ddetailer:
                 total += apply_ddetailer_patches
 
-            total += copy_extensions_config
+            total += userdata and copy_extensions_config
 
             models = models.drop(models.query(f'주소 == ""').index)
             total += models.count()["주소"]
@@ -933,7 +933,7 @@ class Launcher(ABC):
             확장 설정 파일 복사
              - 심볼릭 링크를 통한 동기화를 사용하지 않는 이유 : gradio 접근 권한 문제
             """
-            if copy_extensions_config:
+            if userdata and copy_extensions_config:
                 steps += 1
                 for index, (name, url) in enumerate(
                     zip(extensions["이름"], extensions["주소"])
@@ -944,7 +944,7 @@ class Launcher(ABC):
                     repository_path = Path(extensions_path, reponame)
                     repository_path_target = Path(userdata_path, "extensions", reponame)
                     if (
-                        repository_path != repository_path_target  # userdata
+                        repository_path != repository_path_target
                         and repository_path.exists()
                         and repository_path_target.exists()
                     ):
@@ -964,6 +964,7 @@ class Launcher(ABC):
                         # 단순 복사
                         else:
                             extensions_path_target = Path(userdata_path, "extensions")
+                            assert extensions_path_target != extensions_path
 
                             import glob
 
