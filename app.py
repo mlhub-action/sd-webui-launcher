@@ -152,6 +152,7 @@ DEFAULT_SETTINGS = """
 # fmt: off
 FAVORITES_EXTENSIONS = [
     ["한글 패치[⧉](https://github.com/36DB/stable-diffusion-webui-localization-ko_KR)"],
+    ["Bilingual Localization[⧉](https://github.com/journey-ad/sd-webui-bilingual-localization)"],
     ["Booru tag autocompletion[⧉](https://github.com/DominikDoom/a1111-sd-webui-tagcomplete)"],
     ["Civitai Helper[⧉](https://github.com/butaixianran/Stable-Diffusion-Webui-Civitai-Helper.git)"],
     ["Composable LoRA[⧉](https://github.com/opparco/stable-diffusion-webui-composable-lora.git)"],
