@@ -1,0 +1,9 @@
+# 처음 한번만 수행
+
+https://github.com/mlhub-action/sd-webui-launcher/archive/refs/heads/main.zip
+
+위 링크를 다운받고 압축해제 후
+
+아래 파일들을 덮어 씌우면 됩니다.
+ - "app.py"
+ - "5.런처로.SD.Web.UI.실행.bat"
