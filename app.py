@@ -957,7 +957,7 @@ class Launcher(ABC):
                                 progress,
                                 steps,
                                 total,
-                                desc=f"확장 설정 파일 복사, 이름: {reponame}, 경로: {dst} -> {src}",
+                                desc=f"확장 설정 파일 복사, 이름: {reponame}, 경로: {src} -> {dst}",
                             )
                             shutil.copytree(src, dst, dirs_exist_ok=True)
 
