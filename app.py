@@ -291,7 +291,7 @@ class Launcher(ABC):
         if not self.has_executable("gdown"):
             self.run("pip -q install gdown", check=True, live=True)
 
-        if not self.has_executable("GitPython"):
+        if not self.is_installed("git"):
             self.run("pip -q install GitPython", check=False, live=True)
 
     @staticmethod
