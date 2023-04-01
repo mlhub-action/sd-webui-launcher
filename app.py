@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.2.8rc1"  # @param {type:"string"}
+VERSION = "v0.2.8"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
@@ -139,7 +139,8 @@ DEFAULT_SETTINGS = """
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
     "use_virtualenv": false,
-    "apply_ddetailer_patches": true
+    "apply_ddetailer_patches": true,
+    "copy_extensions_config": true
 }
 """
 
@@ -436,6 +437,9 @@ class Launcher(ABC):
                 apply_ddetailer_patches: gr.Checkbox.update(
                     value=settings.get("apply_ddetailer_patches", True),
                 ),
+                copy_extensions_config: gr.Checkbox.update(
+                    value=settings.get("copy_extensions_config", True),
+                ),
             }
 
         def on_default_settings():
@@ -499,6 +503,7 @@ class Launcher(ABC):
             git_url,
             git_commit,
             apply_ddetailer_patches,
+            copy_extensions_config,
         ):
             import json
 
@@ -530,6 +535,7 @@ class Launcher(ABC):
                         "git_url": gr.Text(git_url).value,
                         "git_commit": gr.Text(git_commit).value,
                         "apply_ddetailer_patches": apply_ddetailer_patches,
+                        "copy_extensions_config": copy_extensions_config,
                     },
                     f,
                     ensure_ascii=False,
@@ -720,6 +726,7 @@ class Launcher(ABC):
             git_url,
             git_commit,
             apply_ddetailer_patches,
+            copy_extensions_config,
             progress=lambda x, desc: "",  # gr.Blocks.queue 사용시 응답이 느려서 gr.Progress 대신 콘솔창에 출력
         ):
             def update_progress(progress, steps, total, desc):
@@ -758,6 +765,8 @@ class Launcher(ABC):
             include_ddetailer = has_extension_settings(extensions, "ddetailer")
             if include_ddetailer:
                 total += apply_ddetailer_patches
+
+            total += copy_extensions_config
 
             models = models.drop(models.query(f'주소 == ""').index)
             total += models.count()["주소"]
@@ -921,6 +930,62 @@ class Launcher(ABC):
                     self.run(f"aria2c {aria2c_options} {url}", cwd)
 
             """
+            확장 설정 파일 복사
+             - 심볼릭 링크를 통한 동기화를 사용하지 않는 이유 : gradio 접근 권한 문제
+            """
+            if copy_extensions_config:
+                steps += 1
+                for index, (name, url) in enumerate(
+                    zip(extensions["이름"], extensions["주소"])
+                ):
+                    assert url
+
+                    reponame = reponame_from(url)
+                    repository_path = Path(extensions_path, reponame)
+                    repository_path_target = Path(userdata_path, "extensions", reponame)
+                    if (
+                        repository_path != repository_path_target  # userdata
+                        and repository_path.exists()
+                        and repository_path_target.exists()
+                    ):
+                        # 레포 디렉터리 지정 복사
+                        if reponame == "sd-dynamic-prompts":
+                            src = Path(repository_path_target, "wildcards")
+                            dst = Path(repository_path, "wildcards")
+
+                            update_progress(
+                                progress,
+                                steps,
+                                total,
+                                desc=f"확장 설정 파일 복사, 이름: {reponame}, 경로: {dst} -> {src}",
+                            )
+                            shutil.copytree(src, dst, dirs_exist_ok=True)
+
+                        # 단순 복사
+                        else:
+                            extensions_path_target = Path(userdata_path, "extensions")
+
+                            import glob
+
+                            # 하위 경로의 모든 json 파일 복사
+                            for file in glob.glob(
+                                str(Path(extensions_path_target, "**/*.json")),
+                                recursive=True,
+                            ):
+                                src = Path(file).absolute()
+                                rel = src.relative_to(extensions_path_target)
+                                dst = Path(extensions_path, rel).absolute()
+
+                                update_progress(
+                                    progress,
+                                    steps,
+                                    total,
+                                    desc=f"확장 설정 파일 복사, 이름: {reponame}, 경로: {src} -> {dst}",
+                                )
+                                shutil.copyfile(src, dst)
+                    time.sleep(0.1)
+
+            """
             컨트롤넷 모델 다운로드
             TODO : --controlnet-dir 옵션으로 구글 드라이브에 저장 가능 하도록 선택 기능 제공
             """
@@ -1061,11 +1126,12 @@ class Launcher(ABC):
                 zip(extensions["이름"], extensions["주소"])
             ):
                 assert url
-                if reponame_from(url) == "ddetailer":
+                reponame = reponame_from(url)
+                if reponame == "ddetailer":
                     if apply_ddetailer_patches:
                         diff_path = Path(
                             extensions_path,
-                            reponame_from(url),
+                            reponame,
                             "deprecate_lib2to3.diff",
                         )
                         steps += 1
@@ -1073,7 +1139,7 @@ class Launcher(ABC):
                             progress,
                             steps,
                             total,
-                            desc=f"확장 패치 적용, {diff_path}",
+                            desc=f"{reponame }확장 패치 적용, {diff_path}",
                         )
 
                         self.run(
@@ -1317,6 +1383,18 @@ class Launcher(ABC):
                                     col_count=(2, "fixed"),
                                     interactive=True,
                                 )
+                            with gr.Tab("(선택) 설정 파일 복사") as ddetailer_tab:
+                                copy_extensions_config = gr.Checkbox(
+                                    label="구글 드라이브 연결시 확장별 설정 파일 복사",
+                                    info="기본값, 체크",
+                                    value=True,
+                                )
+                                gr.Markdown(
+                                    """
+                                    > 📝 체크시: 확장별 설정 파일(\*.json|extensions/sd-dynamic-prompts/wildcards/\*.txt)을 단순 복사
+                                    > 📝 해제시: 복사 안함
+                                    """
+                                )
                             with gr.Tab("ControlNet 모델") as controlnet_tab:
                                 controlnet_models = gr.Dataframe(
                                     headers=["이름", "주소"],
@@ -1337,6 +1415,7 @@ class Launcher(ABC):
                                     > 📝 해제시: 패치 안함 => 👍버전 호환성 좋음
                                     """
                                 )
+
                         with gr.Column(scale=0.2):
                             gr.Markdown(
                                 "[확장 인덱스](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)"
@@ -1888,6 +1967,7 @@ class Launcher(ABC):
                 git_url,
                 git_commit,
                 apply_ddetailer_patches,
+                copy_extensions_config,
             ]
 
             default_settings.click(
