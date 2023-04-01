@@ -178,6 +178,7 @@ FAVORITES_MODELS = [
     ["AOM3A1[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors)"],
     ["AOM3A2[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A2_orangemixs.safetensors)"],
     ["AOM3A3[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A3_orangemixs.safetensors)"],
+    ["Anything V5[⧉](https://civitai.com/api/download/models/30163)"],
     ["Pastel-Mix[⧉](https://civitai.com/api/download/models/6297)"],
     ["ChilloutMix[⧉](https://civitai.com/api/download/models/11745)"],
 ]
