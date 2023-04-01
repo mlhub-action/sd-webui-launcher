@@ -766,7 +766,7 @@ class Launcher(ABC):
             if include_ddetailer:
                 total += apply_ddetailer_patches
 
-            total += userdata and copy_extensions_config
+            total += 1 if userdata and copy_extensions_config else 0
 
             models = models.drop(models.query(f'주소 == ""').index)
             total += models.count()["주소"]
