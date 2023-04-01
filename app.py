@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.3.0"  # @param {type:"string"}
+VERSION = "v0.3.1"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
@@ -244,9 +244,10 @@ log_formatter = logging.Formatter(
     "%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s", datefmt="%Y-%m-%dT%H:%M:%S"
 )
 
-
+log_filename = Path("log", "launcher.log")
+log_filename.parent.mkdir(parents=True, exist_ok=True)
 file_handler = logging.handlers.RotatingFileHandler(
-    Path("log", "launcher.log"), maxBytes=(1024 * 512), backupCount=3
+    log_filename, maxBytes=(1024 * 512), backupCount=3, encoding="utf-8"
 )
 file_handler.setFormatter(
     logging.Formatter(
@@ -1129,14 +1130,26 @@ class Launcher(ABC):
                 str(python_path.parent) + os.pathsep + webui_environ["PATH"]
             )
 
+            # No module named pip
+            # No module named ensurepip
             pip_path = python_path.with_stem("pip")
             if not pip_path.exists():
                 # curl https://bootstrap.pypa.io/get-pip.py 방법은 SSL certificate 문제가 있음
+                import urllib.request
+
+                Path("temp").mkdir(parents=True, exist_ok=True)
+                get_pip_py = Path("temp", "get-pip.py")
+                urllib.request.urlretrieve(
+                    "https://bootstrap.pypa.io/get-pip.py",
+                    get_pip_py,
+                )
+
                 self.run(
-                    f'"{python_path}" -m ensurepip --upgrade',
+                    f'"{python_path}" "{get_pip_py}"',
                     check=True,
                     env=webui_environ,
                 )
+
                 self.run(
                     f'"{python_path}" -m pip --help', check=True, env=webui_environ
                 )
