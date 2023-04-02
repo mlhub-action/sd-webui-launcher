@@ -32,7 +32,7 @@
 - 코랩 사용 환경 : ubuntu 20.04, python 3.9
 - 런팟 사용 환경 : ubuntu 20.04, python 3.10, [runpod/pytorch 템플릿](https://hub.docker.com/r/runpod/pytorch/tags), venv 가상 환경
   > runpod/pytorch:3.10-1.13.1-116 <br> runpod/pytorch:3.10-2.0.0-117
-- 로컬 사용 환경 : Windows 10, python 3.10, git
+- 로컬 사용 환경 : Windows 10, python 3.10, git, venv 가상 환경
 </br>
 
 ## 알려진 문제
