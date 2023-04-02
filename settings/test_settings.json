@@ -99,6 +99,10 @@
                     "https://github.com/Gerschel/sd_web_ui_preset_utils.git"
                 ],
                 [
+                    "Regional Prompter",
+                    "https://github.com/hako-mikan/sd-webui-regional-prompter.git"
+                ],
+                [
                     "stable-diffusion-webui-state",
                     "https://github.com/ilian6806/stable-diffusion-webui-state.git"
                 ],
