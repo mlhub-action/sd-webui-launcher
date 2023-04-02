@@ -1783,7 +1783,7 @@ class Launcher(ABC):
 
                                 torch_command_dropdown = gr.Dropdown(
                                     label="Torch 버전",
-                                    info="  Torch 버전을 선택해 주세요. 재설치 하려면 --reinstall-torch 실행 인자를 추가해 주세요",
+                                    info="  Torch 버전을 선택해 주세요. 해당 버전으로 재설치 하려면 --reinstall-torch 실행 인자를 추가해 주세요",
                                     value="빈칸(기본값)",
                                     choices=[*torch_command_mapping.keys()],
                                     interactive=True,
@@ -1854,7 +1854,7 @@ class Launcher(ABC):
 
                                 xformers_package_dropdown = gr.Dropdown(
                                     label="xFormers 버전",
-                                    info="  xFormers 패키지 버전을 선택해 주세요. 재설치 하려면 --reinstall-xformers 실행 인자를 추가해 주세요",
+                                    info="  xFormers 패키지 버전을 선택해 주세요. 해당 버전으로 재설치 하려면 --reinstall-xformers 실행 인자를 추가해 주세요",
                                     value="빈칸(기본값)",
                                     choices=[*xformers_package_mapping.keys()],
                                     interactive=True,
