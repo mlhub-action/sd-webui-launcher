@@ -1256,7 +1256,7 @@ class Launcher(ABC):
                             progress,
                             steps,
                             total,
-                            desc=f"{reponame }확장 패치 적용, {diff_path}",
+                            desc=f"{reponame} 확장 패치 적용, {diff_path}",
                         )
 
                         self.run(
