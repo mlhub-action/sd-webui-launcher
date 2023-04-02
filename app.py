@@ -410,6 +410,8 @@ class Launcher(ABC):
                         "memory": memory,
                         "driver": driver,
                     }
+                except ValueError as e:
+                    return {"error": query_gpu}
 
                 except Exception as e:
                     return {"error": e}
