@@ -1224,11 +1224,11 @@ class Launcher(ABC):
                     f'"{python_path}" -m pip --help', check=True, env=webui_environ
                 )
 
-            # Repect SD Web UI default
+            # Repect SD Web UI default, need --reinstall-torch for already installed
             if torch_command:
                 webui_environ["TORCH_COMMAND"] = torch_command
 
-            # Repect SD Web UI default
+            # Repect SD Web UI default, need --reinstall-xformers for already installed
             if xformers_package:
                 webui_environ["XFORMERS_PACKAGE"] = xformers_package
 
@@ -1880,6 +1880,12 @@ class Launcher(ABC):
                                     info="  xFormers 패키지 버전을 선택하면 아래에 XFORMERS_PACKAGE 환경 변수가 표시됩니다",
                                     # value=xformers_package_mapping[xformers_package_dropdown.value],
                                     interactive=False,
+                                )
+
+                                gr.Markdown(
+                                    """
+                                    > ⚠️ Torch 버전과 일치하는 패키지를 선택해 주세요
+                                    """
                                 )
 
                                 def resolve_xformers_package(xformers_package):
