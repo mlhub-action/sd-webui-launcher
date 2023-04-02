@@ -1241,6 +1241,13 @@ class Launcher(ABC):
                 )
                 return pattern.match(torch_command)
 
+            if torch_command:
+                torch_version, cuda_version = torch_cuda_version(torch_command).groups()
+                versioning = ["major", "minor", "patch"]
+                torch_version = dict(
+                    zip(versioning, map(int, torch_version.split(".", maxsplit=2)))
+                )
+
             # Patch extensions dependencies
             for index, (name, url) in enumerate(
                 zip(extensions["이름"], extensions["주소"])
@@ -1248,6 +1255,13 @@ class Launcher(ABC):
                 assert url
                 reponame = reponame_from(url)
                 if reponame == "ddetailer":
+                    if torch_command and torch_version["major"] > 1:
+                        version_string = ".".join(
+                            str(torch_version[x]) for x in sorted(torch_version)
+                        )
+                        logger.warning(
+                            f"Launcher: {reponame} 확장은 Torch {version_string} 버전과 호환되지 않을 수 있습니다"
+                        )
                     if apply_ddetailer_patches:
                         diff_path = Path(
                             extensions_path,
