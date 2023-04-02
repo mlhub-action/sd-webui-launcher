@@ -1,5 +1,5 @@
 # @title ## 런처 앱 ##
-VERSION = "v0.3.1"  # @param {type:"string"}
+VERSION = "v0.3.2"  # @param {type:"string"}
 
 # @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
@@ -1003,13 +1003,17 @@ class Launcher(ABC):
                     rel = src.relative_to(extensions_path_target)
                     dst = Path(extensions_path, rel).absolute()
 
-                    update_progress(
-                        progress,
-                        steps,
-                        total,
-                        desc=f"확장 설정 파일 복사, 경로: {src} -> {dst}",
-                    )
-                    shutil.copyfile(src, dst)
+                    repository_path = Path(extensions_path, rel.parts[0])
+                    if repository_path.exists():
+                        update_progress(
+                            progress,
+                            steps,
+                            total,
+                            desc=f"확장 설정 파일 복사, 경로: {src} -> {dst}",
+                        )
+                        if dst.parent.is_dir():
+                            dst.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copyfile(src, dst)
 
                 for index, (name, url) in enumerate(
                     zip(extensions["이름"], extensions["주소"])
