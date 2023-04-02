@@ -1,14 +1,14 @@
-# @title ## 런처 앱 ##
-VERSION = "v0.3.2"  # @param {type:"string"}
+# @title ## 2. 런처 앱 ##
+VERSION = "v0.3.3"  # @param {type:"string"}
 
-# @markdown ## <br> 1. 런처 웹페이지 표시 방법 선택 ##
+# @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
 # @markdown - 해제시 : 노트북 결과창에 직접 표시(🐇응답 <font color="blue">빠름</font>, ⚠️보기 <font color="red">불편</font>)
 USE_GRADIO_LIVE = True  # @param {type:"boolean"}
 
-# @markdown ## <br> 2. 필요한 경우 아래 기본 설정 및 즐겨찾기 편집 ##
-# @markdown #### <br> 2.1 기본 설정 ####
-# @markdown > 예제 JSON 형식
+## @markdown ## <br> 필요한 경우 아래 기본 설정 및 즐겨찾기 편집 ##
+## @markdown #### <br> 기본 설정 ####
+## @markdown > 예제 JSON 형식
 DEFAULT_SETTINGS = """
 {
     "workspace": {
@@ -144,11 +144,11 @@ DEFAULT_SETTINGS = """
 }
 """
 
-# @markdown #### <br> 2.2 즐겨찾기 ####
-# @markdown > 등록 형식 : "이름\[⧉\]\(링크\)"
+## @markdown #### <br> 즐겨찾기 ####
+## @markdown > 등록 형식 : "이름\[⧉\]\(링크\)"
 
 
-# @markdown - 즐겨찾기 : 확장
+## @markdown - 즐겨찾기 : 확장
 # fmt: off
 FAVORITES_EXTENSIONS = [
     ["한글 패치[⧉](https://github.com/36DB/stable-diffusion-webui-localization-ko_KR)"],
@@ -172,7 +172,7 @@ FAVORITES_EXTENSIONS = [
     ["WD 1.4 Tagger[⧉](https://github.com/toriato/stable-diffusion-webui-wd14-tagger)"],
 ]
 
-# @markdown - 즐겨찾기 : 모델
+## @markdown - 즐겨찾기 : 모델
 FAVORITES_MODELS = [
     ["AOM3[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3_orangemixs.safetensors)"],
     ["AOM3A1[⧉](https://huggingface.co/WarriorMama777/OrangeMixs/resolve/main/Models/AbyssOrangeMix3/AOM3A1_orangemixs.safetensors)"],
@@ -183,20 +183,20 @@ FAVORITES_MODELS = [
     ["ChilloutMix[⧉](https://civitai.com/api/download/models/11745)"],
 ]
 
-# @markdown - 즐겨찾기 : 로라
+## @markdown - 즐겨찾기 : 로라
 FAVORITES_LORAS = [
     ["Anime Tarot Card Art Style LoRA[⧉](https://civitai.com/api/download/models/19859)"],
     ["Anime Lineart[⧉](https://civitai.com/api/download/models/19075)"],
 ]
 
-# @markdown - 즐겨찾기 : 임베딩
+## @markdown - 즐겨찾기 : 임베딩
 FAVORITES_EMBEDDINGS = [
     ["EasyNegative[⧉](https://civitai.com/api/download/models/9208)"],
     ["badhandv4[⧉](https://civitai.com/api/download/models/20068)"],
     ["bad_prompt_version2[⧉](https://huggingface.co/embed/bad_prompt/resolve/main/bad_prompt_version2.pt)"],
 ]
 
-# @markdown - 즐겨찾기 : VAES
+## @markdown - 즐겨찾기 : VAES
 FAVORITES_VAES = [
     [
         "kl-f8-anime2[⧉](https://huggingface.co/hakurei/waifu-diffusion-v1-4/resolve/main/vae/kl-f8-anime2.ckpt)"
@@ -206,7 +206,7 @@ FAVORITES_VAES = [
     ],
 ]
 
-# @markdown - 즐겨찾기 : 실행 인자
+## @markdown - 즐겨찾기 : 실행 인자
 FAVORITES_ARGS = [
     ["--xformers"],
     ["--medvram"],
@@ -214,7 +214,7 @@ FAVORITES_ARGS = [
     ["--update-all-extensions"],
 ]
 
-# @markdown - 즐겨찾기 : 커밋 해시
+## @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
     [
         "2023-03-29 gradio==3.23[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/22bcc7be428c94e9408f589966c2040187245d81)"
