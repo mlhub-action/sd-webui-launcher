@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.3.3"  # @param {type:"string"}
+VERSION = "v0.3.4"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
@@ -212,6 +212,7 @@ FAVORITES_ARGS = [
     ["--medvram"],
     ["--no-gradio-queue"],
     ["--update-all-extensions"],
+    ["--disable-console-progressbars"],
 ]
 
 ## @markdown - 즐겨찾기 : 커밋 해시
@@ -1846,8 +1847,8 @@ class Launcher(ABC):
                                 # https://pypi.org/project/xformers/#history
                                 xformers_package_mapping = {
                                     "빈칸(기본값)": "",
-                                    "0.0.16rc425": "xformers==0.0.16rc425",
-                                    "0.0.17(torch2.0.0 필요)": "xformers==0.0.17",
+                                    "0.0.16rc425(torch==1.13.1)": "xformers==0.0.16rc425",
+                                    "0.0.17(torch==2.0.0)": "xformers==0.0.17",
                                     "직접 입력": "",
                                 }
 
