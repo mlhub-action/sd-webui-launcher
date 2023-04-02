@@ -298,6 +298,8 @@ class Launcher(ABC):
             pass
 
         logger.info(f"Launcher: 시작, 버전: {VERSION}")
+        logger.info(f'Launcher: 플랫폼: {self.system_info()["platform"]}')
+        logger.info(f'Launcher: 그래픽카드: {self.system_info()["gpu"]}')
 
         # Suppress pip version upgrade warning
         self.run("python -m pip -q install --upgrade pip", check=False, live=True)
@@ -374,6 +376,45 @@ class Launcher(ABC):
                     logger.warning(f"Launcher: {message}")
 
             return proc.stdout
+
+    def system_info(self):
+        def platform_info(self):
+            import platform
+
+            try:
+                return {
+                    "arch": platform.machine(),
+                    "cpu": platform.processor(),
+                    "system": platform.system(),
+                    "release": platform.platform(aliased=True, terse=False)
+                    if platform.system() == "Windows"
+                    else platform.release(),
+                    "python": platform.python_version(),
+                }
+            except Exception as e:
+                return {"error": e}
+
+        def gpu_info(self):
+            if not self.has_executable("nvidia-smi"):
+                return {}
+            else:
+                try:
+                    query_gpu = self.run(
+                        f'nvidia-smi --query-gpu="name,memory.total,driver_version" --format=csv',
+                        check=False,
+                        live=False,
+                    ).rstrip("\n")
+                    name, memory, driver = query_gpu.split("\n")[-1].split(", ")
+                    return {
+                        "name": name,
+                        "memory": memory,
+                        "driver": driver,
+                    }
+
+                except Exception as e:
+                    return {"error": e}
+
+        return {"platform": platform_info(self), "gpu": gpu_info(self)}
 
     @staticmethod
     @abstractmethod
