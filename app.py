@@ -2129,11 +2129,12 @@ class Launcher(ABC):
             )
 
             # gr.Accordion이 모두 open 되어 있어야만 호출됨, LocalLauncher에서만 마지막 실행한 설정 값 로드
-            demo.load(
-                fn=on_load_last_settings,
-                inputs=None,
-                outputs=[*settings, settings_file],
-            )
+            if self.is_support_load():
+                demo.load(
+                    fn=on_load_last_settings,
+                    inputs=None,
+                    outputs=[*settings, settings_file],
+                )
 
         demo.launch(
             share=USE_GRADIO_LIVE and self.is_support_share(),  # 공유 연결 사용할지 여부
