@@ -29,8 +29,9 @@
 ## 제한 사항
 - 설정한 확장은 구글 드라이브에 저장 안됨. gradio 보안상 이유로 SD Web UI 앱 이외의 경로 접근 제한
 - 기본값으로 런처는 gradio.live로 연결되는데 gradio.live가 응답이 느린 경우 USE_GRADIO_LIVE 체크 해제하고 사용 권장
-- 코랩 사용 환경 : ubuntu 20.04, python 3.9, venv 가상 환경
-- 런팟 사용 환경 : runpod/pytorch:3.10-1.13.1-116 템플릿, ubuntu 20.04, python 3.10, venv 가상 환경
+- 코랩 사용 환경 : ubuntu 20.04, python 3.9
+- 런팟 사용 환경 : ubuntu 20.04, python 3.10, [runpod/pytorch 템플릿](https://hub.docker.com/r/runpod/pytorch/tags), venv 가상 환경
+  > runpod/pytorch:3.10-1.13.1-116 <br> runpod/pytorch:3.10-2.0.0-117
 - 로컬 사용 환경 : Windows 10, python 3.10, git
 </br>
 
@@ -39,6 +40,12 @@
 </br>
 
 ## 업데이트
+### v0.3.4 (2023-04-02)
+#### 변경 내역
+ - 런팟 템플릿 업데이트로, 가상 환경 사용 강제
+ - 즐겨찾기 실행 인자 추가: --disable-console-progressbars
+</br>
+
 ### v0.3.3 (2023-04-02)
 #### 변경 내역
  - 초보가 사용이 쉽도록, 코랩/런팟 노트북 실행해야 할 탐색기/런처 앱 넘버링, 과도한 정보 숨김

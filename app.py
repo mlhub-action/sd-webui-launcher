@@ -1920,7 +1920,7 @@ class Launcher(ABC):
                                 f"""
                                 > 📝 체크시: 가상 환경 venv 생성 => 🐢설치 속도 느림, 👍버전 호환성 좋음
                                 > 📝 해제시: 코랩/런팟 기본 환경 사용 => 🐇설치 속도 빠름, ⚠️버전 호환성 나쁨
-                                {"> ⚠️ 단, 로컬은 가상 환경 사용이 강제" if self.force_virtualenv() else ''}
+                                {"> ⚠️ 단, 로컬/런팟은 가상 환경 사용이 강제" if self.force_virtualenv() else ''}
                                 """
                             )
                     with gr.Column(scale=0.2):
@@ -2410,7 +2410,7 @@ class RunPodLauncher(LinuxPlatform):
 
     @staticmethod
     def force_virtualenv():
-        return False
+        return True
 
 
 class LocalLauncher(WindowsPlatform):
