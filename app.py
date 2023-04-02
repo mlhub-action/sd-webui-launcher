@@ -1321,7 +1321,9 @@ class Launcher(ABC):
                 ):
                     handler.terminator = ""
                 for line in proc.stdout:
-                    logger.info("SDWebUI: " + line)
+                    # Skip huggingface.co ad link
+                    if not line.startswith("This share link expires in"):
+                        logger.info("SDWebUI: " + line)
 
                     if line.startswith("ngrok connected to"):
                         tunnel = line
