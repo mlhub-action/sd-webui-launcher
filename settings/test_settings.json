@@ -55,6 +55,10 @@
                     "https://github.com/toshiaki1729/stable-diffusion-webui-dataset-tag-editor.git"
                 ],
                 [
+                    "Depth map library",
+                    "https://github.com/jexom/sd-webui-depth-lib.git"
+                ],
+                [
                     "Detection Detailer",
                     "https://github.com/dustysys/ddetailer.git"
                 ],
