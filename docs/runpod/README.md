@@ -111,12 +111,12 @@
 > 윈도우 파워쉘 터미널을 열고<br>
 > 아래 명령어를 입력하고 엔터 3번 눌러주세요.<br>
 
-> ssh-keygen -t ed25519
+    ssh-keygen -t ed25519
 
 
 ### 16.2. SSH 키, 생성 위치 확인
 
-> cat ~/.ssh/id_ed25519.pub
+    cat ~/.ssh/id_ed25519.pub
 
 ![image](../images/runpod/16.2%EB%9F%B0%ED%8C%9F.png)
 <br>
@@ -124,9 +124,9 @@
 
 ### 16.3. 런팟 SSH 키 설정
 
-> https://www.runpod.io/console/user/settings
-
 > 위에 확인한 키를 SSH Public Key에 붙여넣고 Update Public Key 클릭해주세요.
+
+    https://www.runpod.io/console/user/settings
 
 ![image](../images/runpod/16.3.%EB%9F%B0%ED%8C%9F.png)
 <br>
