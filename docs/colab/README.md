@@ -1,5 +1,9 @@
 # SD Web UI 런처 사용법 - 코랩(Colab)
 
+노트북 파일 링크(항상 최신)
+
+    https://colab.research.google.com/github/mlhub-action/sd-webui-launcher/blob/main/notebooks/SD-Web-UI-Launcher.ipynb
+
 ## 1. Drive로 복사
 > 버튼을 클릭해서 노트북을 자신의 구글 드라이브로 복사하세요.<br>
 > 그래야 변경사항을 저장할 수 있습니다.
