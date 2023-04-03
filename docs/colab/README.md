@@ -10,7 +10,7 @@
 
 ## 2. 런처 앱 셀 실행
 > 버튼을 클릭해서 런처 앱을 실행해 주세요.<br>
-> 코랩 연결 후 시작까지 약 1분 미만 소요
+> 코랩 연결 후 시작까지 약 1분 정도 걸림
 
 ![image](../images/02_%EB%9F%B0%EC%B2%98_%EC%95%B1_%EC%85%80_%EC%8B%A4%ED%96%89_%EB%B2%84%ED%8A%BC_%ED%81%B4%EB%A6%AD.png)
 <br>
@@ -131,7 +131,8 @@
 <br>
 
 ## 20. SD WebUI 접속 주소 클릭
-> Running on public URL: 다음에 나오는
+> Running on public URL: 다음에 나오는<br>
+> 설정에 따라 약 3분~10분 정도 걸림
 
 ![image](../images/20_%EB%85%B8%ED%8A%B8%EB%B6%81_%EC%B6%9C%EB%A0%A5%EC%B0%BD_SD_Web_UI_%EC%A0%91%EC%86%8D_%EC%A3%BC%EC%86%8C_%ED%81%B4%EB%A6%AD.png)
 <br>
