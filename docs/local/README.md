@@ -14,7 +14,7 @@
 
  
 
-## 2. 아래 압축 파일 다운로드, 해제
+## 2. 아래 런처 압축 파일 다운로드 및 해제
 
     https://github.com/mlhub-action/sd-webui-launcher/archive/refs/heads/main.zip
 

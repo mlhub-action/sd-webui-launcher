@@ -29,6 +29,10 @@
 > Quadro RTX 5000은 2개 중 1개만 대여 가능 확인 후<br>
 > Deploy 버튼을 클릭해 주세요.
 
+> 팁1: vCPU 개수는 최소 4개 이상<br>
+> 팁2: 업/다운 속도가 높은 것으로<br>
+> 팁3: TCP 연결 제공 확인, 나중에 SFTP 연결시 필요<br>
+
 ![image](../images/runpod/04.%EB%9F%B0%ED%8C%9F.png)
 <br>
 <br>
@@ -56,7 +60,8 @@
 <br>
 
 ## 9. 주피터 노트북(랩)에 연결
-> Connect to Jupyter Lab 버튼을 클릭해주세요.
+> Connect to Jupyter Lab 버튼을 클릭해주세요.<br>
+> 그리고 SSH over exposed TCP 터미널 연결 아이피, 포트를 확인해 두세요.<br> 나중에 SFTP 접속시 필요합니다.
 
 ![image](../images/runpod/08.%EB%9F%B0%ED%8C%9F.png)
 <br>
@@ -92,9 +97,8 @@
 <br>
 <br>
 
-## 14. SD WebUI 접속 주소 클릭
+## 14. 런처 웹페이지 접속 주소 클릭
 > Running on public URL: 다음에 나오는<br>
-> 설정에 따라 약 3분~10분 정도 걸림
 
 ![image](../images/runpod/13.%EB%9F%B0%ED%8C%9F.png)
 <br>
