@@ -245,9 +245,63 @@ logger = logging.getLogger("Launcher")
 logger.setLevel(logging.INFO)
 
 
+def run(shell, command, cwd=None, check=False, live=False, env=None):
+    import shlex
+    import subprocess
+
+    if live:
+        logger.info(f"Launcher: {command}")
+        proc = subprocess.run(
+            [shell, "-c", command],
+            encoding="utf8",
+            errors="ignore",
+            cwd=cwd,
+            env=env,
+        )
+        if proc.returncode != 0:
+            message = f"RunningCommandError: Return code: '{proc.returncode}', Command: '{command}'"
+            if check:
+                raise RuntimeError(message)
+            else:
+                logger.info(f"Launcher: {message}")
+
+        return ""
+    else:
+        logger.debug(f"Launcher: {command}")
+        proc = subprocess.run(
+            [shell, "-c", command],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            encoding="utf8",
+            errors="ignore",
+            cwd=cwd,
+            env=env,
+        )
+
+        if proc.returncode != 0:
+            message = f"RunningCommandError: Return code: '{proc.returncode}', Message: '{proc.stderr if len(proc.stderr)>0 else ''}', Command: '{command}'"
+            if check:
+                raise RuntimeError(message)
+            else:
+                logger.warning(f"Launcher: {message}")
+
+        return proc.stdout
+
+
 class Launcher(ABC):
     def __init__(self):
+        self.shell = self.bash_path()
         self.environ = os.environ.copy()
+
+    def cmd(self, command, cwd=None, check=False, live=False, env=None):
+        return run(
+            self.shell,
+            command=command,
+            cwd=cwd,
+            check=check,
+            live=live,
+            env=env if env else self.environ,
+        )
 
     def setup(self):
         global logger
@@ -294,7 +348,7 @@ class Launcher(ABC):
 
         try:
             if SUPPORT_LAUNCHER_NGROK and not self.is_installed("pyngrok"):
-                self.run('pip -q install "pyngrok"', check=True, live=True)
+                self.cmd('pip -q install "pyngrok"', check=True, live=True)
         except NameError:
             pass
 
@@ -303,22 +357,22 @@ class Launcher(ABC):
         logger.info(f'Launcher: 그래픽카드: {self.system_info()["gpu"]}')
 
         # Suppress pip version upgrade warning
-        self.run("python -m pip -q install --upgrade pip", check=False, live=True)
+        self.cmd("python -m pip -q install --upgrade pip", check=False, live=True)
 
         if not self.is_installed("gradio"):
-            self.run('pip -q install "gradio>=3.21"', check=True, live=True)
+            self.cmd('pip -q install "gradio>=3.21"', check=True, live=True)
 
         if not self.is_installed("bs4"):
-            self.run('pip -q install "beautifulsoup4"', check=True, live=True)
+            self.cmd('pip -q install "beautifulsoup4"', check=True, live=True)
 
         if not self.is_installed("lxml"):
-            self.run('pip -q install "lxml"', check=True, live=True)
+            self.cmd('pip -q install "lxml"', check=True, live=True)
 
         if not self.has_executable("gdown"):
-            self.run("pip -q install gdown", check=True, live=True)
+            self.cmd("pip -q install gdown", check=True, live=True)
 
         if not self.is_installed("git"):
-            self.run("pip -q install GitPython", check=False, live=True)
+            self.cmd("pip -q install GitPython", check=False, live=True)
 
     @staticmethod
     def is_installed(package):
@@ -335,48 +389,6 @@ class Launcher(ABC):
         import shutil
 
         return shutil.which(cmd=name, path=path) is not None
-
-    def run(self, command, cwd=None, check=False, live=False, env=None):
-        import shlex
-        import subprocess
-
-        if live:
-            logger.info(f"Launcher: {command}")
-            proc = subprocess.run(
-                [self.shell(), "-c", command],
-                encoding="utf8",
-                errors="ignore",
-                cwd=cwd,
-                env=env if env else self.environ,
-            )
-            if proc.returncode != 0:
-                message = f"RunningCommandError: Return code: '{proc.returncode}', Command: '{command}'"
-                if check:
-                    raise RuntimeError(message)
-                else:
-                    logger.info(f"Launcher: {message}")
-
-            return ""
-        else:
-            logger.debug(f"Launcher: {command}")
-            proc = subprocess.run(
-                [self.shell(), "-c", command],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                encoding="utf8",
-                errors="ignore",
-                cwd=cwd,
-                env=env if env else self.environ,
-            )
-
-            if proc.returncode != 0:
-                message = f"RunningCommandError: Return code: '{proc.returncode}', Message: '{proc.stderr if len(proc.stderr)>0 else ''}', Command: '{command}'"
-                if check:
-                    raise RuntimeError(message)
-                else:
-                    logger.warning(f"Launcher: {message}")
-
-            return proc.stdout
 
     def system_info(self):
         def platform_info(self):
@@ -400,7 +412,7 @@ class Launcher(ABC):
                 return {}
             else:
                 try:
-                    query_gpu = self.run(
+                    query_gpu = self.cmd(
                         f'nvidia-smi --query-gpu="name,memory.total,driver_version" --format=csv',
                         check=False,
                         live=False,
@@ -421,7 +433,7 @@ class Launcher(ABC):
 
     @staticmethod
     @abstractmethod
-    def shell():
+    def bash_path():
         pass
 
     @staticmethod
@@ -889,16 +901,16 @@ class Launcher(ABC):
 
             assert git_url
             if not sd_webui_path.exists():
-                self.run(
+                self.cmd(
                     f'git -C "{sd_webui_path.parent}" clone {git_url} {sd_webui_path.name}',
                     check=True,
                 )
 
             if git_commit:
-                self.run(f'git -C "{sd_webui_path}" fetch origin master')
-                self.run(f'git -C "{sd_webui_path}" checkout {git_commit}')
+                self.cmd(f'git -C "{sd_webui_path}" fetch origin master')
+                self.cmd(f'git -C "{sd_webui_path}" checkout {git_commit}')
             else:
-                self.run(f'git -C "{sd_webui_path}" pull origin master')
+                self.cmd(f'git -C "{sd_webui_path}" pull origin master')
 
             time.sleep(0.1)
 
@@ -982,10 +994,10 @@ class Launcher(ABC):
                 )
                 repository_path = Path(extensions_path, reponame_from(url))
                 if not repository_path.exists():
-                    self.run(
+                    self.cmd(
                         f'git -C "{extensions_path}" clone --recursive --depth=1 {url}'
                     )
-                    self.run(
+                    self.cmd(
                         f'git -C "{repository_path}" fetch --depth=1'
                     )  # SD Web UI의 Check for updates 기능을 위해
                 time.sleep(0.1)
@@ -1016,16 +1028,16 @@ class Launcher(ABC):
 
                 u = urlparse(url)
                 if u.hostname == "civitai.com":
-                    self.run(f"aria2c {aria2c_options} {url}", cwd)
+                    self.cmd(f"aria2c {aria2c_options} {url}", cwd)
                 elif u.hostname == "huggingface.co":
                     url = url.replace("/blob/", "/resolve/")
-                    self.run(
+                    self.cmd(
                         f"aria2c {aria2c_options} {url} --out={filename(url)}", cwd
                     )
                 elif u.hostname == "drive.google.com":
-                    self.run(f"gdown --fuzzy {url}", cwd)
+                    self.cmd(f"gdown --fuzzy {url}", cwd)
                 else:
-                    self.run(f"aria2c {aria2c_options} {url}", cwd)
+                    self.cmd(f"aria2c {aria2c_options} {url}", cwd)
 
             """
             확장 설정 파일 복사
@@ -1186,7 +1198,7 @@ class Launcher(ABC):
 
                 venv_path = Path(sd_webui_path, "venv")
                 if not venv_path.exists():
-                    self.run(
+                    self.cmd(
                         f'python -m venv "{venv_path}" --without-pip',
                         check=True,
                     )
@@ -1214,13 +1226,13 @@ class Launcher(ABC):
                     get_pip_py,
                 )
 
-                self.run(
+                self.cmd(
                     f'"{python_path}" "{get_pip_py}"',
                     check=True,
                     env=webui_environ,
                 )
 
-                self.run(
+                self.cmd(
                     f'"{python_path}" -m pip --help', check=True, env=webui_environ
                 )
 
@@ -1276,10 +1288,10 @@ class Launcher(ABC):
                             desc=f"{reponame} 확장 패치 적용, {diff_path}",
                         )
 
-                        self.run(
+                        self.cmd(
                             f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
                         )
-                        self.run(
+                        self.cmd(
                             f'patch -N -d "{diff_path.parent}" -p1 < "{diff_path}" || true',
                             check=False,
                         )
@@ -1317,7 +1329,7 @@ class Launcher(ABC):
             launch_path = Path(sd_webui_path, "launch.py")
             with subprocess.Popen(
                 [
-                    self.shell(),
+                    self.shell,
                     "-c",
                     f'"{python_path}" -u "{launch_path}" {cmdline_args}',
                 ],
@@ -2222,19 +2234,19 @@ class LinuxPlatform(Launcher):
     def setup(self):
         super().setup()
 
-        self.run("apt-get update -qq -y", check=True, live=True)
+        self.cmd("apt-get update -qq -y", check=True, live=True)
 
         if not self.has_executable("git"):
-            self.run("apt-get install -qq -y git", check=True, live=True)
+            self.cmd("apt-get install -qq -y git", check=True, live=True)
 
         if not self.has_executable("curl"):
-            self.run("apt-get install -qq -y curl", check=True, live=True)
+            self.cmd("apt-get install -qq -y curl", check=True, live=True)
 
         if not self.has_executable("aria2c"):
-            self.run("apt-get install -qq -y aria2", check=True, live=True)
+            self.cmd("apt-get install -qq -y aria2", check=True, live=True)
 
     @staticmethod
-    def shell():
+    def bash_path():
         return "/usr/bin/bash"
 
     @staticmethod
@@ -2306,7 +2318,7 @@ class WindowsPlatform(Launcher):
         super().start(inbrowser=args.inbrowser)
 
     @staticmethod
-    def shell():
+    def bash_path():
         path = ""
         path += "C:\\Program Files (x86)\\Git\\bin" + os.pathsep
         path += "C:\\Program Files\\Git\\bin" + os.pathsep
@@ -2330,7 +2342,7 @@ class ColabLauncher(LinuxPlatform):
         # https://github.com/googlecolab/colabtools/issues/3412
         try:
             # 패키지가 이미 다운그레이드 됐는지 확인하기
-            self.run("dpkg -l libunwind8-dev", check=True, live=True)
+            self.cmd("dpkg -l libunwind8-dev", check=True, live=True)
         except RuntimeError:
             for url in (
                 "http://launchpadlibrarian.net/367274644/libgoogle-perftools-dev_2.5-2.2ubuntu3_amd64.deb",
@@ -2338,14 +2350,14 @@ class ColabLauncher(LinuxPlatform):
                 "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libtcmalloc-minimal4_2.5-2.2ubuntu3_amd64.deb",
                 "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb",
             ):
-                self.run(
+                self.cmd(
                     f"curl --location --output {url.rsplit('/', 1)[-1]} {url}",
                     check=False,
                     live=True,
                 )
-            self.run("apt install -qq libunwind8-dev", check=False, live=True)
-            self.run("dpkg -i *.deb", check=False, live=True)
-            self.run("rm *.deb", check=False, live=True)
+            self.cmd("apt install -qq libunwind8-dev", check=False, live=True)
+            self.cmd("dpkg -i *.deb", check=False, live=True)
+            self.cmd("rm *.deb", check=False, live=True)
 
         # https://github.com/googlecolab/colabtools/issues/3412
         self.environ["LD_PRELOAD"] = "libtcmalloc.so"
@@ -2385,20 +2397,20 @@ class RunPodLauncher(LinuxPlatform):
     def setup(self):
         super().setup()
 
-        self.run(
+        self.cmd(
             "apt-get install -qq -y libgl1",
             check=True,
             live=True,
         )
 
         # For ddetailer extension, mmcv, mmdet dependency
-        self.run(
+        self.cmd(
             "apt-get install -qq -y libpython3.10-dev build-essential python3-lib2to3 python3-distutils python3-toolz",
             check=True,
             live=True,
         )
         # And
-        self.run(
+        self.cmd(
             "pip install -q --upgrade pip setuptools wheel",
             check=True,
             live=True,
