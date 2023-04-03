@@ -353,8 +353,16 @@ class Launcher(ABC):
             pass
 
         logger.info(f"Launcher: 시작, 버전: {VERSION}")
-        logger.info(f'Launcher: 플랫폼: {self.system_info()["platform"]}')
-        logger.info(f'Launcher: 그래픽카드: {self.system_info()["gpu"]}')
+
+        def info2list(info: dict):
+            return [
+                "{key}: {val}".format(key=key, val=info[key])
+                for i, key in enumerate(info)
+                if info[key]
+            ]
+
+        for info in info2list(self.system_info()):
+            logger.info(f"Launcher: {info}")
 
         # Suppress pip version upgrade warning
         self.cmd("python -m pip -q install --upgrade pip", check=False, live=True)
@@ -390,47 +398,6 @@ class Launcher(ABC):
 
         return shutil.which(cmd=name, path=path) is not None
 
-    def system_info(self):
-        def platform_info(self):
-            import platform
-
-            try:
-                return {
-                    "arch": platform.machine(),
-                    "cpu": platform.processor(),
-                    "system": platform.system(),
-                    "release": platform.platform(aliased=True, terse=False)
-                    if platform.system() == "Windows"
-                    else platform.release(),
-                    "python": platform.python_version(),
-                }
-            except Exception as e:
-                return {"error": e}
-
-        def gpu_info(self):
-            if not self.has_executable("nvidia-smi"):
-                return {}
-            else:
-                try:
-                    query_gpu = self.cmd(
-                        f'nvidia-smi --query-gpu="name,memory.total,driver_version" --format=csv',
-                        check=False,
-                        live=False,
-                    ).rstrip("\n")
-                    name, memory, driver = query_gpu.split("\n")[-1].split(", ")
-                    return {
-                        "name": name,
-                        "memory": memory,
-                        "driver": driver,
-                    }
-                except ValueError as e:
-                    return {"error": query_gpu}
-
-                except Exception as e:
-                    return {"error": e}
-
-        return {"platform": platform_info(self), "gpu": gpu_info(self)}
-
     @staticmethod
     @abstractmethod
     def bash_path():
@@ -439,6 +406,10 @@ class Launcher(ABC):
     @staticmethod
     @abstractmethod
     def python_path(venv_path=None):
+        pass
+
+    @staticmethod
+    def system_info():
         pass
 
     @staticmethod
@@ -2251,6 +2222,88 @@ class LinuxPlatform(Launcher):
             self.cmd("apt-get install -qq -y aria2", check=True, live=True)
 
     @staticmethod
+    def system_info():
+        def platform_info():
+            import platform
+
+            try:
+                return {
+                    "arch": platform.machine(),
+                    "cpu": platform.processor(),
+                    "system": platform.system(),
+                    "release": platform.platform(),
+                    "python": platform.python_version(),
+                }
+            except Exception as e:
+                return {"error": e}
+
+        def cpu_info():
+            def vCPU():
+                def cpu_count():
+                    count = run(
+                        LinuxPlatform.bash_path(),
+                        f"cat /proc/cpuinfo | grep processor | wc -l",
+                        check=False,
+                        live=False,
+                    ).rstrip("\n")
+                    return len(
+                        os.sched_getaffinity(0)
+                    )  # vs os.cpu_count(), psutil.cpu_count()
+
+                try:
+                    with open("/sys/fs/cgroup/cpu/cpu.cfs_quota_us") as cfs:
+                        cfs_quota_us = int(cfs.read())
+                    with open("/sys/fs/cgroup/cpu/cpu.cfs_period_us") as cfs:
+                        cfs_period_us = int(cfs.read())
+                    return (
+                        cfs_quota_us / cfs_period_us
+                        if cfs_quota_us == -1
+                        else cpu_count()
+                    )
+                except:
+                    return cpu_count()
+
+            try:
+                query_cpu = run(
+                    LinuxPlatform.bash_path(),
+                    f'cat /proc/cpuinfo | grep "model name" | uniq',
+                    check=False,
+                    live=False,
+                ).rstrip("\n")
+                key, colon, name = tuple(
+                    map(lambda x: x.strip(), query_cpu.partition(":"))
+                )
+                return {"name": name, "vCPU": vCPU()}
+            except ValueError as e:
+                return {"error": query_cpu}
+            except Exception as e:
+                return {"error": e}
+
+        def gpu_info():
+            if not LinuxPlatform.has_executable("nvidia-smi"):
+                return {}
+            else:
+                try:
+                    query_gpu = run(
+                        LinuxPlatform.bash_path(),
+                        f'nvidia-smi --query-gpu="name,memory.total,driver_version" --format=csv',
+                        check=False,
+                        live=False,
+                    ).rstrip("\n")
+                    name, memory, driver = query_gpu.split("\n")[-1].split(", ")
+                    return {
+                        "name": name,
+                        "memory": memory,
+                        "driver": driver,
+                    }
+                except ValueError as e:
+                    return {"error": query_gpu}
+                except Exception as e:
+                    return {"error": e}
+
+        return {"Platform": platform_info(), "CPU": cpu_info(), "GPU": gpu_info()}
+
+    @staticmethod
     def bash_path():
         return "/usr/bin/bash"
 
@@ -2310,6 +2363,52 @@ class WindowsPlatform(Launcher):
                     aria2c_exe, "wb"
                 ) as dst:
                     shutil.copyfileobj(src, dst)
+
+    @staticmethod
+    def system_info():
+        def platform_info():
+            import platform
+
+            try:
+                return {
+                    "arch": platform.machine(),
+                    "cpu": platform.processor(),
+                    "system": platform.system(),
+                    "release": platform.platform(aliased=True, terse=False),
+                    "python": platform.python_version(),
+                }
+            except Exception as e:
+                return {"error": e}
+
+        def cpu_info():
+            def cpu_count():
+                return os.cpu_count()
+
+            return {"count": cpu_count()}
+
+        def gpu_info():
+            if not WindowsPlatform.has_executable("nvidia-smi"):
+                return {}
+            else:
+                try:
+                    query_gpu = run(
+                        WindowsPlatform.bash_path(),
+                        f'nvidia-smi --query-gpu="name,memory.total,driver_version" --format=csv',
+                        check=False,
+                        live=False,
+                    ).rstrip("\n")
+                    name, memory, driver = query_gpu.split("\n")[-1].split(", ")
+                    return {
+                        "name": name,
+                        "memory": memory,
+                        "driver": driver,
+                    }
+                except ValueError as e:
+                    return {"error": query_gpu}
+                except Exception as e:
+                    return {"error": e}
+
+        return {"Platform": platform_info(), "CPU": cpu_info(), "GPU": gpu_info()}
 
     def start(self, inbrowser=False):
         import argparse
