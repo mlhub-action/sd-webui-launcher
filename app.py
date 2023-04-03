@@ -1558,6 +1558,11 @@ class Launcher(ABC):
                                     col_count=(2, "fixed"),
                                     interactive=True,
                                 )
+                                gr.Markdown(
+                                    """
+                                    > 📝 컨트롤넷 모델은 작업 디렉터리에 저장하지 않고 매번 다운로드
+                                    """
+                                )
                             with gr.Tab("Detection Detailer") as ddetailer_tab:
                                 apply_ddetailer_patches = gr.Checkbox(
                                     label="설치 문제 패치 적용",
