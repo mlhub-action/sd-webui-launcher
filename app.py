@@ -138,7 +138,7 @@ DEFAULT_SETTINGS = """
     "cmdline_args": "--xformers --no-gradio-queue",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
-    "use_virtualenv": false,
+    "use_virtualenv": true,
     "apply_ddetailer_patches": true,
     "copy_extensions_config": true
 }
@@ -502,7 +502,7 @@ class Launcher(ABC):
                     value=settings.get("xformers_package", None),
                 ),
                 use_virtualenv: gr.Checkbox.update(
-                    value=settings.get("use_virtualenv", False),
+                    value=settings.get("use_virtualenv", True),
                 ),
                 git_url: gr.Text.update(
                     value=settings.get("git_url", None),
@@ -1985,8 +1985,8 @@ class Launcher(ABC):
                         with gr.Tab("(선택) 가상 환경"):
                             use_virtualenv = gr.Checkbox(
                                 label="Python 가상 환경 venv 사용",
-                                info="기본값, 해제",
-                                value=False,
+                                info="기본값, 체크",
+                                value=True,
                             )
                             gr.Markdown(
                                 f"""

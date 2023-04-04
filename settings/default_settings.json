@@ -126,6 +126,6 @@
     "cmdline_args": "--xformers --no-gradio-queue",
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
-    "use_virtualenv": false,
+    "use_virtualenv": true,
     "apply_ddetailer_patches": true
 }
