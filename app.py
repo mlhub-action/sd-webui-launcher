@@ -379,9 +379,6 @@ class Launcher(ABC):
         if not self.has_executable("gdown"):
             self.cmd("pip -q install gdown", check=True, live=True)
 
-        if not self.is_installed("git"):
-            self.cmd("pip -q install GitPython", check=False, live=True)
-
     @staticmethod
     def is_installed(package):
         import importlib.util
@@ -2105,6 +2102,13 @@ class Launcher(ABC):
                             def on_select_commit_since5days_tab(git_url):
 
                                 try:
+                                    if not self.is_installed("git"):
+                                        self.cmd(
+                                            "pip -q install GitPython",
+                                            check=False,
+                                            live=True,
+                                        )
+
                                     import git
 
                                     if not sd_webui_path.exists():
