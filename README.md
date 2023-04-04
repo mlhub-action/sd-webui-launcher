@@ -50,6 +50,7 @@
  - 가상 환경 사용 여부 기본값을 사용으로 변경, 호환성을 위해
  - 접속 방법 : cloudflare 추가
  - 시작시 CPU 정보 출력
+ - 실행 인자 즐겨찾기 추가 : --reinstall-torch --reinstall-xformers
 </br>
 
 ### v0.3.5 (2023-04-03)
