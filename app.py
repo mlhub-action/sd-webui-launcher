@@ -818,7 +818,9 @@ class Launcher(ABC):
             진행 스탭 계산
             """
             steps = 0
-            total = 5
+            total = 4
+
+            total += "gradio" in auth_method
 
             total += self.is_support_googledrive() and workspace_googledrive
 
@@ -1299,7 +1301,7 @@ class Launcher(ABC):
 
                 from pycloudflared import try_cloudflare
 
-                tunnel = try_cloudflare(port=7860)
+                tunnel = f"Running on public URL: {try_cloudflare(port=7860).tunnel}"
 
             import subprocess
 
@@ -1330,7 +1332,7 @@ class Launcher(ABC):
                         logger.info("SDWebUI: " + line)
 
                     if line.startswith("ngrok connected to"):
-                        tunnel = line
+                        tunnel = f"Running on public URL: {line.partition(':')[-1]}"
                     if line.startswith("Running on local URL:") or line.startswith(
                         "Running on public URL:"
                     ):
