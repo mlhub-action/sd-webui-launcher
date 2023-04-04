@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.3.5"  # @param {type:"string"}
+VERSION = "v0.3.6"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
@@ -1294,9 +1294,18 @@ class Launcher(ABC):
 
             time.sleep(0.1)
 
+            tunnel = None
+
+            if "cloudflare" in auth_method:
+                if not self.is_installed("pycloudflared"):
+                    self.cmd("pip install pycloudflared", check=True, live=False)
+
+                from pycloudflared import try_cloudflare
+
+                tunnel = try_cloudflare(port=7860)
+
             import subprocess
 
-            tunnel = None
             launch_path = Path(sd_webui_path, "launch.py")
             with subprocess.Popen(
                 [
@@ -1636,39 +1645,95 @@ class Launcher(ABC):
                     SD Web UI에 접속할 방법을 선택해 주세요.
                     """
                 )
+                auth_method_mapping = {
+                    "gradio(기본값)": "gradio",
+                    "cloudflare": "cloudflare",
+                    "ngrok": "ngrok",
+                }
                 auth_method = gr.Text(visible=False, value="gradio")
-                with gr.Tabs():
-                    with gr.Tab("gradio") as tab_gradio:
-                        auth_username = gr.Text(
-                            label="Username",
-                            placeholder="인증이 필요 없으면 빈칸으로 두세요",
-                            interactive=True,
-                        )
-                        auth_password = gr.Text(
-                            label="Password",
-                            placeholder="인증이 필요 없으면 빈칸으로 두세요",
-                            interactive=True,
-                        )
-                    tab_gradio.select(
-                        fn=on_select_auth_method,
-                        inputs=None,
-                        outputs=auth_method,
+                auth_method_dropdown = gr.Dropdown(
+                    label="Tunnel",
+                    info="  웹 응답이 느릴 때 다른 Tunnel을 선택해 보세요.",
+                    value="gradio(기본값)",
+                    choices=[*auth_method_mapping.keys()],
+                    interactive=True,
+                )
+
+                with gr.Box(visible=True) as tab_gradio:
+                    auth_username = gr.Text(
+                        label="Username",
+                        placeholder="인증이 필요 없으면 빈칸으로 두세요",
+                        interactive=True,
+                    )
+                    auth_password = gr.Text(
+                        label="Password",
+                        placeholder="인증이 필요 없으면 빈칸으로 두세요",
+                        interactive=True,
                     )
 
-                    with gr.Tab("ngrok") as tab_ngrok:
-                        gr.Markdown(
-                            "[인증 토큰?](https://dashboard.ngrok.com/get-started/your-authtoken)"
-                        )
-                        auth_token = gr.Text(
-                            label="Authtoken",
-                            placeholder="인증 토큰을 입력해 주세요",
-                            interactive=True,
-                        )
-                    tab_ngrok.select(
-                        fn=on_select_auth_method,
-                        inputs=None,
-                        outputs=auth_method,
+                with gr.Box(visible=False) as tab_cloudflare:
+                    gr.Markdown("[인증 정보 필요 없음](https://try.cloudflare.com/)")
+
+                with gr.Box(visible=False) as tab_ngrok:
+                    gr.Markdown(
+                        "[인증 토큰?](https://dashboard.ngrok.com/get-started/your-authtoken)"
                     )
+                    auth_token = gr.Text(
+                        label="Authtoken",
+                        placeholder="인증 토큰을 입력해 주세요",
+                        interactive=True,
+                    )
+
+                def on_update_auth_method(value):
+                    return [
+                        gr.Box.update(visible=value in v)
+                        for k, v in auth_method_mapping.items()
+                    ]
+
+                def resolve_auth_method(auth_method):
+                    for (
+                        key,
+                        value,
+                    ) in auth_method_mapping.items():
+                        if auth_method == value:
+                            break
+                    return key, value
+
+                def on_change_auth_method(auth_method):
+                    key, value = resolve_auth_method(auth_method)
+                    return [
+                        gr.Dropdown.update(value=key),
+                        *on_update_auth_method(value),
+                    ]
+
+                auth_method.change(
+                    fn=on_change_auth_method,
+                    inputs=auth_method,
+                    outputs=[
+                        auth_method_dropdown,
+                        tab_gradio,
+                        tab_cloudflare,
+                        tab_ngrok,
+                    ],
+                )
+
+                def on_select_auth_method(evt: gr.SelectData):
+                    value = auth_method_mapping[evt.value]
+                    return [
+                        gr.Text.update(value=value),
+                        *on_update_auth_method(value),
+                    ]
+
+                auth_method_dropdown.select(
+                    fn=on_select_auth_method,
+                    inputs=None,
+                    outputs=[
+                        auth_method,
+                        tab_gradio,
+                        tab_cloudflare,
+                        tab_ngrok,
+                    ],
+                )
 
             with gr.Box():
                 gr.Markdown(
