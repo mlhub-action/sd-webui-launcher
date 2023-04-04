@@ -213,6 +213,8 @@ FAVORITES_ARGS = [
     ["--no-gradio-queue"],
     ["--update-all-extensions"],
     ["--disable-console-progressbars"],
+    ["--reinstall-torch"],
+    ["--reinstall-xformers"],
 ]
 
 ## @markdown - 즐겨찾기 : 커밋 해시
