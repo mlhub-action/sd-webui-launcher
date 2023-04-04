@@ -2034,8 +2034,8 @@ class Launcher(ABC):
                         )
                         git_commit = gr.Text(
                             label="Commit hash",
-                            info="  (선택) 다른 버전을 사용하려면 입력해 주세요",
-                            placeholder="최신 버전을 사용하려면 빈칸으로 두세요. 예) a9fed7c364061ae6efb37f797b6b522cb3cf7aa2",
+                            info="  (선택) 다른 버전을 사용하려면 입력해 주세요. 예) 22bcc7be428c94e9408f589966c2040187245d81",
+                            placeholder="최신 버전을 사용하려면 빈칸으로 두세요.",
                             interactive=True,
                         )
                     with gr.Column(scale=0.2):
