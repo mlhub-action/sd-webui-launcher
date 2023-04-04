@@ -658,9 +658,6 @@ class Launcher(ABC):
                 gr.Markdown.update(visible=False),
             ]
 
-        def on_select_auth_method(evt: gr.SelectData):
-            return evt.value
-
         def build_cmdline_args(
             workspace_name,
             auth_method,
