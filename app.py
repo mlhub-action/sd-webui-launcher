@@ -369,6 +369,21 @@ class Launcher(ABC):
 
         if not self.is_installed("gradio"):
             self.cmd('pip -q install "gradio>=3.21"', check=True, live=True)
+        else:
+            from importlib.metadata import version
+
+            versioning = ["major", "minor", "patch"]
+            gradio_version = dict(
+                zip(versioning, map(int, version("gradio").split(".", maxsplit=2)))
+            )
+            # SD Web UI와 Python 환경을 같이 써서 SD Web UI에서 gradio 버전을 다운그레이드한 경우
+            if gradio_version["major"] != 3 or gradio_version["minor"] < 21:
+                logger.warning("Launcher: gradio 버전이 낮아 재설치 합니다.")
+                self.cmd(
+                    'pip -q install --upgrade --force-reinstall "gradio>=3.21"',
+                    check=True,
+                    live=True,
+                )
 
         if not self.is_installed("bs4"):
             self.cmd('pip -q install "beautifulsoup4"', check=True, live=True)
