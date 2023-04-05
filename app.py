@@ -163,6 +163,7 @@ FAVORITES_EXTENSIONS = [
     ["Dump U-Net[⧉](https://github.com/hnmr293/stable-diffusion-webui-dumpunet.git)"],
     ["Dynamic Prompts[⧉](https://github.com/adieyal/sd-dynamic-prompts.git)"],
     ["Dynamic Thresholding[⧉](https://github.com/mcmonkeyprojects/sd-dynamic-thresholding)"],
+    ["Image browser[⧉](https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git)"],
     ["Kohya-ss Additional Networks[⧉](https://github.com/kohya-ss/sd-webui-additional-networks)"],
     ["Latent Couple[⧉](https://github.com/ashen-sensored/stable-diffusion-webui-two-shot.git)"],
     ["Locon[⧉](https://github.com/KohakuBlueleaf/a1111-sd-webui-locon.git)"],

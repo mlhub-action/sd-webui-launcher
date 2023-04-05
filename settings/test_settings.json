@@ -71,6 +71,10 @@
                     "https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git"
                 ],
                 [
+                    "Image browser",
+                    "https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git"
+                ],
+                [
                     "Kohya-ss Additional Networks",
                     "https://github.com/kohya-ss/sd-webui-additional-networks.git"
                 ],
