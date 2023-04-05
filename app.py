@@ -4,7 +4,10 @@ VERSION = "v0.3.7"  # @param {type:"string"}
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
 # @markdown - 해제시 : 노트북 결과창에 직접 표시(🐇응답 <font color="blue">빠름</font>, ⚠️보기 <font color="red">불편</font>)
+# @markdown 💡 gradio.live 연결이 안되거나 응답이 늦을 때 체크 해제 하고 사용하세요.
 USE_GRADIO_LIVE = True  # @param {type:"boolean"}
+
+LAUNCHER_PORT = 7878
 
 ## @markdown ## <br> 필요한 경우 아래 기본 설정 및 즐겨찾기 편집 ##
 ## @markdown #### <br> 기본 설정 ####
@@ -295,6 +298,7 @@ class Launcher(ABC):
     def __init__(self):
         self.shell = self.bash_path()
         self.environ = os.environ.copy()
+        self.tunnel = None
 
     def cmd(self, command, cwd=None, check=False, live=False, env=None):
         return run(
@@ -1315,7 +1319,7 @@ class Launcher(ABC):
 
             time.sleep(0.1)
 
-            tunnel = None
+            tunnel_url = None
 
             if "cloudflare" in auth_method:
                 if not self.is_installed("pycloudflared"):
@@ -1323,7 +1327,8 @@ class Launcher(ABC):
 
                 from pycloudflared import try_cloudflare
 
-                tunnel = f"Running on public URL: {try_cloudflare(port=7860).tunnel}"
+                self.tunnel = try_cloudflare(port=7860)
+                tunnel_url = f"Running on public URL: {self.tunnel.tunnel}"
 
             import subprocess
 
@@ -1354,7 +1359,7 @@ class Launcher(ABC):
                         logger.info("SDWebUI: " + line)
 
                     if line.startswith("ngrok connected to"):
-                        tunnel = f"Running on public URL: {line.partition(':')[-1]}"
+                        tunnel_url = f"Running on public URL: {line.partition(':')[-1]}"
                     if line.startswith("Running on local URL:") or line.startswith(
                         "Running on public URL:"
                     ):
@@ -1364,7 +1369,7 @@ class Launcher(ABC):
                             progress,
                             steps,
                             total,
-                            desc=f"SD Web UI 실행 완료, {tunnel if tunnel else line}\n",
+                            desc=f"SD Web UI 실행 완료, {tunnel_url if tunnel_url else line}\n",
                         )
                         from datetime import datetime as dt
                         from datetime import timedelta
@@ -2288,9 +2293,17 @@ class Launcher(ABC):
             share=USE_GRADIO_LIVE and self.is_support_share(),  # 공유 연결 사용할지 여부
             debug=True,  # 노트북 결과창에 출력 여부
             inline=not USE_GRADIO_LIVE,  # 노트북에 웹 표시 여부
-            server_port=7878,
+            server_port=LAUNCHER_PORT,
             inbrowser=inbrowser,
         )
+
+    def stop(self):
+        if self.tunnel:
+            self.tunnel.terminate(LAUNCHER_PORT)
+
+        import gradio as gr
+
+        gr.close_all()
 
     @staticmethod
     def log(message):
@@ -2648,7 +2661,7 @@ class LocalLauncher(WindowsPlatform):
         super().setup()
         from os import system
 
-        system("title " + "SD Web UI 런처 127.0.0.1:7878")
+        system("title " + f"SD Web UI 런처 127.0.0.1:{LAUNCHER_PORT}")
 
     @staticmethod
     def working_dir():
@@ -2715,6 +2728,9 @@ class LauncherFactory:
 
 if __name__ == "__main__":
 
-    launcher = LauncherFactory.create()
-    launcher.setup()
-    launcher.start()
+    try:
+        launcher = LauncherFactory.create()
+        launcher.setup()
+        launcher.start()
+    except KeyboardInterrupt:
+        launcher.stop()
