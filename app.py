@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.3.6"  # @param {type:"string"}
+VERSION = "v0.3.7"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)
@@ -746,6 +746,11 @@ class Launcher(ABC):
                     userdata,
                     "config.json",
                 )
+                styles_file_path = PurePath(
+                    sd_webui_path,
+                    userdata,
+                    "styles.csv",
+                )
 
                 if not "--ckpt-dir" in override_args:
                     cmdline_args += [f'--ckpt-dir "{ckpt_path}"']
@@ -759,6 +764,8 @@ class Launcher(ABC):
                     cmdline_args += [f'--ui-config-file "{ui_config_path}"']
                 if not "--ui-settings-file" in override_args:
                     cmdline_args += [f'--ui-settings-file "{ui_settings_path}"']
+                if not "--styles-file" in override_args:
+                    cmdline_args += [f'--styles-file "{styles_file_path}"']
 
             cmdline_args += [f"{extra_args}"]
 
