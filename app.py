@@ -1539,7 +1539,7 @@ class Launcher(ABC):
                                 )
                                 gr.Markdown(
                                     """
-                                    > 📝 체크시: 확장별 설정 파일(\extensions/**/*.json|extensions/sd-dynamic-prompts/wildcards/\*.txt)을 단순 복사
+                                    > 📝 체크시: 확장별 설정 파일(extensions/\*\*/\*.json | extensions/sd-dynamic-prompts/wildcards/\*.txt)을 단순 복사
                                     > 📝 해제시: 복사 안함
                                     """
                                 )
