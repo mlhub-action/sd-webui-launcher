@@ -1534,12 +1534,12 @@ class Launcher(ABC):
                             with gr.Tab("(선택) 설정 파일 복사") as ddetailer_tab:
                                 copy_extensions_config = gr.Checkbox(
                                     label="구글 드라이브 연결시 확장별 설정 파일 복사",
-                                    info="기본값, 체크",
+                                    info="작업 디렉터리의 extensions 경로 아래 설정 파일을 복사해서 사용합니다. 기본값, 체크",
                                     value=True,
                                 )
                                 gr.Markdown(
                                     """
-                                    > 📝 체크시: 확장별 설정 파일(\*.json|extensions/sd-dynamic-prompts/wildcards/\*.txt)을 단순 복사
+                                    > 📝 체크시: 확장별 설정 파일(\extensions/**/*.json|extensions/sd-dynamic-prompts/wildcards/\*.txt)을 단순 복사
                                     > 📝 해제시: 복사 안함
                                     """
                                 )
