@@ -1479,8 +1479,10 @@ class Launcher(ABC):
                     [civitai](https://civitai.com/) 또는 [huggingface](https://huggingface.co/)에서 다운로드 할 주소 목록을 작성해주세요.
                     > 💡 이름은 표시 용도니 자유롭게 정하세요.
                     > 💡 테이블의 셀을 더블 클릭하면 편집/삭제 가능합니다.
+                    > 💡 작업 디렉터리에 저장되는 것만(⭕) 구글 드라이브 연결시 동기화 됩니다. 
                     """
                 )
+                gr.Markdown("<br/>")
 
                 def favorite_tuple(markdown: str):
                     from bs4 import BeautifulSoup
@@ -1515,6 +1517,11 @@ class Launcher(ABC):
                         return gr.DataFrame.update()
 
                 with gr.Accordion("모델", open=True):
+                    gr.Markdown(
+                        """
+                        > 작업 디렉터리에 저장 ⭕
+                        """
+                    )
                     with gr.Row():
                         with gr.Column(scale=0.8):
                             models = gr.Dataframe(
@@ -1536,6 +1543,11 @@ class Launcher(ABC):
                     gr.Markdown("<br/>")
 
                 with gr.Accordion("확장", open=True):
+                    gr.Markdown(
+                        """
+                        > 작업 디렉터리에 저장 ❌, 설정 파일은 복사 ⭕
+                        """
+                    )
                     with gr.Row():
                         with gr.Column(scale=0.8):
                             with gr.Tab("저장소"):
@@ -1603,6 +1615,11 @@ class Launcher(ABC):
                     gr.Markdown("<br/>")
 
                 with gr.Accordion("로라", open=self.is_support_load()):
+                    gr.Markdown(
+                        """
+                        > 작업 디렉터리에 저장 ⭕
+                        """
+                    )
                     with gr.Row():
                         with gr.Column(scale=0.8):
                             loras = gr.Dataframe(
@@ -1624,6 +1641,11 @@ class Launcher(ABC):
                     gr.Markdown("<br/>")
 
                 with gr.Accordion("임베딩", open=self.is_support_load()):
+                    gr.Markdown(
+                        """
+                        > 작업 디렉터리에 저장 ⭕
+                        """
+                    )
                     with gr.Row():
                         with gr.Column(scale=0.8):
                             embeddings = gr.Dataframe(
@@ -1647,6 +1669,11 @@ class Launcher(ABC):
                     gr.Markdown("<br/>")
 
                 with gr.Accordion("VAE", open=self.is_support_load()):
+                    gr.Markdown(
+                        """
+                        > 작업 디렉터리에 저장 ⭕
+                        """
+                    )
                     with gr.Row():
                         with gr.Column(scale=0.8):
                             vaes = gr.Dataframe(
