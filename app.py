@@ -8,6 +8,7 @@ VERSION = "v0.3.7"  # @param {type:"string"}
 USE_GRADIO_LIVE = True  # @param {type:"boolean"}
 
 LAUNCHER_PORT = 7878
+SD_WEBUI_PORT = 7860
 
 ## @markdown ## <br> 필요한 경우 아래 기본 설정 및 즐겨찾기 편집 ##
 ## @markdown #### <br> 기본 설정 ####
@@ -298,7 +299,6 @@ class Launcher(ABC):
     def __init__(self):
         self.shell = self.bash_path()
         self.environ = os.environ.copy()
-        self.tunnel = None
 
     def cmd(self, command, cwd=None, check=False, live=False, env=None):
         return run(
@@ -1327,8 +1327,7 @@ class Launcher(ABC):
 
                 from pycloudflared import try_cloudflare
 
-                self.tunnel = try_cloudflare(port=7860)
-                tunnel_url = f"Running on public URL: {self.tunnel.tunnel}"
+                tunnel_url = f"Running on public URL: {try_cloudflare(port=SD_WEBUI_PORT).tunnel}"
 
             import subprocess
 
@@ -2298,16 +2297,19 @@ class Launcher(ABC):
         )
 
     def stop(self):
-        if self.tunnel:
-            self.tunnel.terminate(LAUNCHER_PORT)
+        try:
+            from pycloudflared import try_cloudflare
 
-        import gradio as gr
+            try_cloudflare.terminate(SD_WEBUI_PORT)
+        except (ImportError, NameError, ValueError):
+            pass
 
-        gr.close_all()
+        try:
+            import gradio as gr
 
-    @staticmethod
-    def log(message):
-        pass
+            gr.close_all()
+        except (ImportError, NameError):
+            pass
 
 
 class LinuxPlatform(Launcher):
@@ -2732,5 +2734,5 @@ if __name__ == "__main__":
         launcher = LauncherFactory.create()
         launcher.setup()
         launcher.start()
-    except KeyboardInterrupt:
+    finally:  # KeyboardInterrupt
         launcher.stop()
