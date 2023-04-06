@@ -35,3 +35,32 @@ index 7841d8e..a18ad15 100644
 -- 
 2.32.0.windows.2
 
+From aa9b768712328c8ce468bb9e9bcbae708fb54fa7 Mon Sep 17 00:00:00 2001
+From: sumof2primes <sumof2primes@gmail.com>
+Date: Thu, 6 Apr 2023 20:36:58 +0900
+Subject: [PATCH] Specify install package version
+
+---
+ scripts/ddetailer.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/ddetailer.py b/scripts/ddetailer.py
+index a18ad15..5c42bcf 100644
+--- a/scripts/ddetailer.py
++++ b/scripts/ddetailer.py
+@@ -45,9 +45,9 @@ def startup():
+     from launch import is_installed, run
+     if not is_installed("mmdet"):
+         python = sys.executable
+-        run(f'"{python}" -m pip install -U openmim', desc="Installing openmim", errdesc="Couldn't install openmim")
+-        run(f'"{python}" -m mim install mmcv-full', desc=f"Installing mmcv-full", errdesc=f"Couldn't install mmcv-full")
+-        run(f'"{python}" -m pip install mmdet', desc=f"Installing mmdet", errdesc=f"Couldn't install mmdet")
++        run(f'"{python}" -m pip install -U openmim==0.3.7', desc="Installing openmim", errdesc="Couldn't install openmim")
++        run(f'"{python}" -m mim install mmcv-full==1.7.1', desc=f"Installing mmcv-full", errdesc=f"Couldn't install mmcv-full")
++        run(f'"{python}" -m pip install mmdet==2.28.2', desc=f"Installing mmdet", errdesc=f"Couldn't install mmdet")
+         site_packages_path = run(
+             f'"{python}" -c "import sysconfig; print(sysconfig.get_path(\'purelib\'))"',
+             desc=f"Find site packages path",
+-- 
+2.32.0.windows.2
+
