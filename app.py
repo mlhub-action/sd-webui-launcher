@@ -695,6 +695,9 @@ class Launcher(ABC):
 
             override_args = shlex.split(extra_args)  # allow override
 
+            if not "--enable-insecure-extension-access" in override_args:
+                cmdline_args += [f"--enable-insecure-extension-access"]
+
             if not "--autolaunch" in override_args:
                 if inbrowser:
                     cmdline_args += [f"--autolaunch"]
