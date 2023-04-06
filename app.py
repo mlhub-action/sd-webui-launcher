@@ -399,7 +399,7 @@ class Launcher(ABC):
             self.cmd('pip -q install "lxml"', check=True, live=True)
 
         if not self.has_executable("gdown"):
-            self.cmd("pip -q install gdown", check=True, live=True)
+            self.cmd('pip -q install "gdown"', check=True, live=True)
 
     @staticmethod
     def is_installed(package):
@@ -1323,7 +1323,7 @@ class Launcher(ABC):
 
             if "cloudflare" in auth_method:
                 if not self.is_installed("pycloudflared"):
-                    self.cmd("pip install pycloudflared", check=True, live=False)
+                    self.cmd('pip -q install "pycloudflared"', check=True, live=False)
 
                 from pycloudflared import try_cloudflare
 
@@ -2133,7 +2133,7 @@ class Launcher(ABC):
                                 try:
                                     if not self.is_installed("git"):
                                         self.cmd(
-                                            "pip -q install GitPython",
+                                            'pip -q install "GitPython"',
                                             check=False,
                                             live=True,
                                         )
