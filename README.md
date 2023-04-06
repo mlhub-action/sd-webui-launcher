@@ -41,12 +41,9 @@
 </br>
 
 ## 알려진 문제
- - [Unexpected token '<', "<html> <h"... is not valid JSON](https://github.com/mlhub-action/sd-webui-launcher/issues/1)
-</br>
- - [DiffusionMapper has 859.52 M params](https://github.com/mlhub-action/sd-webui-launcher/issues/4)
-</br>
- - [PyTorch has CUDA Version=11.7 and torchvision has CUDA Version=11.8](https://github.com/mlhub-action/sd-webui-launcher/issues/5)
-</br>
+ - [Unexpected token '<', "<html> <h"... is not valid JSON](https://github.com/mlhub-action/sd-webui-launcher/issues/1)</br>
+ - [DiffusionMapper has 859.52 M params](https://github.com/mlhub-action/sd-webui-launcher/issues/4)</br>
+ - [PyTorch has CUDA Version=11.7 and torchvision has CUDA Version=11.8](https://github.com/mlhub-action/sd-webui-launcher/issues/5)</br>
  
 
 ## 업데이트
