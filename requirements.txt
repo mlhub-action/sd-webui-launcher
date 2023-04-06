@@ -1,0 +1,6 @@
+gradio>=3.21
+beautifulsoup4
+lxml
+gdown
+pycloudflared
+GitPython
