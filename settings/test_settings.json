@@ -99,6 +99,10 @@
                     "https://github.com/fkunn1326/openpose-editor.git"
                 ],
                 [
+                    "PBRemTools",
+                    "https://github.com/mattyamonaca/PBRemTools.git"
+                ],
+                [
                     "posex",
                     "https://github.com/hnmr293/posex.git"
                 ],
