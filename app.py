@@ -1291,7 +1291,7 @@ class Launcher(ABC):
                         )
 
                         self.cmd(
-                            f'curl --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
+                            f'curl -sS --location --output "{diff_path}" https://raw.githubusercontent.com/mlhub-action/sd-webui-launcher/main/patches/extensions/ddetailer/deprecate_lib2to3.diff'
                         )
                         self.cmd(
                             f'patch -N -d "{diff_path.parent}" -p1 < "{diff_path}" || true',
@@ -2600,7 +2600,7 @@ class ColabLauncher(LinuxPlatform):
                 "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb",
             ):
                 self.cmd(
-                    f"curl --location --output {url.rsplit('/', 1)[-1]} {url}",
+                    f"curl -sS --location --output {url.rsplit('/', 1)[-1]} {url}",
                     check=False,
                     live=True,
                 )
