@@ -296,6 +296,8 @@ def run(shell, command, cwd=None, check=False, live=False, env=None):
 
 
 class Launcher(ABC):
+    import platform
+
     def __init__(self):
         self.shell = self.bash_path()
         self.environ = os.environ.copy()
@@ -2551,17 +2553,6 @@ class WindowsPlatform(Launcher):
 
         return {"Platform": platform_info(), "CPU": cpu_info(), "GPU": gpu_info()}
 
-    def start(self, inbrowser=False):
-        import argparse
-
-        parser = argparse.ArgumentParser(description="SD Web UI 런처")
-        parser.add_argument(
-            "--inbrowser", action="store_true", help="기본 웹브라우저로 런처 창 띄우기"
-        )
-
-        args = parser.parse_args()
-        super().start(inbrowser=args.inbrowser)
-
     @staticmethod
     def bash_path():
         path = ""
@@ -2701,6 +2692,17 @@ class LocalLauncher(WindowsPlatform):
 
         system("title " + f"SD Web UI 런처 127.0.0.1:{LAUNCHER_PORT}")
 
+    def start(self, inbrowser=False):
+        import argparse
+
+        parser = argparse.ArgumentParser(description="SD Web UI 런처")
+        parser.add_argument(
+            "--inbrowser", action="store_true", help="기본 웹브라우저로 런처 창 띄우기"
+        )
+
+        args = parser.parse_args()
+        super().start(inbrowser=args.inbrowser)
+
     @staticmethod
     def working_dir():
         return Path.cwd()
@@ -2730,21 +2732,55 @@ class LocalLauncher(WindowsPlatform):
         return True
 
 
+class JupyterLauncher(WindowsPlatform):
+    def setup(self):
+        super().setup()
+
+    def start(self, inbrowser=False):
+        super().start()
+
+    @staticmethod
+    def working_dir():
+        return Path.cwd()
+
+    @staticmethod
+    def service_name():
+        return "주피터(windows)"
+
+    @staticmethod
+    def service_type():
+        return "노트북"
+
+    @staticmethod
+    def is_support_googledrive():
+        return False
+
+    @staticmethod
+    def is_support_share():
+        return False
+
+    @staticmethod
+    def is_support_load():
+        return True
+
+    @staticmethod
+    def force_virtualenv():
+        return True
+
+
 class LauncherFactory:
+    import platform
+
     @staticmethod
     def create():
-        if LauncherFactory.is_local():
-            return LocalLauncher()
-        elif LauncherFactory.is_colab():
+        if LauncherFactory.is_colab():
             return ColabLauncher()
         elif LauncherFactory.is_runpod():
             return RunPodLauncher()
-
-    @staticmethod
-    def is_local():
-        import platform
-
-        return platform.system() == "Windows"
+        elif LauncherFactory.is_local():
+            return LocalLauncher()
+        elif LauncherFactory.is_jupyter():
+            return JupyterLauncher()
 
     @staticmethod
     def is_colab():
@@ -2761,7 +2797,15 @@ class LauncherFactory:
 
     @staticmethod
     def is_runpod():
-        return not LauncherFactory.is_local() and not LauncherFactory.is_colab()
+        return Launcher.platform.system() == "Linux" and Launcher.is_interactive()
+
+    @staticmethod
+    def is_local():
+        return Launcher.platform.system() == "Windows" and not Launcher.is_interactive()
+
+    @staticmethod
+    def is_jupyter():
+        return Launcher.platform.system() == "Windows" and Launcher.is_interactive()
 
 
 if __name__ == "__main__":
