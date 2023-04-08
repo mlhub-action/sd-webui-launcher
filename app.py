@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.3.8"  # @param {type:"string"}
+VERSION = "v0.3.9"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)<br>
@@ -402,6 +402,10 @@ class Launcher(ABC):
             self.cmd('pip -q install "gdown"', check=True, live=True)
 
     @staticmethod
+    def is_interactive():
+        return hasattr(sys, "ps1")
+
+    @staticmethod
     def is_installed(package):
         import importlib.util
 
@@ -688,7 +692,6 @@ class Launcher(ABC):
             auth_token,
             extra_args,
         ):
-
             cmdline_args = []
 
             import shlex
@@ -2159,7 +2162,6 @@ class Launcher(ABC):
                             )
 
                             def on_select_commit_since5days_tab(git_url):
-
                                 try:
                                     if not self.is_installed("git"):
                                         self.cmd(
@@ -2579,6 +2581,10 @@ class WindowsPlatform(Launcher):
 
 class ColabLauncher(LinuxPlatform):
     def setup(self):
+        from google.colab.output import eval_js
+
+        eval_js('google.colab.output.setIframeHeight("400")')
+
         super().setup()
 
         # 코랩 tcmalloc 관련 이슈 우회
@@ -2759,7 +2765,6 @@ class LauncherFactory:
 
 
 if __name__ == "__main__":
-
     try:
         launcher = LauncherFactory.create()
         launcher.setup()
