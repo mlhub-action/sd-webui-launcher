@@ -7,6 +7,9 @@ VERSION = "v0.3.9"  # @param {type:"string"}
 # @markdown 💡 gradio.live 연결이 안되거나 응답이 늦을 때 체크 해제 하고 사용하세요
 USE_GRADIO_LIVE = True  # @param {type:"boolean"}
 
+# @markdown ## 노트북 출력창에 표시되는 줄 수 ##
+DISPLAY_OUTPUT_LINES = 40  # @param {type:"integer"}
+
 LAUNCHER_PORT = 7878
 SD_WEBUI_PORT = 7860
 
@@ -2572,9 +2575,10 @@ class WindowsPlatform(Launcher):
 
 class ColabLauncher(LinuxPlatform):
     def setup(self):
+        # 코랩 출력창 스크롤 높이 조정
         from google.colab.output import eval_js
 
-        eval_js('google.colab.output.setIframeHeight("400")')
+        eval_js(f'google.colab.output.setIframeHeight("{DISPLAY_OUTPUT_LINES*10}")')
 
         super().setup()
 
@@ -2635,6 +2639,25 @@ class ColabLauncher(LinuxPlatform):
 
 class RunPodLauncher(LinuxPlatform):
     def setup(self):
+        # 런팟 출력창 스크롤 높이 조정
+        from IPython.display import display, HTML
+
+        display(
+            HTML(
+                f"""
+        <style>
+        .jp-OutputArea-child {{
+            max-height: {DISPLAY_OUTPUT_LINES}em;
+        }}
+
+        .jp-OutputArea-child .jp-OutputArea-output {{
+            overflow: auto;
+        }}
+        </style>
+        """
+            )
+        )
+
         super().setup()
 
         self.cmd(
