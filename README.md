@@ -32,12 +32,12 @@
 </br>
 
 ## 제한 사항
-- 설정한 확장은 구글 드라이브에 저장 안됨. gradio 보안상 이유로 SD Web UI 앱 이외의 경로 접근 제한
-- 기본값으로 런처는 gradio.live로 연결되는데 gradio.live가 응답이 느린 경우 USE_GRADIO_LIVE 체크 해제하고 사용 권장
+- 설정한 확장은 구글 드라이브에 저장 안됨. 확장 호환성을 위한 선택.
+- 기본값으로 런처는 gradio.live로 연결되는데 웹 응답이 느린 경우 USE_GRADIO_LIVE 체크 해제하고 사용 권장
 - 코랩 사용 환경 : ubuntu 20.04, python 3.9
 - 런팟 사용 환경 : ubuntu 20.04, python 3.10, [runpod/pytorch 템플릿](https://hub.docker.com/r/runpod/pytorch/tags), venv 가상 환경
   > runpod/pytorch:3.10-1.13.1-116 <br> runpod/pytorch:3.10-2.0.0-117
-- 로컬 사용 환경 : Windows 10, python 3.10, git, venv 가상 환경
+- 로컬 사용 환경 : Windows 10, python 3.10, git, venv 가상 환경(강제)
 </br>
 
 ## 알려진 문제
