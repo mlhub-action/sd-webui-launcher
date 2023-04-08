@@ -2645,16 +2645,16 @@ class RunPodLauncher(LinuxPlatform):
         display(
             HTML(
                 f"""
-        <style>
-        .jp-OutputArea-child {{
-            max-height: {DISPLAY_OUTPUT_LINES}em;
-        }}
+                <style>
+                .jp-OutputArea-child {{
+                    max-height: {DISPLAY_OUTPUT_LINES}em;
+                }}
 
-        .jp-OutputArea-child .jp-OutputArea-output {{
-            overflow: auto;
-        }}
-        </style>
-        """
+                .jp-OutputArea-child .jp-OutputArea-output {{
+                    overflow: auto;
+                }}
+                </style>
+                """
             )
         )
 
@@ -2757,6 +2757,24 @@ class LocalLauncher(WindowsPlatform):
 
 class JupyterLauncher(WindowsPlatform):
     def setup(self):
+        # 주피터 출력창 스크롤 높이 조정
+        from IPython.display import display, HTML
+
+        display(
+            HTML(
+                f"""
+                <style>
+                .jp-OutputArea-child {{
+                    max-height: {DISPLAY_OUTPUT_LINES}em;
+                }}
+
+                .jp-OutputArea-child .jp-OutputArea-output {{
+                    overflow: auto;
+                }}
+                </style>
+                """
+            )
+        )
         super().setup()
 
     def start(self, inbrowser=False):
