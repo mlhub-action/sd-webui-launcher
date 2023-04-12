@@ -95,6 +95,10 @@
                     "https://github.com/hako-mikan/sd-webui-lora-block-weight.git"
                 ],
                 [
+                    "LyCORIS",
+                    "https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris.git"
+                ],
+                [
                     "OpenPose Editor",
                     "https://github.com/fkunn1326/openpose-editor.git"
                 ],
@@ -113,6 +117,10 @@
                 [
                     "Regional Prompter",
                     "https://github.com/hako-mikan/sd-webui-regional-prompter.git"
+                ],
+                [
+                    "Segment Anything",
+                    "https://github.com/continue-revolution/sd-webui-segment-anything.git"
                 ],
                 [
                     "stable-diffusion-webui-state",
