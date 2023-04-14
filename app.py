@@ -154,9 +154,8 @@ DEFAULT_SETTINGS = """
 ## @markdown #### <br> 즐겨찾기 ####
 ## @markdown > 등록 형식 : "이름\[⧉\]\(링크\)"
 
-
-## @markdown - 즐겨찾기 : 확장
 # fmt: off
+## @markdown - 즐겨찾기 : 확장
 FAVORITES_EXTENSIONS = [
     ["한글 패치[⧉](https://github.com/36DB/stable-diffusion-webui-localization-ko_KR)"],
     ["Bilingual Localization[⧉](https://github.com/journey-ad/sd-webui-bilingual-localization)"],
@@ -181,6 +180,18 @@ FAVORITES_EXTENSIONS = [
     ["stable-diffusion-webui-state[⧉](https://github.com/ilian6806/stable-diffusion-webui-state.git)"],
     ["System Info[⧉](https://github.com/vladmandic/sd-extension-system-info)"],
     ["WD 1.4 Tagger[⧉](https://github.com/toriato/stable-diffusion-webui-wd14-tagger)"],
+]
+
+## @markdown - 즐겨찾기 : ControlNet 모델
+FAVORITES_CONTROLNET_MODELS = [
+    ["openpose[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors)"],
+    ["canny[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors)"],
+    ["hed[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors)"],
+    ["depth[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors)"],
+    ["normal[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_normal-fp16.safetensors)"],
+    ["mlsd[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_mlsd-fp16.safetensors)"],
+    ["scribble[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_scribble-fp16.safetensors)"],
+    ["seg[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_seg-fp16.safetensors)"]
 ]
 
 ## @markdown - 즐겨찾기 : 모델
@@ -1609,20 +1620,36 @@ class Launcher(ABC):
                                 )
 
                         with gr.Column(scale=0.2):
-                            gr.Markdown(
-                                "[확장 인덱스](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)"
-                            )
-                            extensions_favorites = gr.Dataset(
-                                components=[gr.Markdown(visible=False)],
-                                label="즐겨찾기",
-                                samples=FAVORITES_EXTENSIONS,
-                                samples_per_page=10,
-                            )
-                            extensions_favorites.select(
-                                fn=on_click_favorites,
-                                inputs=extensions,
-                                outputs=extensions,
-                            )
+                            with gr.Tab("확장 저장소"):
+                                gr.Markdown(
+                                    "[찾아보기](https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json)"
+                                )
+                                extensions_favorites = gr.Dataset(
+                                    components=[gr.Markdown(visible=False)],
+                                    label="즐겨찾기",
+                                    samples=FAVORITES_EXTENSIONS,
+                                    samples_per_page=10,
+                                )
+                                extensions_favorites.select(
+                                    fn=on_click_favorites,
+                                    inputs=extensions,
+                                    outputs=extensions,
+                                )
+                            with gr.Tab("ControlNet 모델"):
+                                gr.Markdown(
+                                    "[찾아보기](https://huggingface.co/webui/ControlNet-modules-safetensors/tree/main)"
+                                )
+                                controlnet_favorites = gr.Dataset(
+                                    components=[gr.Markdown(visible=False)],
+                                    label="즐겨찾기",
+                                    samples=FAVORITES_CONTROLNET_MODELS,
+                                    samples_per_page=10,
+                                )
+                                controlnet_favorites.select(
+                                    fn=on_click_favorites,
+                                    inputs=controlnet_models,
+                                    outputs=controlnet_models,
+                                )
                     gr.Markdown("<br/>")
 
                 with gr.Accordion("로라", open=self.is_support_load()):
