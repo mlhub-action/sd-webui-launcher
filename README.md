@@ -51,7 +51,7 @@
 #### 변경 내역
  - ControlNet 모델 즐겨찾기 추가
  - RTX 40 시리즈 사용시, 속도 향상 안내 문구 추가
- - 확장 즐겨찾기 추가 : LyCORIS, Regional Prompter, Segment Anything
+ - 확장 즐겨찾기 추가 : 3D Openpose Editor, LyCORIS, Regional Prompter, Segment Anything
 </br>
 
 ### v0.3.9 (2023-04-08)
