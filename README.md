@@ -49,6 +49,7 @@
 ## 업데이트
 ### v0.4.0 (2023-04-13)
 #### 변경 내역
+ - RTX 40 시리즈 사용시, 속도 향상 안내 문구 추가
  - 확장 즐겨찾기 추가 : LyCORIS, Regional Prompter, Segment Anything
 </br>
 

@@ -1807,8 +1807,10 @@ class Launcher(ABC):
                     """
                     # 4. 실행 방법
                     [SD Web UI 실행 인자](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings#all-command-line-arguments)를 입력해 주세요.
+                    > 🔥 RTX 40 시리즈 사용시, 속도 향상을 위해 Torch 버전 2.0.0+cu118, xFormers 버전 0.0.17, 가상 환경 사용을 추천합니다.
                     """
                 )
+                gr.Markdown("<br/>")
                 with gr.Row():
                     with gr.Column(scale=0.8):
                         with gr.Tab("실행 인자"):
