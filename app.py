@@ -208,7 +208,7 @@ FAVORITES_MODELS = [
 ## @markdown - 즐겨찾기 : 로라
 FAVORITES_LORAS = [
     ["Anime Tarot Card Art Style LoRA[⧉](https://civitai.com/api/download/models/19859)"],
-    ["Anime Lineart[⧉](https://civitai.com/api/download/models/19075)"],
+    ["Anime Lineart[⧉](https://civitai.com/api/download/models/28907)"],
 ]
 
 ## @markdown - 즐겨찾기 : 임베딩
