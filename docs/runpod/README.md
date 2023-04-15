@@ -61,8 +61,7 @@
 
 ## 9. 주피터 노트북(랩)에 연결
 > Connect to Jupyter Lab 버튼을 클릭해주세요.<br>
-> 그리고 SSH over exposed TCP 터미널 연결 아이피, 포트를 확인해 두세요.<br>
-> 나중에 SFTP 접속시 필요합니다.<br>
+> 그리고 SSH over exposed TCP 터미널 연결 아이피, 포트를 확인해 두세요. 나중에 SFTP 접속시 필요합니다.<br>
 > ssh 사용자이름@서버아이피 -p 포트 -i ~/.ssh/id_ed25519
 
 ![image](../images/runpod/08.%EB%9F%B0%ED%8C%9F.png)
@@ -140,7 +139,7 @@
 
 ### 16.4 SFTP 프로그램 설정
 > 예) 아래는 Cyberduck 프로그램 사용시, 다른 프로그램도 가능합니다.<br>
-> 새 연결 -> SFTP 선택 -> 서버 아이피, 포트, 사용자 이름, SSH 개인키 위치는 9번 항 맞게 수정해 주세요.<br>
+> 새 연결 -> SFTP 선택 -> 서버 아이피, 포트, 사용자 이름, SSH 개인키 위치는 '9. 주피터 노트북(랩)에 연결'에서 확인한  맞게 수정해 주세요.<br>
 > SSH 개인키로 접속하기 선택, 키 위치는 ~/.ssh/id_ed25519로 설정해주세요.
 
 ![image](../images/runpod/16.4.%EB%9F%B0%ED%8C%9F.png)
