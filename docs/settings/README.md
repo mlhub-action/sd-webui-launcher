@@ -18,6 +18,14 @@
 <br>
 <br>
 
+## ControlNet 모델 추가 경로 설정
+> [작업 디렉터리 이름]/models/ControlNet
+> 구글 드라이브 위 경로에 ControlNet 모델을 업로드 하세요.
+
+![image](./ControlNet_Extra_Path.png)
+<br>
+<br>
+
 ## Additional Networks 확장 로라 경로 설정
 > [작업 디렉터리 이름]/models/Lora
 
