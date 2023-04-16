@@ -251,8 +251,9 @@ FAVORITES_ARGS = [
     ["--xformers"],
     ["--medvram"],
     ["--no-gradio-queue"],
-    ["--update-all-extensions"],
+    ["--no-hashing"],
     ["--disable-console-progressbars"],
+    ["--update-all-extensions"],
     ["--reinstall-torch"],
     ["--reinstall-xformers"],
 ]
