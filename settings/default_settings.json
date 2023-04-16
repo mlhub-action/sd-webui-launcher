@@ -27,19 +27,19 @@
             ],
             "data": [
                 [
-                    "openpose",
+                    "v10_sd15_openpose",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors"
                 ],
                 [
-                    "canny",
+                    "v10_sd15_canny",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors"
                 ],
                 [
-                    "hed",
+                    "v10_sd15_hed",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors"
                 ],
                 [
-                    "depth",
+                    "v10_sd15_depth",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors"
                 ],
                 [
@@ -127,5 +127,6 @@
     "git_url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
     "git_commit": "",
     "use_virtualenv": true,
-    "apply_ddetailer_patches": true
+    "apply_ddetailer_patches": true,
+    "copy_extensions_config": true
 }

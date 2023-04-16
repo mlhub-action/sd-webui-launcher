@@ -46,19 +46,19 @@ DEFAULT_SETTINGS = """
             ],
             "data": [
                 [
-                    "openpose",
+                    "v10_sd15_openpose",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors"
                 ],
                 [
-                    "canny",
+                    "v10_sd15_canny",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors"
                 ],
                 [
-                    "hed",
+                    "v10_sd15_hed",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors"
                 ],
                 [
-                    "depth",
+                    "v10_sd15_depth",
                     "https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors"
                 ],
                 [
