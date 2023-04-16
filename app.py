@@ -196,20 +196,20 @@ FAVORITES_CONTROLNET_V10_MODELS = [
 ]
 
 FAVORITES_CONTROLNET_V11_MODELS = [
-    ["v11p_sd15_openpose[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_openpose.pth)"],
-    ["v11p_sd15_canny[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_canny.pth)"],
-    ["v11f1p_sd15_depth[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11f1p_sd15_depth.pth)"],
-    ["v11p_sd15_normalbae[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_normalbae.pth)"],
-    ["v11p_sd15_mlsd[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_mlsd.pth)"],
-    ["v11p_sd15_scribble[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_scribble.pth)"],
-    ["v11p_sd15_seg[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_seg.pth)"],
-    ["v11p_sd15_softedge[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_softedge.pth)"],
-    ["v11p_sd15_lineart[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_lineart.pth)"],
-    ["v11p_sd15s2_lineart_anime[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15s2_lineart_anime.pth)"],
-    ["v11p_sd15_inpaint[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_inpaint.pth)"],
-    ["v11u_sd15_tile[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11u_sd15_tile.pth)"],
-    ["v11e_sd15_ip2p[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11e_sd15_ip2p.pth)"],
-    ["v11e_sd15_shuffle[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11e_sd15_shuffle.pth)"],
+    ["v11p_sd15_openpose[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_openpose_fp16.safetensors)"],
+    ["v11p_sd15_canny[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_canny_fp16.safetensors)"],
+    ["v11f1p_sd15_depth[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11f1p_sd15_depth_fp16.safetensors)"],
+    ["v11p_sd15_normalbae[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_normalbae_fp16.safetensors)"],
+    ["v11p_sd15_mlsd[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_mlsd_fp16.safetensors)"],
+    ["v11p_sd15_scribble[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_scribble_fp16.safetensors)"],
+    ["v11p_sd15_seg[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_seg_fp16.safetensors)"],
+    ["v11p_sd15_softedge[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_softedge_fp16.safetensors)"],
+    ["v11p_sd15_lineart[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_lineart_fp16.safetensors)"],
+    ["v11p_sd15s2_lineart_anime[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15s2_lineart_anime_fp16.safetensors)"],
+    ["v11p_sd15_inpaint[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_inpaint_fp16.safetensors)"],
+    ["v11u_sd15_tile[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11u_sd15_tile_fp16.safetensors)"],
+    ["v11e_sd15_ip2p[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11e_sd15_ip2p_fp16.safetensors)"],
+    ["v11e_sd15_shuffle[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11e_sd15_shuffle_fp16.safetensors)"],
 ]
 
 ## @markdown - 즐겨찾기 : 모델
