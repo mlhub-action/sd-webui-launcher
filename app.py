@@ -1069,6 +1069,18 @@ class Launcher(ABC):
                 u = urlparse(url)
                 if u.hostname == "civitai.com":
                     self.cmd(f"aria2c {aria2c_options} {url}", cwd)
+
+                    # 접속 장애로 실제 이름이 아닌, id 이름으로 받아진 모든 파일 삭제
+                    import glob
+
+                    assert filename(url).isnumeric()
+                    for file in glob.glob(
+                        str(Path(cwd, f"{filename(url)}*")),
+                        recursive=False,
+                    ):
+                        logger.warning(f"Launcher: 다운로드 실패, 주소 : {url}")
+                        Path(file).unlink(missing_ok=True)
+
                 elif u.hostname == "huggingface.co":
                     url = url.replace("/blob/", "/resolve/")
                     self.cmd(
