@@ -47,9 +47,9 @@
  
 
 ## 업데이트
-### v0.4.0 (2023-04-13)
+### v0.4.0 (2023-04-16)
 #### 변경 내역
- - ControlNet 모델 즐겨찾기 추가
+ - ControlNet v1.0/v1.1 모델 즐겨찾기 추가
  - RTX 40 시리즈 사용시, 속도 향상 안내 문구 추가
  - 확장 즐겨찾기 추가 : 3D Openpose Editor, LyCORIS, Regional Prompter, Segment Anything
 </br>

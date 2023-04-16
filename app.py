@@ -184,15 +184,32 @@ FAVORITES_EXTENSIONS = [
 ]
 
 ## @markdown - 즐겨찾기 : ControlNet 모델
-FAVORITES_CONTROLNET_MODELS = [
-    ["openpose[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors)"],
-    ["canny[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors)"],
-    ["hed[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors)"],
-    ["depth[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors)"],
-    ["normal[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_normal-fp16.safetensors)"],
-    ["mlsd[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_mlsd-fp16.safetensors)"],
-    ["scribble[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_scribble-fp16.safetensors)"],
-    ["seg[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_seg-fp16.safetensors)"]
+FAVORITES_CONTROLNET_V10_MODELS = [
+    ["v10_sd15_openpose[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_openpose-fp16.safetensors)"],
+    ["v10_sd15_canny[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors)"],
+    ["v10_sd15_hed[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_hed-fp16.safetensors)"],
+    ["v10_sd15_depth[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors)"],
+    ["v10_sd15_normal[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_normal-fp16.safetensors)"],
+    ["v10_sd15_mlsd[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_mlsd-fp16.safetensors)"],
+    ["v10_sd15_scribble[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_scribble-fp16.safetensors)"],
+    ["v10_sd15_seg[⧉](https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_seg-fp16.safetensors)"],
+]
+
+FAVORITES_CONTROLNET_V11_MODELS = [
+    ["v11p_sd15_openpose[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_openpose.pth)"],
+    ["v11p_sd15_canny[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_canny.pth)"],
+    ["v11f1p_sd15_depth[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11f1p_sd15_depth.pth)"],
+    ["v11p_sd15_normalbae[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_normalbae.pth)"],
+    ["v11p_sd15_mlsd[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_mlsd.pth)"],
+    ["v11p_sd15_scribble[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_scribble.pth)"],
+    ["v11p_sd15_seg[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_seg.pth)"],
+    ["v11p_sd15_softedge[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_softedge.pth)"],
+    ["v11p_sd15_lineart[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_lineart.pth)"],
+    ["v11p_sd15s2_lineart_anime[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15s2_lineart_anime.pth)"],
+    ["v11p_sd15_inpaint[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_inpaint.pth)"],
+    ["v11u_sd15_tile[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11u_sd15_tile.pth)"],
+    ["v11e_sd15_ip2p[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11e_sd15_ip2p.pth)"],
+    ["v11e_sd15_shuffle[⧉](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11e_sd15_shuffle.pth)"],
 ]
 
 ## @markdown - 즐겨찾기 : 모델
@@ -1637,17 +1654,32 @@ class Launcher(ABC):
                                     inputs=extensions,
                                     outputs=extensions,
                                 )
-                            with gr.Tab("ControlNet 모델"):
+                            with gr.Tab("ControlNet v10 모델"):
                                 gr.Markdown(
                                     "[찾아보기](https://huggingface.co/webui/ControlNet-modules-safetensors/tree/main)"
                                 )
-                                controlnet_favorites = gr.Dataset(
+                                controlnet_v10_favorites = gr.Dataset(
                                     components=[gr.Markdown(visible=False)],
                                     label="즐겨찾기",
-                                    samples=FAVORITES_CONTROLNET_MODELS,
+                                    samples=FAVORITES_CONTROLNET_V10_MODELS,
                                     samples_per_page=10,
                                 )
-                                controlnet_favorites.select(
+                                controlnet_v10_favorites.select(
+                                    fn=on_click_favorites,
+                                    inputs=controlnet_models,
+                                    outputs=controlnet_models,
+                                )
+                            with gr.Tab("ControlNet v11 모델"):
+                                gr.Markdown(
+                                    "[찾아보기](https://huggingface.co/lllyasviel/ControlNet-v1-1/tree/main)"
+                                )
+                                controlnet_v11_favorites = gr.Dataset(
+                                    components=[gr.Markdown(visible=False)],
+                                    label="즐겨찾기",
+                                    samples=FAVORITES_CONTROLNET_V11_MODELS,
+                                    samples_per_page=10,
+                                )
+                                controlnet_v11_favorites.select(
                                     fn=on_click_favorites,
                                     inputs=controlnet_models,
                                     outputs=controlnet_models,
