@@ -196,20 +196,20 @@ FAVORITES_CONTROLNET_V10_MODELS = [
 ]
 
 FAVORITES_CONTROLNET_V11_MODELS = [
-    ["v11p_sd15_openpose[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_openpose_fp16.safetensors)"],
-    ["v11p_sd15_canny[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_canny_fp16.safetensors)"],
-    ["v11f1p_sd15_depth[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11f1p_sd15_depth_fp16.safetensors)"],
-    ["v11p_sd15_normalbae[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_normalbae_fp16.safetensors)"],
-    ["v11p_sd15_mlsd[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_mlsd_fp16.safetensors)"],
-    ["v11p_sd15_scribble[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_scribble_fp16.safetensors)"],
-    ["v11p_sd15_seg[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_seg_fp16.safetensors)"],
-    ["v11p_sd15_softedge[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_softedge_fp16.safetensors)"],
-    ["v11p_sd15_lineart[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_lineart_fp16.safetensors)"],
-    ["v11p_sd15s2_lineart_anime[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15s2_lineart_anime_fp16.safetensors)"],
-    ["v11p_sd15_inpaint[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11p_sd15_inpaint_fp16.safetensors)"],
-    ["v11u_sd15_tile[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11u_sd15_tile_fp16.safetensors)"],
-    ["v11e_sd15_ip2p[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11e_sd15_ip2p_fp16.safetensors)"],
-    ["v11e_sd15_shuffle[⧉](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/blob/main/control_v11e_sd15_shuffle_fp16.safetensors)"],
+    ["v11p_sd15_openpose[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_openpose_fp16.safetensors)"],
+    ["v11p_sd15_canny[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_canny_fp16.safetensors)"],
+    ["v11f1p_sd15_depth[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11f1p_sd15_depth_fp16.safetensors)"],
+    ["v11p_sd15_normalbae[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_normalbae_fp16.safetensors)"],
+    ["v11p_sd15_mlsd[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_mlsd_fp16.safetensors)"],
+    ["v11p_sd15_scribble[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_scribble_fp16.safetensors)"],
+    ["v11p_sd15_seg[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_seg_fp16.safetensors)"],
+    ["v11p_sd15_softedge[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_softedge_fp16.safetensors)"],
+    ["v11p_sd15_lineart[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_lineart_fp16.safetensors)"],
+    ["v11p_sd15s2_lineart_anime[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15s2_lineart_anime_fp16.safetensors)"],
+    ["v11p_sd15_inpaint[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_inpaint_fp16.safetensors)"],
+    ["v11u_sd15_tile[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11u_sd15_tile_fp16.safetensors)"],
+    ["v11e_sd15_ip2p[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11e_sd15_ip2p_fp16.safetensors)"],
+    ["v11e_sd15_shuffle[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11e_sd15_shuffle_fp16.safetensors)"],
 ]
 
 ## @markdown - 즐겨찾기 : 모델
@@ -1172,6 +1172,7 @@ class Launcher(ABC):
                         desc=f"컨트롤넷 모델 다운로드, 이름: {name}, 주소: {url}",
                     )
                     download(url, cwd=controlnet_models_path)
+                    download(Path(url).with_suffix(".yaml"), cwd=controlnet_models_path)
                 time.sleep(0.1)
 
             """
