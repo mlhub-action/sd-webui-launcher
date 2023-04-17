@@ -88,11 +88,11 @@
             "data": [
                 [
                     "EasyNegative",
-                    "https://civitai.com/api/download/models/9208"
+                    "https://huggingface.co/mlhub/embeddings/blob/main/EasyNegative/EasyNegative.pt"
                 ],
                 [
                     "badhandv4",
-                    "https://civitai.com/api/download/models/20068"
+                    "https://huggingface.co/mlhub/embeddings/blob/main/badhand/badhandv4.pt"
                 ],
                 [
                     "",

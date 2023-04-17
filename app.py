@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.4.0"  # @param {type:"string"}
+VERSION = "v0.4.1"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)<br>
@@ -107,11 +107,11 @@ DEFAULT_SETTINGS = """
             "data": [
                 [
                     "EasyNegative",
-                    "https://civitai.com/api/download/models/9208"
+                    "https://huggingface.co/mlhub/embeddings/blob/main/EasyNegative/EasyNegative.pt"
                 ],
                 [
                     "badhandv4",
-                    "https://civitai.com/api/download/models/20068"
+                    "https://huggingface.co/mlhub/embeddings/blob/main/badhand/badhandv4.pt"
                 ],
                 [
                     "",
@@ -231,9 +231,9 @@ FAVORITES_LORAS = [
 
 ## @markdown - 즐겨찾기 : 임베딩
 FAVORITES_EMBEDDINGS = [
-    ["EasyNegative[⧉](https://civitai.com/api/download/models/9208)"],
-    ["badhandv4[⧉](https://civitai.com/api/download/models/20068)"],
-    ["bad_prompt_version2[⧉](https://huggingface.co/embed/bad_prompt/resolve/main/bad_prompt_version2.pt)"],
+    ["EasyNegative[⧉](https://huggingface.co/mlhub/embeddings/blob/main/EasyNegative/EasyNegative.pt)"],
+    ["badhandv4[⧉](https://huggingface.co/mlhub/embeddings/blob/main/badhand/badhandv4.pt)"],
+    ["bad_prompt_version2[⧉](https://huggingface.co/mlhub/embeddings/blob/main/bad_prompt/bad_prompt_version2.pt)"],
 ]
 
 ## @markdown - 즐겨찾기 : VAES
