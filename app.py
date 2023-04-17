@@ -198,7 +198,7 @@ FAVORITES_CONTROLNET_V10_MODELS = [
 FAVORITES_CONTROLNET_V11_MODELS = [
     ["v11p_sd15_openpose[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_openpose_fp16.safetensors)"],
     ["v11p_sd15_canny[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_canny_fp16.safetensors)"],
-    ["v11f1p_sd15_depth[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11f1p_sd15_depth_fp16.safetensors)"],
+    ["v11p_sd15_depth[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_depth_fp16.safetensors)"],
     ["v11p_sd15_normalbae[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_normalbae_fp16.safetensors)"],
     ["v11p_sd15_mlsd[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_mlsd_fp16.safetensors)"],
     ["v11p_sd15_scribble[⧉](https://huggingface.co/ckpt/ControlNet-v1-1/blob/main/control_v11p_sd15_scribble_fp16.safetensors)"],
@@ -1172,7 +1172,8 @@ class Launcher(ABC):
                         desc=f"컨트롤넷 모델 다운로드, 이름: {name}, 주소: {url}",
                     )
                     download(url, cwd=controlnet_models_path)
-                    download(Path(url).with_suffix(".yaml"), cwd=controlnet_models_path)
+                    if ".safetensors" in url:
+                        download(url.replace(".safetensors", ".yaml"), cwd=controlnet_models_path)
                 time.sleep(0.1)
 
             """
