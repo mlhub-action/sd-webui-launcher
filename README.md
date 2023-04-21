@@ -4,6 +4,12 @@
 > 기능이 완벽하지 않거나 버그가 있을 수 있습니다
 </br>
 
+## 코랩 이용 제한사항
+무료 이용시 SD Web UI 사용이 제한될 수 있습니다[[1]](https://research.google.com/colaboratory/faq.html#limitations-and-restrictions).
+
+"Colab 리소스는 상호작용 사용 사례에 우선 할당됩니다. 일괄 연산, 다른 사용자에게 부정적인 영향을 줄 수 있는 작업, 정책을 우회하는 작업 등은 금지됩니다. 다음은 Colab 런타임에서 허용되지 않는 사항입니다."
+</br>
+
 | 노트북 이름 | 설명 | 코랩 링크 |
 | --- | --- | --- | 
 | [SD Web UI 런처](https://github.com/mlhub-action/sd-webui-launcher/blob/main/notebooks/SD-Web-UI-Launcher.ipynb) | Stable Diffusion Web UI 런처 | [![코랩에서 열기](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mlhub-action/sd-webui-launcher/blob/main/notebooks/SD-Web-UI-Launcher.ipynb) | 
@@ -47,6 +53,11 @@
  
 
 ## 업데이트
+### v0.4.2 (2023-04-21)
+#### 변경 내역
+ - 코랩 무료 이용시 SD Web UI [사용이 제한](https://research.google.com/colaboratory/faq.html#limitations-and-restrictions)될 수 있습니다.
+</br>
+
 ### v0.4.1 (2023-04-17)
 #### 변경 내역
  - 컨트롤넷 모델 이름과 설정 파일 이름이 같도록 수정
