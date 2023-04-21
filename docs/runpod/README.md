@@ -260,38 +260,45 @@
 <br>
 
 
-## 34. (선택 사항) 런팟에 SFTP 연결해서 파일 업/다운로드 하기
+## 34. 런팟 중지 및 삭제
+> 중지 후 삭제하지 않으면 디스크 유지 비용으로 시간당 비용이 청구됩니다.
 
-### 34.1. SSH 키 생성
+![image](../images/runpod/34.%EB%9F%B0%ED%8C%9F.%EC%A4%91%EC%A7%80.%EB%B0%8F.%EB%94%94%EC%8A%A4%ED%81%AC.%EC%82%AD%EC%A0%9C.png)
+<br>
+<br>
+
+## 35. (선택 사항) 런팟에 SFTP 연결해서 파일 업/다운로드 하기
+
+### 35.1. SSH 키 생성
 > 윈도우 파워쉘 터미널을 열고<br>
 > 아래 명령어를 입력하고 엔터 3번 눌러주세요.<br>
 
     ssh-keygen -t ed25519
 
 
-### 34.2. SSH 키, 생성 위치 확인
+### 35.2. SSH 키, 생성 위치 확인
 
     cat ~/.ssh/id_ed25519.pub
 
-![image](../images/runpod/34.2.SSH.%ED%82%A4.%EC%83%9D%EC%84%B1.%EC%9C%84%EC%B9%98.%ED%99%95%EC%9D%B8.png)
+![image](../images/runpod/35.2.SSH.%ED%82%A4.%EC%83%9D%EC%84%B1.%EC%9C%84%EC%B9%98.%ED%99%95%EC%9D%B8.png)
 <br>
 <br>
 
-### 34.3. 런팟 SSH 키 설정
+### 35.3. 런팟 SSH 키 설정
 
 > 위에 확인한 키를 SSH Public Key에 붙여넣고 Update Public Key 클릭해주세요.
 
     https://www.runpod.io/console/user/settings
 
-![image](../images/runpod/34.3.%EB%9F%B0%ED%8C%9F.SSH.%ED%82%A4.%EC%84%A4%EC%A0%95.png)
+![image](../images/runpod/35.3.%EB%9F%B0%ED%8C%9F.SSH.%ED%82%A4.%EC%84%A4%EC%A0%95.png)
 <br>
 <br>
 
-### 34.4 SFTP 프로그램 설정
+### 35.4 SFTP 프로그램 설정
 > 예) 아래는 Cyberduck 프로그램 사용시, 다른 프로그램도 가능합니다.<br>
 > 새 연결 -> SFTP 선택 -> 서버 아이피, 포트, 사용자 이름, SSH 개인키 위치는 [9. 주피터 노트북(랩)에 연결](https://github.com/mlhub-action/sd-webui-launcher/blob/main/docs/runpod/README.md#9-%EC%A3%BC%ED%94%BC%ED%84%B0-%EB%85%B8%ED%8A%B8%EB%B6%81%EB%9E%A9%EC%97%90-%EC%97%B0%EA%B2%B0)에서 확인한 내용에 맞게 수정해 주세요.<br>
 > SSH 개인키로 접속하기 선택, 키 위치는 ~/.ssh/id_ed25519로 설정해주세요.
 
-![image](../images/runpod/34.4.SFTP.%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8.%EC%84%A4%EC%A0%95.png)
+![image](../images/runpod/35.4.SFTP.%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8.%EC%84%A4%EC%A0%95.png)
 <br>
 <br>
