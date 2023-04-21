@@ -56,6 +56,7 @@
 ### v0.4.2 (2023-04-21)
 #### 변경 내역
  - 코랩 무료 이용시 SD Web UI [사용이 제한](https://research.google.com/colaboratory/faq.html#limitations-and-restrictions)될 수 있습니다.
+ - 파일 탐색기 앱(코랩 전용) 삭제 : 코랩 자체 파일 탐색기로 대체
 </br>
 
 ### v0.4.1 (2023-04-17)
