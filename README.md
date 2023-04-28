@@ -53,6 +53,11 @@
  
 
 ## 업데이트
+### v0.4.3 (2023-04-28)
+#### 변경 내역
+ - 잘못된 civitai.com 모델 다운로드 주소를 에러로 처리 않도록 수정
+</br>
+
 ### v0.4.2 (2023-04-21)
 #### 변경 내역
  - 코랩 무료 이용시 SD Web UI [사용이 제한](https://research.google.com/colaboratory/faq.html#limitations-and-restrictions)될 수 있습니다.

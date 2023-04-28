@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.4.2"  # @param {type:"string"}
+VERSION = "v0.4.3"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)<br>
@@ -1073,7 +1073,9 @@ class Launcher(ABC):
                     # 접속 장애로 실제 이름이 아닌, id 이름으로 받아진 모든 파일 삭제
                     import glob
 
-                    assert filename(url).isnumeric()
+                    # assert filename(url).isnumeric()
+                    # 모델 페이지 주소 : https://civitai.com/models/20282?modelVersionId=54596
+                    # 모델 다운로드 주소 : https://civitai.com/api/download/models/54596
                     for file in glob.glob(
                         str(Path(cwd, f"{filename(url)}*")),
                         recursive=False,
