@@ -166,7 +166,7 @@ FAVORITES_EXTENSIONS = [
     ["ControlNet[⧉](https://github.com/Mikubill/sd-webui-controlnet)"],
     ["Cutoff[⧉](https://github.com/hnmr293/sd-webui-cutoff.git)"],
     ["Dataset Tag Editor[⧉](https://github.com/toshiaki1729/stable-diffusion-webui-dataset-tag-editor)"],
-    ["Detection Detailer[⧉](https://github.com/dustysys/ddetailer)"],
+    ["Detection Detailer[⧉](https://github.com/mlhub-action/ddetailer)"],
     ["Dump U-Net[⧉](https://github.com/hnmr293/stable-diffusion-webui-dumpunet.git)"],
     ["Dynamic Prompts[⧉](https://github.com/adieyal/sd-dynamic-prompts.git)"],
     ["Dynamic Thresholding[⧉](https://github.com/mcmonkeyprojects/sd-dynamic-thresholding)"],
