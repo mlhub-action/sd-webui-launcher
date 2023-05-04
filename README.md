@@ -58,6 +58,7 @@
  - 잘못된 civitai.com 모델 다운로드 주소를 에러로 처리 않도록 수정
  - xformers 0.0.19 버전 선택 추가
  - ddetailer 확장 [즐겨찾기 주소](https://github.com/mlhub-action/ddetailer) 변경 : torch 2.0.0 지원, 기존에 사용하는 런처 설정 파일에서 주소 업데이트 필요
+ - control_v11f1e_sd15_tile 즐겨찾기 추가
 </br>
 
 ### v0.4.2 (2023-04-21)
