@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.4.3"  # @param {type:"string"}
+VERSION = "v0.4.4"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)<br>
@@ -2700,6 +2700,13 @@ class ColabLauncher(LinuxPlatform):
         self.environ["LD_PRELOAD"] = "libtcmalloc.so"
         # Deactivate tensorflow print standard error
         self.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
+        # For sd-webui-controlnet extension, svglib, pycairo dependency
+        self.cmd(
+            "apt-get install -qq -y libcairo2 libcairo2-dev",
+            check=True,
+            live=True,
+        )
 
     @staticmethod
     def working_dir():
