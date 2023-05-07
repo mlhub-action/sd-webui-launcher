@@ -234,6 +234,8 @@ FAVORITES_EMBEDDINGS = [
     ["EasyNegative[⧉](https://huggingface.co/mlhub/embeddings/blob/main/EasyNegative/EasyNegative.pt)"],
     ["badhandv4[⧉](https://huggingface.co/mlhub/embeddings/blob/main/badhand/badhandv4.pt)"],
     ["bad_prompt_version2[⧉](https://huggingface.co/mlhub/embeddings/blob/main/bad_prompt/bad_prompt_version2.pt)"],
+    ["veryBadImageNegative[⧉](https://huggingface.co/mlhub/embeddings/blob/main/veryBadImageNegative/verybadimagenegative_v1.3.pt)"],
+    ["negative_hand[⧉](https://huggingface.co/mlhub/embeddings/blob/main/negative_hand/negative_hand-neg.pt)"],
 ]
 
 ## @markdown - 즐겨찾기 : VAES
