@@ -58,6 +58,7 @@
  - 코랩에서 sd-webui-controlnet 확장 설치시 svglib, pycairo 의존 패키지 설치 오류 수정
  - stable-diffusion-webui v1.1.1 깃 저장소 즐겨찾기 추가
  - 임베딩 즐겨찾기 추가 : negative_hand, veryBadImageNegative
+ - 구글 드라이브 연결시 확장 설정 파일 복사 기능 추가(*.yml)
 </br>
 
 ### v0.4.3 (2023-04-28)

@@ -1106,11 +1106,14 @@ class Launcher(ABC):
 
                 import glob
 
-                # 하위 경로의 모든 json 파일 복사
-                for file in glob.glob(
-                    str(Path(extensions_path_target, "**/*.json")),
-                    recursive=True,
-                ):
+                # 하위 경로의 모든 json/yml 파일 복사
+                files = glob.glob(
+                    str(Path(extensions_path_target, "**/*.json")), recursive=True
+                ) + glob.glob(
+                    str(Path(extensions_path_target, "**/*.yml")), recursive=True
+                )
+
+                for file in files:
                     src = Path(file).absolute()
                     rel = src.relative_to(extensions_path_target)
                     dst = Path(extensions_path, rel).absolute()
@@ -1636,7 +1639,7 @@ class Launcher(ABC):
                                     """
                                     > 📝 체크시: 확장별 설정 파일을 복사해서 사용 함 
                                     > 📝 해제시: 확장별 설정 파일을 복사해서 사용 안함
-                                    > 💡 확장별 설정 파일: extensions/\*\*/\*.json | extensions/sd-dynamic-prompts/wildcards/\*.txt
+                                    > 💡 확장별 설정 파일: extensions/\*\*/\*.json, \*.yml | extensions/sd-dynamic-prompts/wildcards/\*.txt
                                     """
                                 )
                             with gr.Tab("ControlNet 모델") as controlnet_tab:
