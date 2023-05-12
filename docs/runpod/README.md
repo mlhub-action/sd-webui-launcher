@@ -5,7 +5,8 @@
 <br>
 
 ## 2. 메뉴에서 서버 찾기
-> 런팟 홈페이지 Browse Servers 버튼을 클릭해 주세요.
+> 런팟 홈페이지 Browse Servers 버튼을 클릭해 주세요.<br>
+> https://www.runpod.io/console/gpu-browse
 
 ![image](../images/runpod/01.%EB%9F%B0%ED%8C%9F.png)
 <br>
