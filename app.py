@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.4.4"  # @param {type:"string"}
+VERSION = "v0.4.5"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)<br>
@@ -262,6 +262,9 @@ FAVORITES_ARGS = [
 
 ## @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
+    [
+        "2023-05-12 v1.2.0[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/b08500cec8a791ef20082628b49b17df833f5dda)"
+    ],
     [
         "2023-05-02 v1.1.1[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/5ab7f213bec2f816f9c5644becb32eb72c8ffb89)"
     ],
@@ -2006,6 +2009,7 @@ class Launcher(ABC):
                                     "1.13.1+cu116": "pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116",
                                     "1.13.1+cu117": "pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117",
                                     "2.0.0+cu118": "pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118",
+                                    "2.0.1+cu118": "pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118",
                                     "직접 입력": "",
                                 }
 
@@ -2076,8 +2080,8 @@ class Launcher(ABC):
                                 xformers_package_mapping = {
                                     "빈칸(기본값)": "",
                                     "0.0.16rc425(torch==1.13.1)": "xformers==0.0.16rc425",
-                                    "0.0.17(torch==2.0.0)": "xformers==0.0.17",
-                                    "0.0.19(torch==2.0.0)": "xformers==0.0.19",
+                                    "0.0.17(torch>=2.0.0)": "xformers==0.0.17",
+                                    "0.0.19(torch>=2.0.0)": "xformers==0.0.19",
                                     "직접 입력": "",
                                 }
 
