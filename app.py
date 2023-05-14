@@ -2291,6 +2291,7 @@ class Launcher(ABC):
                                             entry.split(" ", 2)
                                             for entry in git.Git(sd_webui_path)
                                             .log(
+                                                "HEAD..origin/master",
                                                 "--since=5.days",
                                                 "--format=%cd %H %s",
                                                 "--date=short",
