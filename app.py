@@ -263,7 +263,7 @@ FAVORITES_ARGS = [
 ## @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
     [
-        "2023-05-12 v1.2.0[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/b08500cec8a791ef20082628b49b17df833f5dda)"
+        "2023-05-14 v1.2.1[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/89f9faa63388756314e8a1d96cf86bf5e0663045)"
     ],
     [
         "2023-05-02 v1.1.1[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/5ab7f213bec2f816f9c5644becb32eb72c8ffb89)"
