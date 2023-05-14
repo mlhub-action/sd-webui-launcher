@@ -1317,16 +1317,19 @@ class Launcher(ABC):
                 webui_environ["XFORMERS_PACKAGE"] = xformers_package
 
             def torch_cuda_version(torch_command):
-                import re
+                try:
+                    import re
 
-                pattern = re.compile(
-                    r"pip\s+install\s+torch==([0-9]+\.[0-9]+\.[0-9]+)\+cu(\d\d\d)\s+.*",
-                    re.IGNORECASE,
-                )
-                return pattern.match(torch_command)
+                    pattern = re.compile(
+                        r"pip\s+install\s+torch==([0-9]+\.[0-9]+\.[0-9]+)\+cu(\d\d\d)\s+.*",
+                        re.IGNORECASE,
+                    )
+                    return pattern.match(torch_command).groups()
+                except Exception:
+                    return ("0.0.0", "000")
 
             if torch_command:
-                torch_version, cuda_version = torch_cuda_version(torch_command).groups()
+                torch_version, cuda_version = torch_cuda_version(torch_command)
                 versioning = ["major", "minor", "patch"]
                 torch_version = dict(
                     zip(versioning, map(int, torch_version.split(".", maxsplit=2)))
