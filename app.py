@@ -176,10 +176,12 @@ FAVORITES_EXTENSIONS = [
     ["Locon[⧉](https://github.com/KohakuBlueleaf/a1111-sd-webui-locon.git)"],
     ["LyCORIS[⧉](https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris.git)"],
     ["Preset Utilities[⧉](https://github.com/Gerschel/sd_web_ui_preset_utils.git)"],
+    ["Prompt All-in-one[⧉](https://github.com/Physton/sd-webui-prompt-all-in-one.git)"],
     ["Regional Prompter[⧉](https://github.com/hako-mikan/sd-webui-regional-prompter.git)"],
     ["Segment Anything[⧉](https://github.com/continue-revolution/sd-webui-segment-anything.git)"],
     ["stable-diffusion-webui-state[⧉](https://github.com/ilian6806/stable-diffusion-webui-state.git)"],
     ["System Info[⧉](https://github.com/vladmandic/sd-extension-system-info)"],
+    ["Ultimate SD Upscale[⧉](https://github.com/Coyote-A/ultimate-upscale-for-automatic1111.git)"],
     ["WD 1.4 Tagger[⧉](https://github.com/toriato/stable-diffusion-webui-wd14-tagger)"],
 ]
 
