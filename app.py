@@ -253,6 +253,7 @@ FAVORITES_VAES = [
 ## @markdown - 즐겨찾기 : 실행 인자
 FAVORITES_ARGS = [
     ["--xformers"],
+    ["--opt-sdp-attention"],
     ["--medvram"],
     ["--no-gradio-queue"],
     ["--no-hashing"],
