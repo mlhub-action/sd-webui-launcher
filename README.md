@@ -56,6 +56,7 @@
 ### v0.4.5 (2023-05-13)
 #### 변경 내역
  - Torch 버전 선택 항목 추가 : 2.0.1+cu118
+ - xFormers 버전 선택 항목 추가 : 0.0.20(torch>=2.0.1)
  - 확장 즐겨찾기 추가 : Prompt All-in-one, Ultimate SD Upscale
 </br>
 

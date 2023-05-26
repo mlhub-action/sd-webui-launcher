@@ -2088,6 +2088,7 @@ class Launcher(ABC):
                                     "0.0.16rc425(torch==1.13.1)": "xformers==0.0.16rc425",
                                     "0.0.17(torch>=2.0.0)": "xformers==0.0.17",
                                     "0.0.19(torch>=2.0.0)": "xformers==0.0.19",
+                                    "0.0.20(torch>=2.0.1)": "xformers==0.0.20",
                                     "직접 입력": "",
                                 }
 
