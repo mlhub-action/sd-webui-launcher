@@ -35,7 +35,7 @@
 
 
 ## a1111-sd-webui-lycoris 확장 로라 경로 설정
-> 추가 실행 인자에 --lyco-dir [작업 디렉터리 이름]/models/LyCORIS
+> 추가 실행 인자에 --lyco-dir [작업 디렉터리 이름]/models/Lora
 
 ![image](./LyCORIS.png)
 <br>
