@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.4.5"  # @param {type:"string"}
+VERSION = "v0.4.6"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)<br>
@@ -171,6 +171,7 @@ FAVORITES_EXTENSIONS = [
     ["Dynamic Prompts[⧉](https://github.com/adieyal/sd-dynamic-prompts.git)"],
     ["Dynamic Thresholding[⧉](https://github.com/mcmonkeyprojects/sd-dynamic-thresholding)"],
     ["Image browser[⧉](https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git)"],
+    ["Infinite Image Browsing[⧉](https://github.com/zanllp/sd-webui-infinite-image-browsing.git)"],
     ["Kohya-ss Additional Networks[⧉](https://github.com/kohya-ss/sd-webui-additional-networks)"],
     ["Latent Couple[⧉](https://github.com/ashen-sensored/stable-diffusion-webui-two-shot.git)"],
     ["Locon[⧉](https://github.com/KohakuBlueleaf/a1111-sd-webui-locon.git)"],
@@ -265,6 +266,9 @@ FAVORITES_ARGS = [
 
 ## @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
+    [
+        "2023-06-05 v1.3.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/baf6946e06249c5af9851c60171692c44ef633e0)"
+    ],
     [
         "2023-05-14 v1.2.1[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/89f9faa63388756314e8a1d96cf86bf5e0663045)"
     ],
