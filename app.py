@@ -1,5 +1,5 @@
 # @title ## 2. 런처 앱 ##
-VERSION = "v0.4.6"  # @param {type:"string"}
+VERSION = "v0.4.7"  # @param {type:"string"}
 
 # @markdown ## <br> 런처 웹페이지 표시 방법 선택 ##
 # @markdown - 체크시(기본값) : 웹 브라우저 창에 표시(🐢응답 <font color="red">느림</font>, 👍보기 <font color="blue">편안</font>)<br>
@@ -266,6 +266,9 @@ FAVORITES_ARGS = [
 
 ## @markdown - 즐겨찾기 : 커밋 해시
 FAVORITES_COMMITS = [
+    [
+        "2023-07-11 v1.4.1[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/f865d3e11647dfd6c7b2cdf90dde24680e58acd8)"
+    ],
     [
         "2023-06-05 v1.3.2[⧉](https://github.com/AUTOMATIC1111/stable-diffusion-webui/commit/baf6946e06249c5af9851c60171692c44ef633e0)"
     ],
@@ -2696,29 +2699,6 @@ class ColabLauncher(LinuxPlatform):
 
         super().setup()
 
-        # 코랩 tcmalloc 관련 이슈 우회
-        # https://github.com/googlecolab/colabtools/issues/3412
-        try:
-            # 패키지가 이미 다운그레이드 됐는지 확인하기
-            self.cmd("dpkg -l libunwind8-dev", check=True, live=True)
-        except RuntimeError:
-            for url in (
-                "http://launchpadlibrarian.net/367274644/libgoogle-perftools-dev_2.5-2.2ubuntu3_amd64.deb",
-                "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/google-perftools_2.5-2.2ubuntu3_all.deb",
-                "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libtcmalloc-minimal4_2.5-2.2ubuntu3_amd64.deb",
-                "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb",
-            ):
-                self.cmd(
-                    f"curl -sS --location --output {url.rsplit('/', 1)[-1]} {url}",
-                    check=False,
-                    live=True,
-                )
-            self.cmd("apt install -qq libunwind8-dev", check=False, live=True)
-            self.cmd("dpkg -i *.deb", check=False, live=True)
-            self.cmd("rm *.deb", check=False, live=True)
-
-        # https://github.com/googlecolab/colabtools/issues/3412
-        self.environ["LD_PRELOAD"] = "libtcmalloc.so"
         # Deactivate tensorflow print standard error
         self.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
