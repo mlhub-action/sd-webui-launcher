@@ -428,7 +428,7 @@ class Launcher(ABC):
         self.cmd("python -m pip -q install --upgrade pip", check=False, live=True)
 
         if not self.is_installed("gradio"):
-            self.cmd('pip -q install "gradio>=3.21"', check=True, live=True)
+            self.cmd('pip -q install "gradio>=3.21,<=3.41.*"', check=True, live=True)
         else:
             from importlib.metadata import version
 
@@ -440,7 +440,7 @@ class Launcher(ABC):
             if gradio_version["major"] != 3 or gradio_version["minor"] < 21:
                 logger.warning("Launcher: gradio 버전이 낮아 재설치 합니다.")
                 self.cmd(
-                    'pip -q install --upgrade --force-reinstall "gradio>=3.21"',
+                    'pip -q install --upgrade --force-reinstall "gradio>=3.21,<=3.41.*"',
                     check=True,
                     live=True,
                 )
