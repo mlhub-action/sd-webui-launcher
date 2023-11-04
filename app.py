@@ -2601,13 +2601,13 @@ class WindowsPlatform(Launcher):
             Path("temp").mkdir(parents=True, exist_ok=True)
             curl_zip = Path("temp", "curl.zip")
             urllib.request.urlretrieve(
-                "https://curl.se/windows/dl-8.0.1_4/curl-8.0.1_4-win64-mingw.zip",
+                "https://curl.se/windows/dl-8.4.0_6/curl-8.4.0_6-win64-mingw.zip",
                 curl_zip,
             )
             curl_exe = bin_path / "curl.exe"
 
             with zipfile.ZipFile(curl_zip) as z:
-                with z.open("curl-8.0.1_4-win64-mingw/bin/curl.exe") as src, open(
+                with z.open("curl-8.4.0_6-win64-mingw/bin/curl.exe") as src, open(
                     curl_exe, "wb"
                 ) as dst:
                     shutil.copyfileobj(src, dst)
