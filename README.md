@@ -53,6 +53,12 @@
  
 
 ## 업데이트
+### v0.4.8 (2023-11-04)
+#### 변경 내역
+ - gradio 설치 버전 지정 >=3.21, <=3.41
+ - AttributeError: module 'gradio' has no attribute 'Box' 문제 수정
+</br>
+
 ### v0.4.7 (2023-07-29)
 #### 변경 내역
  - stable-diffusion-webui v1.4.1 깃 저장소 즐겨찾기 추가
